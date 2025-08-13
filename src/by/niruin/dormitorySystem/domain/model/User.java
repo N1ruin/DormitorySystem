@@ -1,5 +1,7 @@
 package by.niruin.dormitorySystem.domain.model;
 
+import java.util.Objects;
+
 public class User {
     private final long id;
     private String login;
@@ -8,18 +10,14 @@ public class User {
     private final FullName fullName;
     private final Gender gender;
 
-    public User(long id, String login, String password, Role role, FullName fullName, Gender gender) {
+    public User(long id, String login, String password, Role role, String firstName,
+                String lastName, String fatherName, Gender gender) {
         this.id = id;
         this.login = login;
         this.passwordHash = password.hashCode();
         this.role = role;
-        this.fullName = fullName;
+        this.fullName = new FullName(firstName, lastName, fatherName);
         this.gender = gender;
-    }
-
-    public User(long id, String login, String password, Role role, String firstName,
-                String lastName, String fatherName, Gender gender) {
-        this(id, login, password, role, new FullName(firstName, lastName, fatherName), gender);
     }
 
     public long getId() {
@@ -56,5 +54,17 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
