@@ -7,29 +7,28 @@ import by.niruin.dormitorySystem.exception.UserAuthorizationException;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 
 public class AuthorizationService {
-    private final ApplicationContext applicationContext;
     private final UserRepository userRepository;
     private final PrintService printService;
 
-    public AuthorizationService(ApplicationContext applicationContext, UserRepository userRepository, PrintService printService) {
-        this.applicationContext = applicationContext;
+    public AuthorizationService(UserRepository userRepository, PrintService printService) {
         this.userRepository = userRepository;
         this.printService = printService;
     }
 
-    public void authorizeUser(String login, String password) {
-        User user = userRepository.findUserByLogin(login);
+    public void signIn(String login, String password) {
+        User user = userRepository.findByLogin(login);
 
-        if (user == null || !checkPassword(user, password)) {
+
+        if (user == null || !checkPassword(user.getPasswordHash(), password)) {
             throw new UserAuthorizationException();
         }
 
         printService.printWelcomeUserMessage(user);
-        applicationContext.setActiveUser(user);
+        ApplicationContext.setActiveUser(user);
     }
 
-    private boolean checkPassword(User user, String password) {
-        return user.getPasswordHash() == password.hashCode();
+    private boolean checkPassword(int passwordHash, String inputPassword) {
+        return passwordHash == inputPassword.hashCode();
     }
 
     public boolean checkAccess(User user, Role necessaryAccessRole) {

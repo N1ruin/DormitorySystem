@@ -5,25 +5,25 @@ import by.niruin.dormitorySystem.domain.model.User;
 import java.time.LocalDateTime;
 
 public class ApplicationContext {
-    private User activeUser;
-    private LocalDateTime lastDataUpdate;
+    private static User activeUser;
+    private static LocalDateTime lastDataUpdate;
 
     public ApplicationContext() {
     }
 
-    public User getActiveUser() {
+    public static User getActiveUser() {
         return activeUser;
     }
 
-    public void setActiveUser(User activeUser) {
-        this.activeUser = activeUser;
+    public static void setActiveUser(User newActiveUser) {
+        activeUser = newActiveUser;
     }
 
-    public LocalDateTime getLastDataUpdate() {
+    public static LocalDateTime getLastDataUpdate() {
         return lastDataUpdate;
     }
 
-    public void setLastDataUpdate(LocalDateTime dateTime) {
-        this.lastDataUpdate = dateTime;
+    public static void setLastDataUpdate(LocalDateTime dateTime) {
+        lastDataUpdate = dateTime;
     }
 }

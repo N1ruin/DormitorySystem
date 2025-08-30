@@ -1,16 +1,17 @@
 package by.niruin.dormitorySystem.domain.model;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class User {
-    private final long id;
+    private final UUID id;
     private String login;
     private int passwordHash;
     private Role role;
     private final FullName fullName;
     private final Gender gender;
 
-    public User(long id, String login, String password, Role role, String firstName,
+    public User(UUID id, String login, String password, Role role, String firstName,
                 String lastName, String fatherName, Gender gender) {
         this.id = id;
         this.login = login;
@@ -20,7 +21,7 @@ public class User {
         this.gender = gender;
     }
 
-    public long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -58,7 +59,14 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        if (o != this) {
+            return false;
+        }
+
         User user = (User) o;
         return id == user.id;
     }

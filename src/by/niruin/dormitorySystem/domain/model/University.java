@@ -1,7 +1,5 @@
 package by.niruin.dormitorySystem.domain.model;
 
-import java.util.Objects;
-
 public class University {
     private final long id;
     private String name;

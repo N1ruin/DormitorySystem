@@ -5,10 +5,10 @@ import by.niruin.dormitorySystem.domain.model.User;
 import java.util.List;
 
 public interface UserRepository {
-    User findUserByLogin(String login);
-    User findUserById(long id);
+    User findByLogin(String login);
+    User findById(long id);
     void save(User user);
-    List<User> findAllUsers();
-    void updateUser(User user);
+    List<User> findAll();
+    void update(User user);
     void delete(long id);
 }
