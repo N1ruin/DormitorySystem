@@ -2,17 +2,28 @@ package by.niruin.dormitorySystem.domain.authorization;
 
 import by.niruin.dormitorySystem.domain.model.User;
 
+import java.time.LocalDateTime;
+
 public class ApplicationContext {
-    private User activeUser;
+    private static User activeUser;
+    private static LocalDateTime lastDataUpdate;
 
     public ApplicationContext() {
     }
 
-    public User getActiveUser() {
+    public static User getActiveUser() {
         return activeUser;
     }
 
-    public void setActiveUser(User activeUser) {
-        this.activeUser = activeUser;
+    public static void setActiveUser(User newActiveUser) {
+        activeUser = newActiveUser;
+    }
+
+    public static LocalDateTime getLastDataUpdate() {
+        return lastDataUpdate;
+    }
+
+    public static void setLastDataUpdate(LocalDateTime dateTime) {
+        lastDataUpdate = dateTime;
     }
 }
