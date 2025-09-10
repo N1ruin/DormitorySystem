@@ -26,4 +26,9 @@ public class FullName {
     public String getShortName() {
         return "%s. %s. %s".formatted(firstName, lastName.charAt(0), fatherName.charAt(0));
     }
+
+    @Override
+    public String toString() {
+        return "%s %s %s".formatted(firstName, lastName, fatherName);
+    }
 }
