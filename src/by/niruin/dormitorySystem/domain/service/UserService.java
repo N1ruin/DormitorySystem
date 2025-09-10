@@ -4,6 +4,7 @@ import by.niruin.dormitorySystem.domain.model.Gender;
 import by.niruin.dormitorySystem.domain.model.Role;
 import by.niruin.dormitorySystem.domain.model.User;
 import by.niruin.dormitorySystem.domain.repository.UserRepository;
+import by.niruin.dormitorySystem.exception.UserNotFoundException;
 import by.niruin.dormitorySystem.infrastructure.service.InputService;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 
@@ -24,41 +25,41 @@ public class UserService {
         this.userValidationService = userValidationService;
     }
 
-    public void SignUp() {
+    public void signUp() {
         UUID id = UUID.randomUUID();
 
         String login = processUserField(
                 printService::printInputLoginRequestMessage,
                 printService::printIncorrectLoginMessage,
-                userValidationService::validateLogin);
+                userValidationService::isLoginValid);
 
         String password = processUserField(
                 printService::printInputPasswordRequestMessage,
                 printService::printIncorrectPasswordMessage,
-                userValidationService::validatePassword);
+                userValidationService::isPasswordValid);
 
         String firstName = processUserField(
                 printService::printInputFirstNameRequestMessage,
                 printService::printIncorrectFirstNameMessage,
-                userValidationService::validateName
+                userValidationService::isNameValid
         );
 
         String lastName = processUserField(
                 printService::printInputLastNameRequestMessage,
                 printService::printIncorrectLastNameMessage,
-                userValidationService::validateName
+                userValidationService::isNameValid
         );
 
         String fatherName = processUserField(
                 printService::printInputFatherNameRequestMessage,
                 printService::printIncorrectFatherNameMessage,
-                userValidationService::validateName
+                userValidationService::isNameValid
         );
 
         String stringGender = processUserField(
                 printService::printInputGenderRequestMessage,
                 printService::printIncorrectGenderMessage,
-                (gender) -> gender.equalsIgnoreCase("male")
+                gender -> gender.equalsIgnoreCase("male")
                         || gender.equalsIgnoreCase("female")
         );
 
@@ -81,8 +82,19 @@ public class UserService {
                 errorMessagePrinter.run();
             }
 
-        } while (fieldValidator.test(field));
+        } while (Predicate.not(fieldValidator).test(field));
 
         return field;
+    }
+
+    public void setRole(UUID userUUID, Role newRole) {
+        User user = userRepository.findById(userUUID);
+
+        if(user == null) {
+            throw new UserNotFoundException();
+        }
+
+        user.setRole(newRole);
+        userRepository.update(user);
     }
 }

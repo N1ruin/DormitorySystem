@@ -11,19 +11,19 @@ public class ApplicationContext {
     public ApplicationContext() {
     }
 
-    public static User getActiveUser() {
+    public User getActiveUser() {
         return activeUser;
     }
 
-    public static void setActiveUser(User newActiveUser) {
+    public void setActiveUser(User newActiveUser) {
         activeUser = newActiveUser;
     }
 
-    public static LocalDateTime getLastDataUpdate() {
+    public LocalDateTime getLastDataUpdate() {
         return lastDataUpdate;
     }
 
-    public static void setLastDataUpdate(LocalDateTime dateTime) {
+    public void setLastDataUpdate(LocalDateTime dateTime) {
         lastDataUpdate = dateTime;
     }
 }

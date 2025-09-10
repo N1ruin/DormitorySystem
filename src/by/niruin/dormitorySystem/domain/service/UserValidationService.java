@@ -12,20 +12,20 @@ public class UserValidationService {
 
     public static final String NAME_PATTERN = "^[а-яА-Я]+";
 
-    public boolean validateLogin(String login) {
+    public boolean isLoginValid(String login) {
         return login.matches(LOGIN_LENGTH_PATTERN)
                 && login.matches(LOGIN_MIN_ONE_LETTER_PATTERN)
                 && login.matches(LOGIN_SYMBOLS_PATTERN);
     }
 
-    public boolean validatePassword(String password) {
+    public boolean isPasswordValid(String password) {
         return password.matches(PASSWORD_LENGTH_PATTERN)
                 && password.matches(PASSWORD_LETTER_PATTERN)
                 && password.matches(PASSWORD_NUMBER_PATTERN)
                 && password.matches(PASSWORD_SPECIAL_SYMBOL_PATTERN);
     }
 
-    public boolean validateName(String name) {
+    public boolean isNameValid(String name) {
         return name.matches(NAME_PATTERN);
     }
 }

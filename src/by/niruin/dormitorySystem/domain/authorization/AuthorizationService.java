@@ -1,6 +1,5 @@
 package by.niruin.dormitorySystem.domain.authorization;
 
-import by.niruin.dormitorySystem.domain.model.Role;
 import by.niruin.dormitorySystem.domain.model.User;
 import by.niruin.dormitorySystem.domain.repository.UserRepository;
 import by.niruin.dormitorySystem.exception.UserAuthorizationException;
@@ -19,19 +18,15 @@ public class AuthorizationService {
         User user = userRepository.findByLogin(login);
 
 
-        if (user == null || !checkPassword(user.getPasswordHash(), password)) {
+        if (user == null || !isPasswordTrue(user.getPasswordHash(), password)) {
             throw new UserAuthorizationException();
         }
 
         printService.printWelcomeUserMessage(user);
-        ApplicationContext.setActiveUser(user);
+        ApplicationContextHolder.getContext().setActiveUser(user);
     }
 
-    private boolean checkPassword(int passwordHash, String inputPassword) {
+    private boolean isPasswordTrue(int passwordHash, String inputPassword) {
         return passwordHash == inputPassword.hashCode();
-    }
-
-    public boolean checkAccess(User user, Role necessaryAccessRole) {
-        return user.getRole() == necessaryAccessRole;
     }
 }
