@@ -87,14 +87,18 @@ public class UserService {
         return field;
     }
 
-    public void setRole(UUID userUUID, Role newRole) {
-        User user = userRepository.findById(userUUID);
+    public boolean setRole(UUID userUUID, Role newRole) {
+        boolean result = false;
 
-        if(user == null) {
-            throw new UserNotFoundException();
+        try {
+            User user = userRepository.findById(userUUID);
+            user.setRole(newRole);
+            userRepository.update(user);
+            result = true;
+        } catch (UserNotFoundException e) {
+            printService.printExceptionMessage(e);
         }
 
-        user.setRole(newRole);
-        userRepository.update(user);
+        return result;
     }
 }

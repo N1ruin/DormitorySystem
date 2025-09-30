@@ -1,22 +1,26 @@
 package by.niruin.dormitorySystem.domain.model;
 
+import java.util.UUID;
+
 public class Room {
-    private final long id;
+    private final UUID uuid;
     private int number;
     private final byte capacity;
     private boolean availableForLiving;
     private boolean isMaleOnly;
+    private final UUID dormitoryUuid;
 
-    public Room(long id, byte capacity, int number, boolean availableForLiving, boolean isMaleOnly) {
-        this.id = id;
+    public Room(UUID uuid, byte capacity, int number, boolean availableForLiving, boolean isMaleOnly, UUID dormitoryUuid) {
+        this.uuid = uuid;
         this.capacity = capacity;
         this.number = number;
         this.availableForLiving = availableForLiving;
         this.isMaleOnly = isMaleOnly;
+        this.dormitoryUuid = dormitoryUuid;
     }
 
-    public long getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
     public int getNumber() {
@@ -45,5 +49,9 @@ public class Room {
 
     public void setMaleOnly(boolean maleOnly) {
         isMaleOnly = maleOnly;
+    }
+
+    public UUID getDormitoryUuid() {
+        return dormitoryUuid;
     }
 }

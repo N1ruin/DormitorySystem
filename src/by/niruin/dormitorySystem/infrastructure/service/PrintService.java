@@ -59,4 +59,8 @@ public class PrintService {
     public void printIncorrectGenderMessage(){
         System.out.println(ConsoleMessage.INCORRECT_GENDER_MESSAGE);
     }
+
+    public void printExceptionMessage(Exception e) {
+        System.out.println(e.getMessage());
+    }
 }

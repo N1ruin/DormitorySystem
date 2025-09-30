@@ -7,8 +7,17 @@ import java.time.LocalDateTime;
 public class ApplicationContext {
     private static User activeUser;
     private static LocalDateTime lastDataUpdate;
+    private static boolean dataLoaded = false;
 
     public ApplicationContext() {
+    }
+
+    public static boolean isDataLoaded() {
+        return dataLoaded;
+    }
+
+    public static void setDataLoaded(boolean dataLoaded) {
+        ApplicationContext.dataLoaded = dataLoaded;
     }
 
     public User getActiveUser() {
