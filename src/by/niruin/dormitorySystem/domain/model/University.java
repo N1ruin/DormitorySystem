@@ -1,20 +1,23 @@
 package by.niruin.dormitorySystem.domain.model;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class University {
-    private final long id;
+    private final UUID uuid;
     private String name;
     private byte studyDuration;
+    private final List<UUID> dormitories = new ArrayList<>();
 
-    public University(long id, String name, byte studyDuration) {
-        this.id = id;
+    public University(UUID uuid, String name, byte studyDuration) {
+        this.uuid = uuid;
         this.name = name;
         this.studyDuration = studyDuration;
     }
 
-    public long getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
     public String getName() {
@@ -25,6 +28,10 @@ public class University {
         return studyDuration;
     }
 
+    public List<UUID> getDormitories() {
+        return dormitories;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -32,4 +39,5 @@ public class University {
     public void setStudyDuration(byte studyDuration) {
         this.studyDuration = studyDuration;
     }
+
 }

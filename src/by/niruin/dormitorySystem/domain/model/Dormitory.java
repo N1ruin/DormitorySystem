@@ -1,22 +1,27 @@
 package by.niruin.dormitorySystem.domain.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class Dormitory {
-    private final long id;
+    private final UUID uuid;
     private final int number;
     private final int roomsCount;
-    private University university;
+    private final UUID universityUuid;
     private boolean availableForLiving;
+    private final List<UUID> roomUuids = new ArrayList<>();
 
-    public Dormitory(long id, int number, int roomsCount, University university, boolean availableForLiving) {
-        this.id = id;
+    public Dormitory(UUID uuid, int number, int roomsCount, UUID universityUuid, boolean availableForLiving) {
+        this.uuid = uuid;
         this.number = number;
         this.roomsCount = roomsCount;
-        this.university = university;
+        this.universityUuid = universityUuid;
         this.availableForLiving = availableForLiving;
     }
 
-    public long getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
     public int getNumber() {
@@ -27,19 +32,19 @@ public class Dormitory {
         return roomsCount;
     }
 
-    public University getUniversity() {
-        return university;
+    public UUID getUniversityUuid() {
+        return universityUuid;
     }
 
     public boolean isAvailableForLiving() {
         return availableForLiving;
     }
 
-    public void setUniversity(University university) {
-        this.university = university;
-    }
-
     public void setAvailableForLiving(boolean availableForLiving) {
         this.availableForLiving = availableForLiving;
+    }
+
+    public List<UUID> getRoomUuids() {
+        return roomUuids;
     }
 }
