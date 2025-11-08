@@ -1,16 +1,15 @@
 package by.niruin.dormitorySystem.domain.repository;
 
 import java.util.List;
-import java.util.UUID;
 
-public interface Repository<T>{
+public interface Repository<T extends Identity<ID>, ID> {
     void save(T entity);
 
     List<T> findAll();
 
-    T findById(UUID uuid);
+    T findById(ID id);
 
     void update(T entity);
 
-    void delete(UUID uuid);
+    void delete(ID uuid);
 }

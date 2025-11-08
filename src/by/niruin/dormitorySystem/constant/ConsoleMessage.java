@@ -1,7 +1,7 @@
 package by.niruin.dormitorySystem.constant;
 
 public class ConsoleMessage {
-    public static final String WELCOME_MESSAGE = "Welcome";
+    public static final String WELCOME_MESSAGE = "Welcome, %s!";
 
     public static final String INPUT_LOGIN_REQUEST_MESSAGE = "Input your login:";
 

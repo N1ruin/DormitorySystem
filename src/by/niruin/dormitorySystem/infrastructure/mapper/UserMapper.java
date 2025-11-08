@@ -16,7 +16,7 @@ public class UserMapper extends AbstractEntityMapper<User> {
     protected String entityFieldsToString(User user) {
         return String.join(
                 FIELDS_DELIMITER,
-                user.getUuid().toString(),
+                user.getId().toString(),
                 user.getFullName().getFirstName(),
                 user.getFullName().getLastName(),
                 user.getFullName().getFatherName(),

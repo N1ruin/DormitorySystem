@@ -2,6 +2,8 @@ package by.niruin.dormitorySystem.domain.repository;
 
 import by.niruin.dormitorySystem.domain.model.User;
 
-public interface UserRepository extends Repository<User>{
+import java.util.UUID;
+
+public interface UserRepository extends Repository<User<UUID>, UUID> {
     User findByLogin(String login);
 }

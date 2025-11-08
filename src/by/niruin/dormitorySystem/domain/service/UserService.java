@@ -69,6 +69,22 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public boolean setRole(UUID userUUID, Role newRole) {
+        boolean result = false;
+
+        try {
+            User user = userRepository.findById(userUUID);
+            user.setRole(newRole);
+            userRepository.update(user);
+            result = true;
+        } catch (UserNotFoundException e) {
+            printService.printExceptionMessage(e);
+            //тут будет логирование
+        }
+
+        return result;
+    }
+
     private String processUserField(Runnable inputRequestMessagePrinter, Runnable errorMessagePrinter,
                                     Predicate<String> fieldValidator) {
 
@@ -85,20 +101,5 @@ public class UserService {
         } while (Predicate.not(fieldValidator).test(field));
 
         return field;
-    }
-
-    public boolean setRole(UUID userUUID, Role newRole) {
-        boolean result = false;
-
-        try {
-            User user = userRepository.findById(userUUID);
-            user.setRole(newRole);
-            userRepository.update(user);
-            result = true;
-        } catch (UserNotFoundException e) {
-            printService.printExceptionMessage(e);
-        }
-
-        return result;
     }
 }

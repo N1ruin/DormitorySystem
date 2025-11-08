@@ -1,32 +1,32 @@
 package by.niruin.dormitorySystem.domain.model;
 
-import java.time.LocalDate;
-import java.util.UUID;
+import by.niruin.dormitorySystem.domain.repository.Identity;
 
-public class Student {
-    private final UUID uuid;
+import java.time.LocalDate;
+
+public class Student<ID> implements Identity<ID> {
+    private final ID id;
     private final FullName fullName;
     private final Gender gender;
-    private final UUID universityUuid;
-    private final UUID dormitoryUuid;
-    private UUID roomUuid;
+    private final ID universityUuid;
+    private ID roomId;
     private int yearOfEntering;
     private final LocalDate deductionDate;
 
-    public Student(UUID uuid, String firstName, String lastName, String fatherName, Gender gender,
-                   LocalDate deductionDate, int yearOfEntering, UUID roomUuid, UUID dormitoryUuid, UUID universityUuid) {
-        this.uuid = uuid;
+    public Student(ID uuid, String firstName, String lastName, String fatherName, Gender gender,
+                   LocalDate deductionDate, int yearOfEntering, ID roomUuid, ID universityUuid) {
+        this.id = uuid;
         this.fullName = new FullName(firstName, fatherName, lastName);
         this.gender = gender;
         this.deductionDate = deductionDate;
         this.yearOfEntering = yearOfEntering;
-        this.roomUuid = roomUuid;
-        this.dormitoryUuid = dormitoryUuid;
+        this.roomId = roomUuid;
         this.universityUuid = universityUuid;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    @Override
+    public ID getId() {
+        return id;
     }
 
     public FullName getFullName() {
@@ -37,16 +37,12 @@ public class Student {
         return gender;
     }
 
-    public UUID getUniversityUuid() {
+    public ID getUniversityUuid() {
         return universityUuid;
     }
 
-    public UUID getDormitoryUuid() {
-        return dormitoryUuid;
-    }
-
-    public UUID getRoomUuid() {
-        return roomUuid;
+    public ID getRoomId() {
+        return roomId;
     }
 
     public int getYearOfEntering() {
@@ -57,8 +53,8 @@ public class Student {
         return deductionDate;
     }
 
-    public void setRoomUuid(UUID roomUuid) {
-        this.roomUuid = roomUuid;
+    public void setRoomId(ID roomUuid) {
+        this.roomId = roomUuid;
     }
 
     public void setYearOfEntering(int yearOfEntering) {

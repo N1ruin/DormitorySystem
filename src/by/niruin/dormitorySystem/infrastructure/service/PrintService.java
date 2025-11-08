@@ -6,10 +6,7 @@ import by.niruin.dormitorySystem.domain.model.User;
 public class PrintService {
 
     public void printWelcomeUserMessage(User user) {
-        String userFullName = user.getFullName().toString();
-        String message = ConsoleMessage.WELCOME_MESSAGE + ", " + userFullName + "!";
-
-        System.out.println(message);
+        System.out.println(ConsoleMessage.WELCOME_MESSAGE.formatted(user.getFullName().getShortName()));
     }
 
     public void printInputLoginRequestMessage() {
@@ -56,7 +53,7 @@ public class PrintService {
         System.out.println(ConsoleMessage.INPUT_GENDER_REQUEST_MESSAGE);
     }
 
-    public void printIncorrectGenderMessage(){
+    public void printIncorrectGenderMessage() {
         System.out.println(ConsoleMessage.INCORRECT_GENDER_MESSAGE);
     }
 
