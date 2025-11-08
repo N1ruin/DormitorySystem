@@ -1,19 +1,18 @@
 package by.niruin.dormitorySystem.infrastructure.loader;
 
-import by.niruin.dormitorySystem.domain.model.*;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryRepositoryBase;
+import by.niruin.dormitorySystem.infrastructure.repository.*;
 
 public class RepositoryDataLoader {
-    private final InMemoryRepositoryBase<User> userRepository;
-    private final InMemoryRepositoryBase<University> universityRepository;
-    private final InMemoryRepositoryBase<Student> studentRepository;
-    private final InMemoryRepositoryBase<Room> roomRepository;
-    private final InMemoryRepositoryBase<Dormitory> dormitoryRepository;
+    private final InMemoryUserRepository userRepository;
+    private final InMemoryUniversityRepository universityRepository;
+    private final InMemoryStudentRepository studentRepository;
+    private final InMemoryRoomRepository roomRepository;
+    private final InMemoryDormitoryRepository dormitoryRepository;
 
-    public RepositoryDataLoader(InMemoryRepositoryBase<Dormitory> dormitoryRepository,
-                                InMemoryRepositoryBase<User> userRepository,
-                                InMemoryRepositoryBase<University> universityRepository,
-                                InMemoryRepositoryBase<Student> studentRepository, InMemoryRepositoryBase<Room> roomRepository) {
+    public RepositoryDataLoader(InMemoryDormitoryRepository dormitoryRepository,
+                                InMemoryUserRepository userRepository,
+                                InMemoryUniversityRepository universityRepository,
+                                InMemoryStudentRepository studentRepository, InMemoryRoomRepository roomRepository) {
         this.dormitoryRepository = dormitoryRepository;
         this.userRepository = userRepository;
         this.universityRepository = universityRepository;
@@ -29,11 +28,11 @@ public class RepositoryDataLoader {
         dormitoryRepository.loadAllEntitiesFromFile();
     }
 
-    public void saveData() {
-        userRepository.saveAllEntitiesInFile();
-        universityRepository.saveAllEntitiesInFile();
-        studentRepository.saveAllEntitiesInFile();
-        roomRepository.saveAllEntitiesInFile();
-        dormitoryRepository.saveAllEntitiesInFile();
+    public void persistData() {
+        userRepository.persistEntities();
+        universityRepository.persistEntities();
+        studentRepository.persistEntities();
+        roomRepository.persistEntities();
+        dormitoryRepository.persistEntities();
     }
 }

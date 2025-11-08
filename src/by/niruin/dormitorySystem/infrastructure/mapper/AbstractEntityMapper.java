@@ -2,7 +2,7 @@ package by.niruin.dormitorySystem.infrastructure.mapper;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class AbstractEntityMapper<T> implements EntityMapper<T> {
@@ -20,11 +20,10 @@ public abstract class AbstractEntityMapper<T> implements EntityMapper<T> {
 
     protected abstract String entityFieldsToString(T entity);
 
-
     @Override
     public Collection<T> mapStringToEntities(String fields) {
         if (fields == null || fields.trim().isEmpty()) {
-            return Collections.emptyList();
+            return List.of();
         }
 
         String[] dormitoryFields = fields.split(NEW_LINE_SYMBOL);

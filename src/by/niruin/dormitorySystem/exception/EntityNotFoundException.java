@@ -1,10 +1,9 @@
 package by.niruin.dormitorySystem.exception;
 
-import java.util.UUID;
 
 public class EntityNotFoundException extends RuntimeException {
-    public EntityNotFoundException(UUID uuid) {
-  super("Entity with UUID: %s not exist!".formatted(uuid));
+    public <ID> EntityNotFoundException(ID id) {
+        super("Entity with UUID: %s not exist!".formatted(id));
     }
 
     public EntityNotFoundException() {

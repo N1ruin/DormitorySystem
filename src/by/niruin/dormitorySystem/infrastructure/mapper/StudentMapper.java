@@ -8,21 +8,20 @@ import java.util.*;
 public class StudentMapper extends AbstractEntityMapper<Student> {
     @Override
     protected int getFieldsCount() {
-        return 10;
+        return 9;
     }
 
     @Override
     protected String entityFieldsToString(Student student) {
         return String.join(
                 FIELDS_DELIMITER,
-                student.getUuid().toString(),
+                student.getId().toString(),
                 student.getFullName().getFirstName(),
                 student.getFullName().getLastName(),
                 student.getFullName().getFatherName(),
                 student.getGender().toString(),
                 student.getUniversityUuid().toString(),
-                student.getDormitoryUuid().toString(),
-                student.getRoomUuid().toString(),
+                student.getRoomId().toString(),
                 String.valueOf(student.getYearOfEntering()),
                 student.getDeductionDate().toString());
     }
@@ -41,12 +40,11 @@ public class StudentMapper extends AbstractEntityMapper<Student> {
         String fatherName = parts[3];
         Gender gender = Gender.valueOf(parts[4]);
         UUID universityUuid = UUID.fromString(parts[5]);
-        UUID dormitoryUuid = UUID.fromString(parts[6]);
-        UUID roomUuid = UUID.fromString(parts[7]);
-        int yearOfEntering = Integer.parseInt(parts[8]);
-        LocalDate deductionDate = LocalDate.parse(parts[9]);
+        UUID roomUuid = UUID.fromString(parts[6]);
+        int yearOfEntering = Integer.parseInt(parts[7]);
+        LocalDate deductionDate = LocalDate.parse(parts[8]);
 
         return new Student(uuid, firstName, lastName, fatherName, gender, deductionDate, yearOfEntering,
-                roomUuid, dormitoryUuid, universityUuid);
+                roomUuid, universityUuid);
     }
 }

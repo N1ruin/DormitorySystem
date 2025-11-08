@@ -1,19 +1,20 @@
 package by.niruin.dormitorySystem.domain.model;
 
-import java.util.Objects;
-import java.util.UUID;
+import by.niruin.dormitorySystem.domain.repository.Identity;
 
-public class User {
-    private final UUID uuid;
+import java.util.Objects;
+
+public class User<ID> implements Identity<ID> {
+    private final ID id;
     private String login;
     private int passwordHash;
     private Role role;
     private final FullName fullName;
     private final Gender gender;
 
-    public User(UUID id, String login, String password, Role role, String firstName,
+    public User(ID id, String login, String password, Role role, String firstName,
                 String lastName, String fatherName, Gender gender) {
-        this.uuid = id;
+        this.id = id;
         this.login = login;
         this.passwordHash = password.hashCode();
         this.role = role;
@@ -21,8 +22,9 @@ public class User {
         this.gender = gender;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    @Override
+    public ID getId() {
+        return id;
     }
 
     public String getLogin() {
@@ -72,11 +74,11 @@ public class User {
         }
 
         User user = (User) o;
-        return uuid == user.uuid;
+        return id == user.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(uuid);
+        return Objects.hashCode(id);
     }
 }

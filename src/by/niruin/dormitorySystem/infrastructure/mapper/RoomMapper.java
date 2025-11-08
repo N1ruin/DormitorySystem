@@ -14,12 +14,12 @@ public class RoomMapper extends AbstractEntityMapper<Room> {
     protected String entityFieldsToString(Room room) {
         return String.join(
                 FIELDS_DELIMITER,
-                room.getUuid().toString(),
+                room.getId().toString(),
                 String.valueOf(room.getNumber()),
                 String.valueOf(room.getCapacity()),
                 String.valueOf(room.isAvailableForLiving()),
                 String.valueOf(room.isMaleOnly()),
-                room.getDormitoryUuid().toString());
+                room.getDormitoryId().toString());
     }
 
     @Override

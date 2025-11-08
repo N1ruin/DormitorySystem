@@ -5,19 +5,19 @@ import by.niruin.dormitorySystem.domain.model.User;
 import java.time.LocalDateTime;
 
 public class ApplicationContext {
-    private static User activeUser;
-    private static LocalDateTime lastDataUpdate;
-    private static boolean dataLoaded = false;
+    private User activeUser;
+    private LocalDateTime lastDataUpdate;
+    private boolean dataLoaded;
 
     public ApplicationContext() {
     }
 
-    public static boolean isDataLoaded() {
+    public boolean isDataLoaded() {
         return dataLoaded;
     }
 
-    public static void setDataLoaded(boolean dataLoaded) {
-        ApplicationContext.dataLoaded = dataLoaded;
+    public void setDataLoaded(boolean dataLoaded) {
+        this.dataLoaded = dataLoaded;
     }
 
     public User getActiveUser() {

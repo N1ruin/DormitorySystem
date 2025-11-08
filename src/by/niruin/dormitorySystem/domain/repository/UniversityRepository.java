@@ -2,6 +2,8 @@ package by.niruin.dormitorySystem.domain.repository;
 
 import by.niruin.dormitorySystem.domain.model.University;
 
-public interface UniversityRepository extends Repository<University>{
+import java.util.UUID;
+
+public interface UniversityRepository extends Repository<University<UUID>, UUID> {
 
 }
