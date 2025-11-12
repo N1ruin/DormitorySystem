@@ -2,10 +2,16 @@ package by.niruin.dormitorySystem.infrastructure.service;
 
 import by.niruin.dormitorySystem.constant.ConsoleMessage;
 import by.niruin.dormitorySystem.domain.model.User;
+import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 
+import java.util.UUID;
+
+@Component
 public class PrintService {
+    public PrintService() {
+    }
 
-    public void printWelcomeUserMessage(User user) {
+    public void printWelcomeUserMessage(User<UUID> user) {
         System.out.println(ConsoleMessage.WELCOME_MESSAGE.formatted(user.getFullName().getShortName()));
     }
 

@@ -1,7 +1,10 @@
 package by.niruin.dormitorySystem.infrastructure.loader;
 
+import by.niruin.dormitorySystem.infrastructure.annotation.Autowired;
+import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import by.niruin.dormitorySystem.infrastructure.repository.*;
 
+@Component
 public class RepositoryDataLoader {
     private final InMemoryUserRepository userRepository;
     private final InMemoryUniversityRepository universityRepository;
@@ -9,6 +12,7 @@ public class RepositoryDataLoader {
     private final InMemoryRoomRepository roomRepository;
     private final InMemoryDormitoryRepository dormitoryRepository;
 
+    @Autowired
     public RepositoryDataLoader(InMemoryDormitoryRepository dormitoryRepository,
                                 InMemoryUserRepository userRepository,
                                 InMemoryUniversityRepository universityRepository,

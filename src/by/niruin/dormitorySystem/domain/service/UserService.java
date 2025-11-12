@@ -5,20 +5,23 @@ import by.niruin.dormitorySystem.domain.model.Role;
 import by.niruin.dormitorySystem.domain.model.User;
 import by.niruin.dormitorySystem.domain.repository.UserRepository;
 import by.niruin.dormitorySystem.exception.UserNotFoundException;
+import by.niruin.dormitorySystem.infrastructure.annotation.Component;
+import by.niruin.dormitorySystem.infrastructure.annotation.Qualifier;
+import by.niruin.dormitorySystem.infrastructure.repository.InMemoryUserRepository;
 import by.niruin.dormitorySystem.infrastructure.service.InputService;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 
 import java.util.UUID;
 import java.util.function.Predicate;
-
+@Component
 public class UserService {
     private final UserRepository userRepository;
     private final InputService inputService;
     private final PrintService printService;
     private final UserValidationService userValidationService;
 
-    public UserService(UserRepository userRepository, InputService inputService,
-                       PrintService printService, UserValidationService userValidationService) {
+    public UserService(@Qualifier(value = InMemoryUserRepository.class) UserRepository userRepository,
+                       InputService inputService, PrintService printService, UserValidationService userValidationService) {
         this.userRepository = userRepository;
         this.inputService = inputService;
         this.printService = printService;
