@@ -1,37 +1,40 @@
 package by.niruin.dormitorySystem.infrastructure.mapper;
 
 import by.niruin.dormitorySystem.domain.model.Dormitory;
+import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 
 import java.util.*;
 
-public class DormitoryMapper extends AbstractEntityMapper<Dormitory> {
-    @Override
-    protected int getFieldsCount() {
-        return 5;
+@Component
+public class DormitoryMapper extends AbstractEntityMapper<Dormitory<?>> {
+    public DormitoryMapper() {
     }
 
     @Override
-    protected String entityFieldsToString(Dormitory dormitory) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(dormitory.getId().toString()).append(FIELDS_DELIMITER);
-        sb.append(dormitory.getNumber()).append(FIELDS_DELIMITER);
-        sb.append(dormitory.getRoomsCount()).append(FIELDS_DELIMITER);
-        sb.append(dormitory.getUniversityUuid().toString()).append(FIELDS_DELIMITER);
-        sb.append(dormitory.isAvailableForLiving()).append(FIELDS_DELIMITER);
-
-        return sb.toString();
+    protected String entityFieldsToString(Dormitory<?> dormitory) {
+        return String.join(FIELDS_DELIMITER,
+                dormitory.getId().toString(),
+                String.valueOf(dormitory.getNumber()),
+                String.valueOf(dormitory.getRoomsCount()),
+                dormitory.getUniversityUuid().toString(),
+                String.valueOf(dormitory.isAvailableForLiving()));
     }
 
     @Override
-    protected Dormitory mapStringToEntity(String fields) {
+    protected Dormitory<?> mapStringToEntity(String fields) {
         String[] parts = fields.split(FIELDS_DELIMITER);
 
-        UUID uuid = UUID.fromString(parts[0]);
+        if (parts.length != Dormitory.class.getDeclaredFields().length) {
+            throw new RuntimeException(NOT_VALID_FIELDS_QUANTITY_MESSAGE);
+        }
+
+        Object id = getIdObject(Dormitory.class, parts[0]);
         int number = Integer.parseInt(parts[1]);
         int roomsCount = Integer.parseInt(parts[2]);
         UUID universityId = UUID.fromString(parts[3]);
         boolean availableForLiving = Boolean.parseBoolean(parts[4]);
 
-        return new Dormitory(uuid, number, roomsCount, universityId, availableForLiving);
+        return new Dormitory<>(id, number, roomsCount, universityId, availableForLiving);
+
     }
 }

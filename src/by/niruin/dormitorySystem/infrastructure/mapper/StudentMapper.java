@@ -1,18 +1,18 @@
 package by.niruin.dormitorySystem.infrastructure.mapper;
 
 import by.niruin.dormitorySystem.domain.model.*;
+import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 
 import java.time.LocalDate;
 import java.util.*;
 
-public class StudentMapper extends AbstractEntityMapper<Student> {
-    @Override
-    protected int getFieldsCount() {
-        return 9;
+@Component
+public class StudentMapper extends AbstractEntityMapper<Student<?>> {
+    public StudentMapper() {
     }
 
     @Override
-    protected String entityFieldsToString(Student student) {
+    protected String entityFieldsToString(Student<?> student) {
         return String.join(
                 FIELDS_DELIMITER,
                 student.getId().toString(),
@@ -27,14 +27,14 @@ public class StudentMapper extends AbstractEntityMapper<Student> {
     }
 
     @Override
-    protected Student mapStringToEntity(String fields) {
+    protected Student<?> mapStringToEntity(String fields) {
         String[] parts = fields.split(FIELDS_DELIMITER);
 
-        if (parts.length != getFieldsCount()) {
-            throw new RuntimeException("");
+        if (parts.length != StudentMapper.class.getDeclaredFields().length) {
+            throw new RuntimeException(NOT_VALID_FIELDS_QUANTITY_MESSAGE);
         }
 
-        UUID uuid = UUID.fromString(parts[0]);
+        Object id = getIdObject(Student.class, parts[0]);
         String firstName = parts[1];
         String lastName = parts[2];
         String fatherName = parts[3];
@@ -44,7 +44,7 @@ public class StudentMapper extends AbstractEntityMapper<Student> {
         int yearOfEntering = Integer.parseInt(parts[7]);
         LocalDate deductionDate = LocalDate.parse(parts[8]);
 
-        return new Student(uuid, firstName, lastName, fatherName, gender, deductionDate, yearOfEntering,
+        return new Student<>(id, firstName, lastName, fatherName, gender, deductionDate, yearOfEntering,
                 roomUuid, universityUuid);
     }
 }

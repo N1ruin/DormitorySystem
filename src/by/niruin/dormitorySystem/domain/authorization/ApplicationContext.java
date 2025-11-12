@@ -3,9 +3,10 @@ package by.niruin.dormitorySystem.domain.authorization;
 import by.niruin.dormitorySystem.domain.model.User;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class ApplicationContext {
-    private User activeUser;
+    private User<UUID> activeUser;
     private LocalDateTime lastDataUpdate;
     private boolean dataLoaded;
 
@@ -20,11 +21,11 @@ public class ApplicationContext {
         this.dataLoaded = dataLoaded;
     }
 
-    public User getActiveUser() {
+    public User<UUID> getActiveUser() {
         return activeUser;
     }
 
-    public void setActiveUser(User newActiveUser) {
+    public void setActiveUser(User<UUID> newActiveUser) {
         activeUser = newActiveUser;
     }
 

@@ -1,6 +1,12 @@
 package by.niruin.dormitorySystem.domain.service;
 
+import by.niruin.dormitorySystem.infrastructure.annotation.Component;
+
+@Component
 public class UserValidationService {
+    public UserValidationService() {
+    }
+
     public static final String LOGIN_LENGTH_PATTERN = ".{4,16}";
     public static final String LOGIN_SYMBOLS_PATTERN = "^[a-zA-Z0-9]+";
     public static final String LOGIN_MIN_ONE_LETTER_PATTERN = "^.*[a-zA-Z]+.*";

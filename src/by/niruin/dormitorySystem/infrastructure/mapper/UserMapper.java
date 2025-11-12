@@ -3,17 +3,17 @@ package by.niruin.dormitorySystem.infrastructure.mapper;
 import by.niruin.dormitorySystem.domain.model.Gender;
 import by.niruin.dormitorySystem.domain.model.Role;
 import by.niruin.dormitorySystem.domain.model.User;
+import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 
 import java.util.*;
 
-public class UserMapper extends AbstractEntityMapper<User> {
-    @Override
-    protected int getFieldsCount() {
-        return 6;
+@Component
+public class UserMapper extends AbstractEntityMapper<User<?>> {
+    public UserMapper() {
     }
 
     @Override
-    protected String entityFieldsToString(User user) {
+    protected String entityFieldsToString(User<?> user) {
         return String.join(
                 FIELDS_DELIMITER,
                 user.getId().toString(),
@@ -27,11 +27,11 @@ public class UserMapper extends AbstractEntityMapper<User> {
     }
 
     @Override
-    protected User mapStringToEntity(String fields) {
+    protected User<?> mapStringToEntity(String fields) {
         String[] parts = fields.split(FIELDS_DELIMITER);
 
-        if (parts.length != getFieldsCount()) {
-            throw new RuntimeException("");
+        if (parts.length != User.class.getDeclaredFields().length) {
+            throw new RuntimeException(NOT_VALID_FIELDS_QUANTITY_MESSAGE);
         }
 
         UUID uuid = UUID.fromString(parts[0]);
@@ -43,7 +43,7 @@ public class UserMapper extends AbstractEntityMapper<User> {
         Role role = Role.valueOf(parts[6]);
         int passwordHash = Integer.parseInt(parts[7]);
 
-        User user = new User(uuid, login, null, role, firstName, lastName, fatherName, gender);
+        User<?> user = new User<>(uuid, login, null, role, firstName, lastName, fatherName, gender);
         user.setPasswordHash(passwordHash);
 
         return user;
