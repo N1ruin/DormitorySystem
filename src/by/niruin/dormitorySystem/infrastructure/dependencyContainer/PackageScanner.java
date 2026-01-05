@@ -17,13 +17,14 @@ public class PackageScanner {
     public static final String CLASS_FILE_NAME_POSTFIX = ".class";
     public static final String EMPTY_STRING = "";
     public static final String DOT_SYMBOL = ".";
+    public static final String SLASH_SYMBOL = "/";
     private final Logger logger = LoggerFactory.getLogger(PackageScanner.class);
 
     public Set<Class<?>> scanPackage(String packageName) {
         Set<Class<?>> findedClasses = new HashSet<>();
         ClassLoader classLoader = this.getClass().getClassLoader();
 
-        String packagePath = "./" + packageName.replace(".", "/");
+        String packagePath = DOT_SYMBOL + SLASH_SYMBOL + packageName.replace(DOT_SYMBOL, SLASH_SYMBOL);
         URL url = classLoader.getResource(packagePath);
 
         if (url != null) {
