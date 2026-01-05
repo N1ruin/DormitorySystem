@@ -5,9 +5,6 @@ import by.niruin.dormitorySystem.domain.model.Room;
 import by.niruin.dormitorySystem.domain.repository.DormitoryRepository;
 import by.niruin.dormitorySystem.domain.repository.RoomRepository;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
-import by.niruin.dormitorySystem.infrastructure.annotation.Qualifier;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryDormitoryRepository;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryRoomRepository;
 
 import java.util.List;
 import java.util.Random;
@@ -21,8 +18,8 @@ public class RoomDataGenerator implements EntityDataGenerator {
     private final DormitoryRepository dormitoryRepository;
     private final Random random = new Random();
 
-    public RoomDataGenerator(@Qualifier(InMemoryRoomRepository.class) RoomRepository roomRepository,
-                             @Qualifier(InMemoryDormitoryRepository.class) DormitoryRepository dormitoryRepository) {
+    public RoomDataGenerator(RoomRepository roomRepository,
+                             DormitoryRepository dormitoryRepository) {
         this.roomRepository = roomRepository;
         this.dormitoryRepository = dormitoryRepository;
     }

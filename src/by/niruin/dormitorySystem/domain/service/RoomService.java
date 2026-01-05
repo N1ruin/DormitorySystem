@@ -9,9 +9,6 @@ import by.niruin.dormitorySystem.domain.repository.StudentRepository;
 import by.niruin.dormitorySystem.domain.service.validation.RoomValidationService;
 import by.niruin.dormitorySystem.exception.EntityNotFoundException;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
-import by.niruin.dormitorySystem.infrastructure.annotation.Qualifier;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryRoomRepository;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryStudentRepository;
 import by.niruin.dormitorySystem.ui.menu.SelectOrderRoomMenuItem;
 
 import java.util.*;
@@ -33,8 +30,8 @@ public class RoomService {
     private final StudentRepository studentRepository;
 
     public RoomService(RoomValidationService roomValidationService,
-                       @Qualifier(InMemoryRoomRepository.class) RoomRepository roomRepository,
-                       @Qualifier(InMemoryStudentRepository.class) StudentRepository studentRepository) {
+                       RoomRepository roomRepository,
+                       StudentRepository studentRepository) {
         this.roomValidationService = roomValidationService;
         this.roomRepository = roomRepository;
 

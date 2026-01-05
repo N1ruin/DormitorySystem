@@ -3,17 +3,13 @@ package by.niruin.dormitorySystem.domain.service;
 import by.niruin.dormitorySystem.domain.model.University;
 import by.niruin.dormitorySystem.domain.model.dto.UniversityNumbersDto;
 import by.niruin.dormitorySystem.domain.repository.UniversityRepository;
-import by.niruin.dormitorySystem.infrastructure.annotation.Component;
-import by.niruin.dormitorySystem.infrastructure.annotation.Qualifier;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryUniversityRepository;
 
 import java.util.List;
 
-@Component
 public class UniversityService {
     private final UniversityRepository universityRepository;
 
-    public UniversityService(@Qualifier(InMemoryUniversityRepository.class) UniversityRepository universityRepository) {
+    public UniversityService(UniversityRepository universityRepository) {
         this.universityRepository = universityRepository;
     }
 

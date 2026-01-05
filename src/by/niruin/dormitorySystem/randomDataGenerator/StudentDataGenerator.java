@@ -5,13 +5,7 @@ import by.niruin.dormitorySystem.domain.repository.DormitoryRepository;
 import by.niruin.dormitorySystem.domain.repository.RoomRepository;
 import by.niruin.dormitorySystem.domain.repository.StudentRepository;
 import by.niruin.dormitorySystem.domain.repository.UniversityRepository;
-import by.niruin.dormitorySystem.infrastructure.annotation.Component;
-import by.niruin.dormitorySystem.infrastructure.annotation.Qualifier;
 import by.niruin.dormitorySystem.infrastructure.loader.RandomFullNameLoader;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryDormitoryRepository;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryRoomRepository;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryStudentRepository;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryUniversityRepository;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -19,7 +13,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-@Component
 public class StudentDataGenerator implements EntityDataGenerator {
     public static final int MIN_YEAR_OF_ENTERING = 2023;
     public static final int MAX_YEAR_OF_ENTERING = 2024;
@@ -30,10 +23,10 @@ public class StudentDataGenerator implements EntityDataGenerator {
     private final RandomFullNameLoader randomFullNameLoader;
     private final Random random = new Random();
 
-    public StudentDataGenerator(@Qualifier(InMemoryStudentRepository.class) StudentRepository studentRepository,
-                                @Qualifier(InMemoryRoomRepository.class) RoomRepository roomRepository,
-                                @Qualifier(InMemoryDormitoryRepository.class) DormitoryRepository dormitoryRepository,
-                                @Qualifier(InMemoryUniversityRepository.class) UniversityRepository universityRepository,
+    public StudentDataGenerator(StudentRepository studentRepository,
+                                RoomRepository roomRepository,
+                                DormitoryRepository dormitoryRepository,
+                                UniversityRepository universityRepository,
                                 RandomFullNameLoader randomFullNameLoader) {
         this.studentRepository = studentRepository;
         this.roomRepository = roomRepository;

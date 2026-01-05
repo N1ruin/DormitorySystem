@@ -5,8 +5,6 @@ import by.niruin.dormitorySystem.domain.model.Room;
 import by.niruin.dormitorySystem.domain.repository.RoomRepository;
 import by.niruin.dormitorySystem.exception.EntityValidationException;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
-import by.niruin.dormitorySystem.infrastructure.annotation.Qualifier;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryRoomRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +16,7 @@ public class RoomValidationService {
     public static final int MAX_ROOMS_IN_DORMITORY = 1000;
     private final RoomRepository roomRepository;
 
-    public RoomValidationService(@Qualifier(InMemoryRoomRepository.class) RoomRepository roomRepository) {
+    public RoomValidationService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
 

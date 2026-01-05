@@ -2,13 +2,10 @@ package by.niruin.dormitorySystem.domain.service;
 
 import by.niruin.dormitorySystem.domain.context.ApplicationContextHolder;
 import by.niruin.dormitorySystem.domain.model.dto.AuthentificationUserDto;
-import by.niruin.dormitorySystem.domain.model.Role;
 import by.niruin.dormitorySystem.domain.model.User;
 import by.niruin.dormitorySystem.domain.repository.UserRepository;
 import by.niruin.dormitorySystem.exception.UserAuthentificationException;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
-import by.niruin.dormitorySystem.infrastructure.annotation.Qualifier;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryUserRepository;
 
 import java.util.Optional;
 
@@ -18,7 +15,7 @@ import static by.niruin.dormitorySystem.constant.ConsoleMessage.INCORRECT_LOGIN_
 public class AuthentificationService {
     private final UserRepository userRepository;
 
-    public AuthentificationService(@Qualifier(InMemoryUserRepository.class) UserRepository userRepository) {
+    public AuthentificationService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
