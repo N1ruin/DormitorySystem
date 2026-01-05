@@ -1,61 +1,100 @@
 package by.niruin.dormitorySystem.infrastructure.dependencyContainer;
 
-import by.niruin.dormitorySystem.infrastructure.annotation.Qualifier;
+import by.niruin.dormitorySystem.exception.AutowiringException;
 import by.niruin.dormitorySystem.logger.Logger;
 import by.niruin.dormitorySystem.logger.LoggerFactory;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static by.niruin.dormitorySystem.constant.ConsoleMessage.*;
+import static by.niruin.dormitorySystem.constant.LoggerMessage.*;
 
 public class ComponentInitializer {
     private final Logger logger = LoggerFactory.getLogger(ComponentInitializer.class);
+    private final ImplementationFinder implementationFinder;
 
-    public Map<Class<?>, Object> initObjects(List<Class<?>> sortedComponentList) {
-        Map<Class<?>, Object> container = new HashMap<>();
-
-        for (var clazz : sortedComponentList) {
-            Object obj = createObject(clazz, container);
-            container.put(clazz, obj);
-        }
-        return container;
+    public ComponentInitializer(ImplementationFinder implementationFinder) {
+        this.implementationFinder = implementationFinder;
     }
 
-    private Object createObject(Class<?> clazz, Map<Class<?>, Object> container) {
-        return processConstructor(clazz.getConstructors()[0], container);
-    }
+    public Map<Class<?>, Object> createObjects(Set<Class<?>> classes) {
+        logger.info(CREATING_OBJECTS_STARTING_LOG);
 
-    private Object processConstructor(Constructor<?> constructor, Map<Class<?>, Object> container) {
-        try {
-            Object[] parameters = processParameters(constructor, container);
-            return constructor.newInstance(parameters);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            logger.error(e.getMessage());
-            logger.error(Arrays.toString(e.getStackTrace()));
-            throw new RuntimeException(e);
+        var objects = new HashMap<Class<?>, Object>();
+
+        for (var clazz : classes) {
+            if (clazz.isInterface()) {
+                var implClass = implementationFinder.findImplementationClass(clazz);
+                getInstance(implClass, objects, new HashSet<>());
+            } else {
+                getInstance(clazz, objects, new HashSet<>());
+            }
         }
-    }
-
-    private Object[] processParameters(Constructor<?> constructor, Map<Class<?>, Object> container) {
-        Parameter[] parameters = constructor.getParameters();
-        Object[] objects = new Object[parameters.length];
-
-        for (int i = 0; i < objects.length; i++) {
-            objects[i] = getParameterObject(parameters[i], container);
-        }
+        logger.info(CREATING_OBJECTS_ENDED_LOG);
         return objects;
     }
 
-    //TODO доработать чтобы искал подходящий класс под интерфейс.
-    private Object getParameterObject(Parameter parameter, Map<Class<?>, Object> container) {
-        Class<?> targetClass = parameter.isAnnotationPresent(Qualifier.class)
-                ? parameter.getAnnotation(Qualifier.class).value()
-                : parameter.getType();
+    private Object getInstance(Class<?> clazz, Map<Class<?>, Object> objects, Set<Class<?>> triggeredBy) {
+        var foundObject = objects.get(clazz);
 
-        return container.get(targetClass);
+        if (foundObject != null) {
+            return foundObject;
+        }
+
+        if (triggeredBy.contains(clazz)) {
+            throw new AutowiringException(CIRCULAR_DEPENDENCY_IS_NOT_ALLOWED_ERROR_MESSAGE);
+        }
+
+        triggeredBy.add(clazz);
+
+        var constructor = getTargetConstructor(clazz);
+        var parameters = getConstructorParameters(constructor, objects, triggeredBy);
+
+        logger.info(CREATING_OBJECT_LOG.formatted(clazz.getSimpleName()));
+        return objects.compute(clazz, (k, value) -> getClassInstanceNoEx(constructor, parameters));
+    }
+
+    private Constructor<?> getTargetConstructor(Class<?> clazz) {
+        var constructors = clazz.getDeclaredConstructors();
+
+        if (constructors.length == 0) {
+            throw new AutowiringException(CLASS_HAS_NO_CONSTRUCTORS_ERROR_MESSAGE.formatted(clazz.getSimpleName()));
+        }
+
+        return constructors[0];
+    }
+
+    private List<?> getConstructorParameters(Constructor<?> constructor, Map<Class<?>, Object> objects, Set<Class<?>> triggeredBy) {
+        if (constructor.getParameters().length == 0) {
+            return List.of();
+        }
+
+        return Arrays.stream(constructor.getParameters())
+                .map(paramClass -> resolveParameter(paramClass, objects, triggeredBy))
+                .toList();
+    }
+
+    private Object resolveParameter(Parameter parameter, Map<Class<?>, Object> objects, Set<Class<?>> triggeredBy) {
+        var parameterType = parameter.getType();
+        if (parameterType.isInterface()) {
+            var interfaceImpl = implementationFinder.findImplementationClass(parameterType);
+            return getInstance(interfaceImpl, objects, triggeredBy);
+        } else {
+            return getInstance(parameterType, objects, triggeredBy);
+        }
+    }
+
+    private Object getClassInstanceNoEx(Constructor<?> constructor, List<?> params) {
+        try {
+            constructor.setAccessible(true);
+            return constructor.newInstance(params.toArray());
+        } catch (Exception e) {
+            var declaringClassName = constructor.getDeclaringClass()
+                    .getName();
+
+            throw new AutowiringException(UNABLE_TO_CREATE_INSTANCE_ERROR_MESSAGE.formatted(declaringClassName));
+        }
     }
 }

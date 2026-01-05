@@ -6,9 +6,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public interface StudentRepository extends Repository<Student> {
+public interface StudentRepository {
+    void persistStudents();
 
-    List<Student> findByRoomId(UUID roomId);
+    void fetchStudents();
+
+    void save(Student student);
+
+    List<Student> findAll();
+
+    void update(Student student);
+
+    void delete(UUID uuid);
+
     Map<UUID, List<Student>> getStudentsInRooms();
+
     List<String> getStudentNamesWithoutRoom(UUID dormitoryId);
 }

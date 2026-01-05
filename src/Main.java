@@ -20,10 +20,12 @@ public class Main {
             application.run();
         } catch (Exception e) {
             logger.error(APP_ERROR_LOG);
+            logger.error(e.getMessage());
             logger.error(Arrays.toString(e.getStackTrace()));
             logger.info(SAVING_DATA_LOG);
             RepositoryDataLoader repositoryDataLoader = dc.getObject(RepositoryDataLoader.class);
             repositoryDataLoader.persistData();
+            throw new RuntimeException(e);
         } finally {
             logger.info(APP_EXIT_LOG);
         }

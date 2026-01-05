@@ -1,7 +1,11 @@
 package by.niruin.dormitorySystem.constant;
 
 public class ConsoleMessage {
-    public static final String DETECTED_CYCLIC_DEPENDENCY_ERROR_MESSAGE = "Detected cyclic dependency!";
+    public static final String CIRCULAR_DEPENDENCY_IS_NOT_ALLOWED_ERROR_MESSAGE = "Circular dependency is not allowed";
+
+    public static final String CLASS_HAS_NO_CONSTRUCTORS_ERROR_MESSAGE = "Class '%s' has no constructors";
+
+    public static final String UNABLE_TO_CREATE_INSTANCE_ERROR_MESSAGE = "Unable to create instance of %s";
 
     public static final String INPUT_LOGIN_REQUEST_MESSAGE = "Input your login:";
 
@@ -73,5 +77,7 @@ public class ConsoleMessage {
 
     public static final String ALL_STUDENTS_HAVING_ROOMS_MESSAGE = "All students have room!";
 
+    public static final String IMPL_NOT_FOUND_ERROR_MESSAGE = "Implementation for class '%s' not found";
 
+    public static final String FOUND_MANY_IMPL_ERROR_MESSAGE = "Find many implementations for class '%s'.";
 }
