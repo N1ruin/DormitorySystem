@@ -1,16 +1,19 @@
 package by.niruin.dormitorySystem.infrastructure.dependencyContainer;
 
-import by.niruin.dormitorySystem.infrastructure.annotation.Autowired;
 import by.niruin.dormitorySystem.infrastructure.annotation.Qualifier;
+import by.niruin.dormitorySystem.logger.Logger;
+import by.niruin.dormitorySystem.logger.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ComponentInitializer {
+    private final Logger logger = LoggerFactory.getLogger(ComponentInitializer.class);
 
     public Map<Class<?>, Object> initObjects(List<Class<?>> sortedComponentList) {
         Map<Class<?>, Object> container = new HashMap<>();
@@ -23,25 +26,21 @@ public class ComponentInitializer {
     }
 
     private Object createObject(Class<?> clazz, Map<Class<?>, Object> container) {
-        for (var constructor : clazz.getDeclaredConstructors()) {
-            if (constructor.isAnnotationPresent(Autowired.class)) {
-                return processConstructor(constructor, container);
-            }
-        }
-        return processConstructor(clazz.getDeclaredConstructors()[0], container);
+        return processConstructor(clazz.getConstructors()[0], container);
     }
 
     private Object processConstructor(Constructor<?> constructor, Map<Class<?>, Object> container) {
         try {
-            Object[] parameters = processParamethers(constructor, container);
+            Object[] parameters = processParameters(constructor, container);
             return constructor.newInstance(parameters);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            //log
+            logger.error(e.getMessage());
+            logger.error(Arrays.toString(e.getStackTrace()));
             throw new RuntimeException(e);
         }
     }
 
-    private Object[] processParamethers(Constructor<?> constructor, Map<Class<?>, Object> container) {
+    private Object[] processParameters(Constructor<?> constructor, Map<Class<?>, Object> container) {
         Parameter[] parameters = constructor.getParameters();
         Object[] objects = new Object[parameters.length];
 
@@ -51,6 +50,7 @@ public class ComponentInitializer {
         return objects;
     }
 
+    //TODO доработать чтобы искал подходящий класс под интерфейс.
     private Object getParameterObject(Parameter parameter, Map<Class<?>, Object> container) {
         Class<?> targetClass = parameter.isAnnotationPresent(Qualifier.class)
                 ? parameter.getAnnotation(Qualifier.class).value()

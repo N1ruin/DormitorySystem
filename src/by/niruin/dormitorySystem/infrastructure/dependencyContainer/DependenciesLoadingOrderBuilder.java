@@ -1,13 +1,19 @@
 package by.niruin.dormitorySystem.infrastructure.dependencyContainer;
 
-import by.niruin.dormitorySystem.infrastructure.annotation.Autowired;
 import by.niruin.dormitorySystem.infrastructure.annotation.Qualifier;
+import by.niruin.dormitorySystem.logger.Logger;
+import by.niruin.dormitorySystem.logger.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.util.*;
 
+import static by.niruin.dormitorySystem.constant.ConsoleMessage.DETECTED_CYCLIC_DEPENDENCY_ERROR_MESSAGE;
+import static by.niruin.dormitorySystem.constant.LoggerMessage.COMPONENT_ADDED_TO_LOADING_ORDER_LOG;
+
 public class DependenciesLoadingOrderBuilder {
+    private final Logger logger = LoggerFactory.getLogger(DependenciesLoadingOrderBuilder.class);
+
     public List<Class<?>> getDependenciesOrder(Set<Class<?>> classes) {
         Map<Class<?>, Set<Class<?>>> dependeciesMap = new HashMap<>();
 
@@ -19,7 +25,7 @@ public class DependenciesLoadingOrderBuilder {
     }
 
     private void addClassDependencies(Map<Class<?>, Set<Class<?>>> dependenciesMap, Class<?> target) {
-        Constructor<?> constructor = getTargetConstructor(target);
+        Constructor<?> constructor = target.getConstructors()[0];
         Parameter[] parameters = constructor.getParameters();
         Set<Class<?>> targetClassDependencies = new HashSet<>();
 
@@ -33,22 +39,7 @@ public class DependenciesLoadingOrderBuilder {
         }
         dependenciesMap.put(target, targetClassDependencies);
     }
-
-    private Constructor<?> getTargetConstructor(Class<?> clazz) {
-        Constructor<?> target = null;
-        for (Constructor<?> constructor : clazz.getDeclaredConstructors()) {
-            if (constructor.isAnnotationPresent(Autowired.class)) {
-                target = constructor;
-                break;
-            }
-        }
-
-        if (target == null) {
-            target = clazz.getDeclaredConstructors()[0];
-        }
-        return target;
-    }
-
+    //todo пересмотреть алгоритм
     private List<Class<?>> sortDependencies(Map<Class<?>, Set<Class<?>>> dependencies) {
         List<Class<?>> dependenciesLoadingOrder = new ArrayList<>();
 
@@ -61,7 +52,7 @@ public class DependenciesLoadingOrderBuilder {
             }
 
             if (readyClasses.isEmpty()) {
-                throw new RuntimeException("Find cyclic dependency!");
+                throw new RuntimeException(DETECTED_CYCLIC_DEPENDENCY_ERROR_MESSAGE);
             }
 
             for (Class<?> clazz : readyClasses) {
@@ -70,6 +61,7 @@ public class DependenciesLoadingOrderBuilder {
                 for (Set<Class<?>> dependenciesSet : dependencies.values()) {
                     dependenciesSet.remove(clazz);
                 }
+                logger.info(COMPONENT_ADDED_TO_LOADING_ORDER_LOG.formatted(clazz.getSimpleName()));
             }
         }
         return dependenciesLoadingOrder;

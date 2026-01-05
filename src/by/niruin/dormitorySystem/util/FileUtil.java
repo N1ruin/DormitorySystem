@@ -1,44 +1,46 @@
 package by.niruin.dormitorySystem.util;
 
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import by.niruin.dormitorySystem.logger.Logger;
+import by.niruin.dormitorySystem.logger.LoggerFactory;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
 public class FileUtil {
+    private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
     public static void writeString(Path path, String data) {
-        ensureFileExist(path);
-
-        try (BufferedWriter bf = Files.newBufferedWriter(path, StandardOpenOption.WRITE)) {
-            bf.write(data);
+        try {
+            Files.writeString(path, data, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
         } catch (IOException e) {
-            throw new RuntimeException("File with path: " + path + " writing error!", e);
-        }
-    }
-
-    private static void ensureFileExist(Path path) {
-        if (!Files.exists(path)) {
-            try {
-                Files.createFile(path);
-            } catch (IOException e) {
-                throw new RuntimeException("File with path: " + path + " creation error!", e);
-            }
+            logger.error(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
     public static String readString(Path path) throws FileNotFoundException {
-        ensureFileExist(path);
-
         String data;
         try {
-            data = Files.readString(path);
+            data = Files.readString(path, StandardCharsets.UTF_8);
+            return data;
         } catch (IOException e) {
+            logger.error(e.getMessage());
             throw new RuntimeException(e);
         }
+    }
 
-        return data;
+    public static void appendString(Path path, String data) {
+        try {
+            Files.writeString(path, data,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.APPEND,
+                    StandardOpenOption.WRITE);
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 }

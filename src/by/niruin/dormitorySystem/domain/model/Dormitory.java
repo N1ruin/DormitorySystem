@@ -2,23 +2,25 @@ package by.niruin.dormitorySystem.domain.model;
 
 import by.niruin.dormitorySystem.domain.repository.Identity;
 
-public class Dormitory<ID> implements Identity<ID> {
-    private final ID id;
+import java.util.UUID;
+
+public class Dormitory implements Identity {
+    private final UUID id;
     private final int number;
     private final int roomsCount;
-    private final ID universityUuid;
+    private final UUID universityId;
     private boolean availableForLiving;
 
-    public Dormitory(ID uuid, int number, int roomsCount, ID universityUuid, boolean availableForLiving) {
+    public Dormitory(UUID uuid, int number, int roomsCount, UUID universityUuid, boolean availableForLiving) {
         this.id = uuid;
         this.number = number;
         this.roomsCount = roomsCount;
-        this.universityUuid = universityUuid;
+        this.universityId = universityUuid;
         this.availableForLiving = availableForLiving;
     }
 
     @Override
-    public ID getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -30,8 +32,8 @@ public class Dormitory<ID> implements Identity<ID> {
         return roomsCount;
     }
 
-    public ID getUniversityUuid() {
-        return universityUuid;
+    public UUID getUniversityId() {
+        return universityId;
     }
 
     public boolean isAvailableForLiving() {

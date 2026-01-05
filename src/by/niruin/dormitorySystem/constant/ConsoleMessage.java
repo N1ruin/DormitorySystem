@@ -1,29 +1,77 @@
 package by.niruin.dormitorySystem.constant;
 
 public class ConsoleMessage {
-    public static final String WELCOME_MESSAGE = "Welcome, %s!";
+    public static final String DETECTED_CYCLIC_DEPENDENCY_ERROR_MESSAGE = "Detected cyclic dependency!";
 
     public static final String INPUT_LOGIN_REQUEST_MESSAGE = "Input your login:";
 
-    public static final String INCORRECT_LOGIN_MESSAGE = "Incorrect login, try again input login:";
-
-    public static final String INCORRECT_PASSWORD_MESSAGE = "Incorrect password, try again input password:";
-
-    public static final String INPUT_PASSWORD_REQUEST_MESSAGE = "Input your password:";
-
     public static final String INPUT_FIRST_NAME_REQUEST_MESSAGE = "Input your first name:";
-
-    public static final String INCORRECT_FIRST_NAME_MESSAGE = "Incorrect first name, try again input first name:";
 
     public static final String INPUT_LAST_NAME_REQUEST_MESSAGE = "Input your last name:";
 
-    public static final String INCORRECT_LAST_NAME_MESSAGE = "Incorrect last name, try again input last name:";
-
     public static final String INPUT_FATHER_NAME_REQUEST_MESSAGE = "Input your father name:";
-
-    public static final String INCORRECT_FATHER_NAME_MESSAGE = "Incorrect father name, try again input father name:";
 
     public static final String INPUT_GENDER_REQUEST_MESSAGE = "Input your gender:";
 
-    public static final String INCORRECT_GENDER_MESSAGE = "Incorrect gender, try again input gender:";
+    public static final String INPUT_PASSWORD_REQUEST_MESSAGE = "Input your password:";
+
+    public static final String INVALID_INPUT_MESSAGE = "Incorrect input, please try again";
+
+    public static final String ROOM_CREATED_SUCCESSFUL_MESSAGE = "Room created successful";
+
+    public static final String ROOM_DELETED_SUCCESSFUL_MESSAGE = "Room deleted successful";
+
+    public static final String SELECT_UNIVERSITY_NUMBER_FROM_LIST_MESSAGE = "Input your university number from list:";
+
+    public static final String SELECT_DORMITORY_NUMBER_FROM_LIST_MESSAGE = "Input your dormitory number from list:";
+
+    public static final String SELECT_ROOM_NUMBER_FROM_LIST_MESSAGE = "Input room number from list:";
+
+    public static final String SELECT_ACTION_MESSAGE = "Select action:";
+
+    public static final String SELECT_SORTING_ORDER_MESSAGE = "Select sorting order:";
+
+    public static final String INPUT_LOGIN_AND_PASSWORD_REQUEST_MESSAGE = "Please, enter your login and password to log in to your account!";
+
+    public static final String WELCOME_APP_MESSAGE = "Welcome dormitory application";
+
+    public static final String INPUT_ROOM_NUMBER_REQUEST_MESSAGE = "Input room number";
+
+    public static final String ROOM_UPDATED_SUCCESSFUL_MESSAGE = "Room updated succesful";
+
+    public static final String CREATING_DIRECTORY_ERROR_MESSAGE = "Error creating directory with path %s";
+
+    public static final String FILL_REGISTRATION_FORM_REQUEST_MESSAGE = "Please, fill out the registration form";
+
+    public static final String REGISTRATION_SUCCESS_MESSAGE = "Registration success!";
+
+    public static final String WELCOME_USER_MESSAGE = "Welcome, %s";
+
+    public static final String INPUT_ROOM_CAPACITY_REQUEST_MESSAGE = "Input room capacity";
+
+    public static final String INPUT_ROOM_AVAILABLE_REQUEST_MESSAGE = "Room available for living? (yes/no)";
+
+    public static final String INPUT_ROOM_GENDER_REQUEST_MESSAGE = "Input room gender(male/female):";
+
+    public static final String NOT_VALID_FIELDS_QUANTITY_MESSAGE = "Fields quantity in object not equals quantity parsed fields";
+
+    public static final String INCORRECT_LOGIN_AND_PASSWORD_EXCEPTION_MESSAGE = "Incorrect login or password!";
+
+    public static final String LOGIN_EXIST_ERROR_MESSAGE = "Login %s exist";
+
+    public static final String ROOM_NUMBER_EXIST_MESSAGE = "Room with number %d exist";
+
+    public static final String ROOM_NUMBER_OUT_OF_BOUNDS_MESSAGE = "Number %d out of acceptable bounds";
+
+    public static final String CREATING_ROOM_FAIL_MESSAGE = "Unable to create room:\n";
+
+    public static final String ROOM_WITH_NUMBER_NOT_EXIST_MESSAGE = "Room with number %d not exist";
+
+    public static final String OPERATION_FAILED_MESSAGE = "Operation failed:\n";
+
+    public static final String ROOMS_NOT_FOUND_STRING = "Rooms not found in dormitory";
+
+    public static final String ALL_STUDENTS_HAVING_ROOMS_MESSAGE = "All students have room!";
+
+
 }

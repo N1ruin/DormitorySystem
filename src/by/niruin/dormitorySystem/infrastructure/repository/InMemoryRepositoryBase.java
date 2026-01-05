@@ -7,11 +7,13 @@ import by.niruin.dormitorySystem.infrastructure.mapper.EntityMapper;
 import by.niruin.dormitorySystem.util.FileUtil;
 
 import java.io.FileNotFoundException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.util.*;
 
-public class InMemoryRepositoryBase<T extends Identity<ID>, ID> implements Repository<T, ID> {
-    protected final Map<ID, T> entities = new HashMap<>();
+public class InMemoryRepositoryBase<T extends Identity> implements Repository<T> {
+    protected final Map<UUID, T> entities = new HashMap<>();
     protected final EntityMapper<T> mapper;
     protected final Path filePath;
 
@@ -25,19 +27,23 @@ public class InMemoryRepositoryBase<T extends Identity<ID>, ID> implements Repos
         FileUtil.writeString(filePath, usersData);
     }
 
-    public void loadAllEntitiesFromFile() {
+    public void fetchEntities() {
         try {
             String usersData = FileUtil.readString(filePath);
-            mapper.mapStringToEntities(usersData).forEach(entity -> entities.put(entity.getId(), entity));
+            mapper.mapStringToEntities(usersData)
+                    .forEach(entity -> entities.put(entity.getId(), entity));
         } catch (FileNotFoundException e) {
             throw new RuntimeException();
         }
     }
 
     @Override
-    public void delete(ID id) {
+    public void delete(UUID id) {
         if (id == null || !entities.containsKey(id)) {
-            throw new EntityNotFoundException(id);
+            Type entityType = this.getClass().getGenericSuperclass();
+            ParameterizedType parameterizedType = (ParameterizedType) entityType;
+            Class<?> genericClass =(Class<?>) parameterizedType.getActualTypeArguments()[0];
+            throw new EntityNotFoundException(id, genericClass);
         }
         entities.remove(id);
     }
@@ -48,27 +54,20 @@ public class InMemoryRepositoryBase<T extends Identity<ID>, ID> implements Repos
     }
 
     @Override
-    public T findById(ID id) {
+    public Optional<T> findById(UUID id) {
         return Optional.of(id)
-                .map(entities::get)
-                .orElseThrow(() -> new EntityNotFoundException(id));
+                .map(entities::get);
     }
 
     @Override
     public void save(T entity) {
-        if (entity == null) {
-            throw new EntityNotFoundException();
-        }
-
+        Objects.requireNonNull(entity);
         entities.put(entity.getId(), entity);
     }
 
     @Override
     public void update(T entity) {
-        if (entity == null) {
-            throw new EntityNotFoundException();
-        }
-
+        Objects.requireNonNull(entity);
         entities.put(entity.getId(), entity);
     }
 }

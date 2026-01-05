@@ -3,27 +3,43 @@ package by.niruin.dormitorySystem.domain.model;
 import by.niruin.dormitorySystem.domain.repository.Identity;
 
 import java.util.Objects;
+import java.util.UUID;
 
-public class User<ID> implements Identity<ID> {
-    private final ID id;
+public class User implements Identity {
+    private final UUID id;
     private String login;
     private int passwordHash;
     private Role role;
     private final FullName fullName;
     private final Gender gender;
+    private final UUID universityId;
+    private final UUID dormitoryId;
 
-    public User(ID id, String login, String password, Role role, String firstName,
-                String lastName, String fatherName, Gender gender) {
+    public User(UUID id, String login, String password, Role role, String firstName,
+                String lastName, String fatherName, Gender gender, UUID universityID, UUID dormitoryId) {
         this.id = id;
         this.login = login;
         this.passwordHash = password.hashCode();
         this.role = role;
         this.fullName = new FullName(firstName, lastName, fatherName);
         this.gender = gender;
+        this.universityId = universityID;
+        this.dormitoryId = dormitoryId;
+    }
+
+    public User(UUID id, String login, Role role, String firstName,
+                String lastName, String fatherName, Gender gender, UUID universityID, UUID dormitoryId) {
+        this.id = id;
+        this.login = login;
+        this.role = role;
+        this.fullName = new FullName(firstName, lastName, fatherName);
+        this.gender = gender;
+        this.universityId = universityID;
+        this.dormitoryId = dormitoryId;
     }
 
     @Override
-    public ID getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -61,6 +77,14 @@ public class User<ID> implements Identity<ID> {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public UUID getUniversityId() {
+        return universityId;
+    }
+
+    public UUID getDormitoryId() {
+        return dormitoryId;
     }
 
     @Override
