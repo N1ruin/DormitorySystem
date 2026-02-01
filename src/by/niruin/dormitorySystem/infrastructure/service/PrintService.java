@@ -1,10 +1,9 @@
 package by.niruin.dormitorySystem.infrastructure.service;
 
 import by.niruin.dormitorySystem.constant.ConsoleMessage;
-import by.niruin.dormitorySystem.domain.model.dto.DormitoryNumbersDto;
-import by.niruin.dormitorySystem.domain.model.dto.RoomNumbersDto;
-import by.niruin.dormitorySystem.domain.model.dto.StudentsWithoutRoomDto;
-import by.niruin.dormitorySystem.domain.model.dto.UniversityNumbersDto;
+import by.niruin.dormitorySystem.domain.model.Role;
+import by.niruin.dormitorySystem.domain.model.dto.room.RoomNumbersDto;
+import by.niruin.dormitorySystem.domain.model.dto.university.UniversityNamesDto;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 
 import static by.niruin.dormitorySystem.constant.ConsoleMessage.*;
@@ -39,26 +38,21 @@ public class PrintService {
         System.out.println(e.getMessage());
     }
 
-    public void printSelectUniversityRequestMessage(UniversityNumbersDto dto) {
+    public void printSelectUniversityRequestMessage(UniversityNamesDto dto) {
         System.out.println(SELECT_UNIVERSITY_NUMBER_FROM_LIST_MESSAGE);
-        System.out.println(dto.numbers());
+        System.out.println(dto.names());
     }
 
-    public void printDormitoriesNameRequestMessage(DormitoryNumbersDto dto) {
+    public void printDormitoriesNumbersRequestMessage(String numbers) {
         System.out.println(SELECT_DORMITORY_NUMBER_FROM_LIST_MESSAGE);
-        System.out.println(dto.numbers());
+        System.out.println(numbers);
     }
 
-    public void printStudentsWithoutRoom(StudentsWithoutRoomDto dto) {
-        if (dto.studentNames().isEmpty()) {
-            System.out.println(ALL_STUDENTS_HAVING_ROOMS_MESSAGE);
-        } else {
-            System.out.println(dto.studentNames());
-
-        }
+    public void printStudentsWithoutRoom(String studentNames) {
+        System.out.println(studentNames);
     }
 
-    public void printSortedRoomsInfo(String roomsInfo) {
+    public void printSortedDormitoriesInfo(String roomsInfo) {
         System.out.println(roomsInfo);
     }
 
@@ -90,7 +84,7 @@ public class PrintService {
         System.out.println(INPUT_LOGIN_AND_PASSWORD_REQUEST_MESSAGE);
     }
 
-    public void printInputRoomCapacityRequestMessage() {
+    public void printInputDormitoryCapacityRequestMessage() {
         System.out.println(INPUT_ROOM_CAPACITY_REQUEST_MESSAGE);
     }
 
@@ -106,7 +100,7 @@ public class PrintService {
         System.out.println(SELECT_ROOM_NUMBER_FROM_LIST_MESSAGE);
 
         if (dto.numbers().isEmpty()) {
-            System.out.println(ROOMS_NOT_FOUND_STRING);
+            System.out.println(ROOMS_NOT_FOUND_IN_DORMITORY_MESSAGE);
         } else {
             System.out.println(dto.numbers());
         }
@@ -114,6 +108,10 @@ public class PrintService {
 
     public void printInputRoomNumberRequestMessage() {
         System.out.println(INPUT_ROOM_NUMBER_REQUEST_MESSAGE);
+    }
+
+    public void printInputDormitoryNumberRequestMessage() {
+        System.out.println(INPUT_DORMITORY_NUMBER_REQUEST_MESSAGE);
     }
 
     public void printWelcomeApplicationMessage() {
@@ -134,5 +132,145 @@ public class PrintService {
 
     public void printRoomDeletedSuccessfulMessage() {
         System.out.println(ROOM_DELETED_SUCCESSFUL_MESSAGE);
+    }
+
+    public void printDormitoryCreatedSuccessfulMessage() {
+        System.out.println(DORMITORY_CREATED_SUCCESSFUL_MESSAGE);
+    }
+
+    public void printDormitoryDeletedSuccessfulMessage() {
+        System.out.println(DORMITORY_DELETED_SUCCESSFUL_MESSAGE);
+    }
+
+    public void printRoomUpdatedSuccessfulMessage() {
+        System.out.println(ROOM_UPDATED_SUCCESSFUL_MESSAGE);
+    }
+
+    public void printDormitoryUpdatedSuccessfulMessage() {
+        System.out.println(DORMITORY_UPDATED_SUCCESSFUL_MESSAGE);
+    }
+
+    public void printDormitoryInfo(String info) {
+        System.out.println(info);
+    }
+
+    public void printDormitoryNumbers(String dormitoryNumbers) {
+        System.out.println(SELECT_DORMITORY_NUMBER_FROM_LIST_MESSAGE);
+
+        if (dormitoryNumbers.isEmpty()) {
+            System.out.println(DORMITORY_NOT_FOUND_MESSAGE);
+        } else {
+            System.out.println(dormitoryNumbers);
+        }
+    }
+
+    public void printInputUniversityNumberRequestMessage() {
+        System.out.println(INPUT_UNIVERSITY_NAME_REQUEST_MESSAGE);
+    }
+
+    public void printInputStudyDurationRequestMessage() {
+        System.out.println(INPUT_STUDY_DURATION_REQUEST_MESSAGE);
+    }
+
+    public void printUniversityNumbers(UniversityNamesDto dto) {
+        System.out.println(SELECT_UNIVERSITY_NUMBER_FROM_LIST_MESSAGE);
+
+        if (dto.names().isEmpty()) {
+            System.out.println(UNIVERSITY_NOT_FOUND_MESSAGE);
+        } else {
+            System.out.println(dto.names());
+        }
+    }
+
+    public void printUniversityCreatedSuccessfulMessage() {
+        System.out.println(UNIVERSITY_CREATED_SUCCESSFUL_MESSAGE);
+    }
+
+    public void printUniversityDeletedSuccessfulMessage() {
+        System.out.println(UNIVERSITY_DELETED_SUCCESSFUL_MESSAGE);
+    }
+
+    public void printUniversityUpdatedSuccessfulMessage() {
+        System.out.println(UNIVERSITY_UPDATED_SUCCESSFUL_MESSAGE);
+    }
+
+    public void printUniversityInfo(String universityInfo) {
+        System.out.println(universityInfo);
+    }
+
+    public void printSortedUniversitiesInfo(String sortedUniversitiesInfo) {
+        System.out.println(sortedUniversitiesInfo);
+    }
+
+    public void printInputRoleRequestMessage() {
+        System.out.println(SELECT_USER_ROLE_FROM_LIST_MESSAGE);
+        for (int i = 1; i <= Role.values().length; i++) {
+            System.out.println("%d. %s".formatted(i, Role.values()[i - 1]));
+        }
+    }
+
+    public void printUserInfo(String userInfo) {
+        System.out.println(userInfo);
+    }
+
+    public void printUserDeletedSuccessfulMessage() {
+        System.out.println(USER_DELETED_SUCCESSFUL_MESSAGE);
+    }
+
+    public void printCurrentDormitorySelectedMessage() {
+        System.out.println(CURRENT_DORMITORY_UPDATED_MESSAGE);
+    }
+
+    public void printCurrentUniversitySelectedMessage() {
+        System.out.println(CURRENT_UNIVERSITY_UPDATED_MESSAGE);
+    }
+
+    public void printUniversityHasNoDormitoriesMessage() {
+        System.out.println(UNIVERSITY_HAS_NO_DORMITORIES_MESSAGE);
+    }
+
+    public void printCreateDormitoryRequestMessage() {
+        System.out.println(NEEDED_CREATE_DORMITORY_MESSAGE);
+    }
+
+    public void printStudentCreatedSuccessfulMessage() {
+        System.out.println(STUDENT_CREATED_SUCCESSFUL_MESSAGE);
+    }
+
+    public void printStudentDeletedSuccessfulMessage() {
+        System.out.println(STUDENT_DELETED_SUCCESSFUL_MESSAGE);
+    }
+
+    public void printInputDateOfEnteringMessage() {
+        System.out.println(INPUT_DATE_OF_ENTERING_REQUEST_MESSAGE);
+    }
+
+    public void printStudentUpdatedSuccessfulMessage() {
+        System.out.println(STUDENT_UPDATED_SUCCESSFUL_MESSAGE);
+    }
+
+    public void printStudentNames(String studentNames) {
+        System.out.println(INPUT_STUDENT_NUMBER_FROM_LIST_MESSAGE);
+        System.out.println(studentNames);
+    }
+
+    public void printStudentInfo(String info) {
+        System.out.println(info);
+    }
+
+    public void printSortedStudentsInfo(String sortedStudentsInfo) {
+        System.out.println(sortedStudentsInfo);
+    }
+
+    public void printStudentDistributedToDormitorySuccessfulMessage() {
+        System.out.println(STUDENT_DISTRIBUTED_TO_DORMITORY_SUCCESS_MESSAGE);
+    }
+
+    public void printStudentDistributedToRoomSuccessfulMessage() {
+
+    }
+
+    public void printStatistics(String statistics) {
+        System.out.println(statistics);
     }
 }

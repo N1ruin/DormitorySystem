@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class University implements Identity {
     private final UUID id;
-    private String name;
+    private final String name;
     private byte studyDuration;
 
     public University(UUID uuid, String name, byte studyDuration) {
@@ -26,10 +26,6 @@ public class University implements Identity {
 
     public byte getStudyDuration() {
         return studyDuration;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setStudyDuration(byte studyDuration) {

@@ -1,5 +1,6 @@
 package by.niruin.dormitorySystem.ui.formHandler;
 
+import by.niruin.dormitorySystem.exception.EntityNotFoundException;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import by.niruin.dormitorySystem.infrastructure.service.InputService;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;

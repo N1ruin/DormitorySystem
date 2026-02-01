@@ -1,13 +1,13 @@
 package by.niruin.dormitorySystem.ui.formHandler.user;
 
-import by.niruin.dormitorySystem.domain.model.dto.UserRegistrationDto;
+import by.niruin.dormitorySystem.domain.model.dto.user.UserRegistrationDto;
 import by.niruin.dormitorySystem.domain.model.Dormitory;
 import by.niruin.dormitorySystem.domain.model.Gender;
 import by.niruin.dormitorySystem.domain.repository.DormitoryRepository;
 import by.niruin.dormitorySystem.domain.repository.UniversityRepository;
 import by.niruin.dormitorySystem.domain.service.DormitoryService;
 import by.niruin.dormitorySystem.domain.service.UniversityService;
-import by.niruin.dormitorySystem.domain.service.validation.DormitoryInputValidationService;
+import by.niruin.dormitorySystem.domain.service.validation.RoomInputValidationService;
 import by.niruin.dormitorySystem.domain.service.validation.UniversityInputValidationService;
 import by.niruin.dormitorySystem.domain.service.validation.UserInputValidationService;
 import by.niruin.dormitorySystem.exception.EntityNotFoundException;
@@ -27,7 +27,7 @@ public class RegistrationFormHandler {
     private final UniversityRepository universityRepository;
     private final DormitoryRepository dormitoryRepository;
     private final UniversityInputValidationService universityValidationService;
-    private final DormitoryInputValidationService dormitoryValidationService;
+    private final RoomInputValidationService dormitoryValidationService;
     private final DormitoryService dormitoryService;
 
     private String login;
@@ -42,7 +42,7 @@ public class RegistrationFormHandler {
     public RegistrationFormHandler(FormHandler formHandler, UserInputValidationService userDataValidationService,
                                    PrintService printService, UniversityService universityService,
                                    UniversityRepository universityRepository,
-                                   DormitoryRepository dormitoryRepository, UniversityInputValidationService universityValidationService, DormitoryInputValidationService dormitoryValidationService, DormitoryService dormitoryService) {
+                                   DormitoryRepository dormitoryRepository, UniversityInputValidationService universityValidationService, RoomInputValidationService dormitoryValidationService, DormitoryService dormitoryService) {
         this.formHandler = formHandler;
         this.userInputValidationService = userDataValidationService;
         this.printService = printService;
@@ -78,7 +78,7 @@ public class RegistrationFormHandler {
         return this;
     }
 
-    public RegistrationFormHandler processLastName() {
+    public RegistrationFormHandler handleLastName() {
         lastName = formHandler.handleInputString(
                 printService::printInputLastNameRequestMessage,
                 Function.identity(),
@@ -101,7 +101,7 @@ public class RegistrationFormHandler {
                 userInputValidationService::validateGender
         );
 
-        gender = genderInput.matches("m") ? Gender.MALE : Gender.FEMALE;
+        gender = genderInput.matches("male") ? Gender.MALE : Gender.FEMALE;
         return this;
     }
 
@@ -119,7 +119,7 @@ public class RegistrationFormHandler {
 
     public RegistrationFormHandler handleDormitoryNumber() {
         int dormitoryNumber = formHandler.handleInputString(
-                () -> printService.printDormitoriesNameRequestMessage(dormitoryService.getDormitoriesNumber(universityId)),
+                () -> printService.printDormitoriesNumbersRequestMessage(dormitoryService.getDormitoryNumbers(universityId)),
                 Integer::parseInt,
                 dormitoryValidationService::validateNumber);
 

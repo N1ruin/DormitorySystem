@@ -1,6 +1,6 @@
 package by.niruin.dormitorySystem.ui.formHandler.room;
 
-import by.niruin.dormitorySystem.domain.model.dto.DeleteRoomDto;
+import by.niruin.dormitorySystem.domain.model.dto.room.DeleteRoomDto;
 import by.niruin.dormitorySystem.domain.service.RoomService;
 import by.niruin.dormitorySystem.domain.service.validation.RoomInputValidationService;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;

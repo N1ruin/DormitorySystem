@@ -6,7 +6,6 @@ import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import by.niruin.dormitorySystem.infrastructure.mapper.UniversityMapper;
 import by.niruin.dormitorySystem.util.FileUtil;
 
-import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -21,19 +20,17 @@ public class InMemoryUniversityRepository implements UniversityRepository {
         this.mapper = mapper;
     }
 
+    @Override
     public void persistUniversities() {
         String universitiesData = mapper.mapUniversitiesToString(universities.values());
         FileUtil.writeString(UNIVERSITIES_FILE_PATH, universitiesData);
     }
 
+    @Override
     public void fetchUniversities() {
-        try {
-            String universitiesData = FileUtil.readString(UNIVERSITIES_FILE_PATH);
-            mapper.mapStringToUniversities(universitiesData)
-                    .forEach(university -> universities.put(university.getId(), university));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException();
-        }
+        String universitiesData = FileUtil.readString(UNIVERSITIES_FILE_PATH);
+        mapper.mapStringToUniversities(universitiesData).forEach(university -> universities.put(university.getId(), university));
+
     }
 
     @Override
@@ -54,5 +51,26 @@ public class InMemoryUniversityRepository implements UniversityRepository {
     @Override
     public void delete(UUID id) {
         universities.remove(id);
+    }
+
+    @Override
+    public Optional<University> findByName(String name) {
+        return universities.values().stream()
+                .filter(university -> university.getName().equals(name))
+                .findFirst();
+    }
+
+    @Override
+    public List<University> findAllOrderBy(Comparator<University> comparator) {
+        return universities.values().stream()
+                .sorted(comparator)
+                .toList();
+    }
+
+    @Override
+    public Optional<University> findById(UUID universityId) {
+        return universities.values().stream()
+                .filter(university -> university.getId().equals(universityId))
+                .findFirst();
     }
 }

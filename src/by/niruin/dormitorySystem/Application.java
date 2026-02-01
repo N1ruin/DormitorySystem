@@ -39,6 +39,6 @@ public class Application {
         repositoryDataLoader.loadData();
         menuDispatcher.dispatch();
         repositoryDataLoader.persistData();
-        logger.info(APP_DATA_LOADED_LOG);
+        logger.info(APP_DATA_SAVED_LOG);
     }
 }

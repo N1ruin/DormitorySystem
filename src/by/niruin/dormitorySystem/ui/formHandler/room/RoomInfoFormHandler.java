@@ -1,6 +1,6 @@
 package by.niruin.dormitorySystem.ui.formHandler.room;
 
-import by.niruin.dormitorySystem.domain.model.dto.GetRoomInfoDto;
+import by.niruin.dormitorySystem.domain.model.dto.room.RoomNumberFromListDto;
 import by.niruin.dormitorySystem.domain.service.RoomService;
 import by.niruin.dormitorySystem.domain.service.validation.RoomInputValidationService;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
@@ -32,7 +32,7 @@ public class RoomInfoFormHandler {
         return this;
     }
 
-    public GetRoomInfoDto createDto() {
-        return new GetRoomInfoDto(roomNumber);
+    public RoomNumberFromListDto createDto() {
+        return new RoomNumberFromListDto(roomNumber);
     }
 }

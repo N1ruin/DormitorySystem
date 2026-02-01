@@ -9,26 +9,26 @@ public class Student implements Identity {
     private final UUID id;
     private final FullName fullName;
     private final Gender gender;
-    private UUID universityUuid;
+    private final UUID universityUuid;
     private UUID roomId;
     private UUID dormitoryId;
-    private final LocalDate dateOfEntering; //дата поступления в ВУЗ
-    private final LocalDate expulsionDate; //дата отчисления из ВУЗа
-    private final LocalDate roomCheckIn; // дата заселения в общежитие
-    private final LocalDate roomCheckOut; //дата выселения из ВУЗа
+    private final LocalDate dateOfStartEducation;
+    private final LocalDate dateOfEndingEducation;
+    private final LocalDate dateOfRoomCheckIn;
+    private final LocalDate dateOfRoomCheckOut;
 
     public Student(UUID id, FullName fullName, Gender gender, UUID universityUuid, UUID roomId, UUID dormitoryId,
-                   LocalDate dateOfEntering, LocalDate expulsionDate, LocalDate roomCheckIn, LocalDate roomCheckOut) {
+                   LocalDate dateOfEntering, LocalDate expulsionDate, LocalDate dateOfRoomCheckIn, LocalDate dateOfRoomCheckOut) {
         this.id = id;
         this.fullName = fullName;
         this.gender = gender;
         this.universityUuid = universityUuid;
         this.roomId = roomId;
         this.dormitoryId = dormitoryId;
-        this.dateOfEntering = dateOfEntering;
-        this.expulsionDate = expulsionDate;
-        this.roomCheckIn = roomCheckIn;
-        this.roomCheckOut = roomCheckOut;
+        this.dateOfStartEducation = dateOfEntering;
+        this.dateOfEndingEducation = expulsionDate;
+        this.dateOfRoomCheckIn = dateOfRoomCheckIn;
+        this.dateOfRoomCheckOut = dateOfRoomCheckOut;
     }
 
     @Override
@@ -44,12 +44,8 @@ public class Student implements Identity {
         return gender;
     }
 
-    public UUID getUniversityUuid() {
+    public UUID getUniversityId() {
         return universityUuid;
-    }
-
-    public void setUniversityUuid(UUID universityUuid) {
-        this.universityUuid = universityUuid;
     }
 
     public UUID getRoomId() {
@@ -68,19 +64,19 @@ public class Student implements Identity {
         this.dormitoryId = dormitoryId;
     }
 
-    public LocalDate getDateOfEntering() {
-        return dateOfEntering;
+    public LocalDate getDateOfStartEducation() {
+        return dateOfStartEducation;
     }
 
-    public LocalDate getExpulsionDate() {
-        return expulsionDate;
+    public LocalDate getDateOfEndingEducation() {
+        return dateOfEndingEducation;
     }
 
-    public LocalDate getRoomCheckOut() {
-        return roomCheckOut;
+    public LocalDate getDateOfRoomCheckOut() {
+        return dateOfRoomCheckOut;
     }
 
-    public LocalDate getRoomCheckIn() {
-        return roomCheckIn;
+    public LocalDate getDateOfRoomCheckIn() {
+        return dateOfRoomCheckIn;
     }
 }

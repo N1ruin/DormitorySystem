@@ -1,6 +1,6 @@
 package by.niruin.dormitorySystem.domain.service;
 
-import by.niruin.dormitorySystem.domain.model.dto.UserRegistrationDto;
+import by.niruin.dormitorySystem.domain.model.dto.user.UserRegistrationDto;
 import by.niruin.dormitorySystem.domain.model.Role;
 import by.niruin.dormitorySystem.domain.model.User;
 import by.niruin.dormitorySystem.domain.repository.UserRepository;

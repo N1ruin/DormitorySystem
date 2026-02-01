@@ -12,7 +12,6 @@ import by.niruin.dormitorySystem.ui.formHandler.room.RoomInfoFormHandler;
 import by.niruin.dormitorySystem.ui.formHandler.room.UpdateRoomFormHandler;
 import by.niruin.dormitorySystem.util.MenuItemUtil;
 
-import static by.niruin.dormitorySystem.constant.ConsoleMessage.ROOM_UPDATED_SUCCESSFUL_MESSAGE;
 import static by.niruin.dormitorySystem.constant.LoggerMessage.*;
 
 public class RoomMenu implements Menu {
@@ -21,25 +20,25 @@ public class RoomMenu implements Menu {
     private final RoomService roomService;
     private final StudentService studentService;
     private final MenuFactory menuFactory;
-    private final CreateRoomFormHandler createRoomFormHandleService;
-    private final DeleteRoomFormHandler deleteRoomFormHandleService;
-    private final UpdateRoomFormHandler updateRoomFormHandleService;
+    private final CreateRoomFormHandler createRoomFormHandler;
+    private final DeleteRoomFormHandler deleteRoomFormHandler;
+    private final UpdateRoomFormHandler updateRoomFormHandler;
     private final RoomInfoFormHandler getRoomInfoFormHandleService;
     private final Logger logger = LoggerFactory.getLogger(RoomMenu.class);
 
     public RoomMenu(InputService inputService, PrintService printService, RoomService roomService,
                     MenuFactory menuFactory, StudentService studentService,
-                    CreateRoomFormHandler createRoomFormHandleService, UpdateRoomFormHandler updateRoomFormHandleService,
-                    RoomInfoFormHandler getRoomInfoFormHandleService, DeleteRoomFormHandler deleteRoomFormHandleService) {
+                    CreateRoomFormHandler createRoomFormHandler, UpdateRoomFormHandler updateRoomFormHandler,
+                    RoomInfoFormHandler getRoomInfoFormHandler, DeleteRoomFormHandler deleteRoomFormHandler) {
         this.inputService = inputService;
         this.printService = printService;
         this.roomService = roomService;
         this.menuFactory = menuFactory;
         this.studentService = studentService;
-        this.createRoomFormHandleService = createRoomFormHandleService;
-        this.updateRoomFormHandleService = updateRoomFormHandleService;
-        this.getRoomInfoFormHandleService = getRoomInfoFormHandleService;
-        this.deleteRoomFormHandleService = deleteRoomFormHandleService;
+        this.createRoomFormHandler = createRoomFormHandler;
+        this.updateRoomFormHandler = updateRoomFormHandler;
+        this.getRoomInfoFormHandleService = getRoomInfoFormHandler;
+        this.deleteRoomFormHandler = deleteRoomFormHandler;
     }
 
     @Override
@@ -68,7 +67,7 @@ public class RoomMenu implements Menu {
             case CREATE_ROOM -> createRoom();
             case DELETE_ROOM -> deleteRoom();
             case UPDATE_ROOM -> updateRoom();
-            case GET_SORTED_ROOMS -> nextMenu = menuFactory.createSelectOrderMenu();
+            case GET_SORTED_ROOMS -> nextMenu = menuFactory.createSelectSortRoomsOrderMenu();
             case GET_ROOM_INFO -> getRoomInfo();
             case GET_INHABILITIES_STUDENTS -> getInhabitedStudents();
             case GO_BACK -> nextMenu = menuFactory.createMainMenu();
@@ -77,7 +76,7 @@ public class RoomMenu implements Menu {
     }
 
     private void createRoom() {
-        var dto = createRoomFormHandleService.handleRoomNumber()
+        var dto = createRoomFormHandler.handleRoomNumber()
                 .handleRoomCapacity()
                 .handleAvailable()
                 .handleGender()
@@ -95,22 +94,22 @@ public class RoomMenu implements Menu {
     }
 
     private void deleteRoom() {
-        var dto = deleteRoomFormHandleService
+        var dto = deleteRoomFormHandler
                 .handleRoomNumber()
                 .createDto();
         try {
             roomService.deleteRoom(dto);
             printService.printRoomDeletedSuccessfulMessage();
-            logger.info(ROOM_DELETED_SUCCESSFUL_LOG.formatted(dto.number()));
+            logger.info(ROOM_DELETED_SUCCESSFUL_LOG.formatted(dto.numberFromList()));
         } catch (Exception e) {
             printService.printExceptionMessage(e);
-            logger.info(ROOM_DELETED_FAIL_LOG.formatted(dto.number()));
+            logger.info(ROOM_DELETED_FAIL_LOG.formatted(dto.numberFromList()));
             logger.info(e.getMessage());
         }
     }
 
     private void updateRoom() {
-        var dto = updateRoomFormHandleService
+        var dto = updateRoomFormHandler
                 .handleNumber()
                 .handleCapacity()
                 .handleAvailable()
@@ -118,7 +117,7 @@ public class RoomMenu implements Menu {
                 .createDto();
         try {
             roomService.updateRoom(dto);
-            System.out.println(ROOM_UPDATED_SUCCESSFUL_MESSAGE);
+            printService.printRoomUpdatedSuccessfulMessage();
             logger.info(ROOM_UPDATED_SUCCESSFUL_LOG.formatted(dto.number()));
         } catch (Exception e) {
             printService.printExceptionMessage(e);
@@ -143,8 +142,9 @@ public class RoomMenu implements Menu {
     }
 
     private void getInhabitedStudents() {
+       var studentNames = studentService.getStudentNamesWithoutRoom();
         try {
-            printService.printStudentsWithoutRoom(studentService.getStudentsNamesWithoutRoom());
+            printService.printStudentsWithoutRoom(studentNames);
             logger.info(DORMITORY_INHABITED_STUDENTS_INFO_RECEIVED_SUCCESS_LOG);
         } catch (Exception e) {
             printService.printExceptionMessage(e);

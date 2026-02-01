@@ -1,9 +1,11 @@
 package by.niruin.dormitorySystem.domain.service.validation;
 
+import by.niruin.dormitorySystem.domain.model.Role;
 import by.niruin.dormitorySystem.exception.InputValidationException;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 
 import static by.niruin.dormitorySystem.constant.ConsoleMessage.INVALID_INPUT_MESSAGE;
+import static by.niruin.dormitorySystem.domain.service.validation.RoomInputValidationService.NUMBER_PATTERN;
 
 @Component
 public class UserInputValidationService {
@@ -19,6 +21,7 @@ public class UserInputValidationService {
 
     public static final String NAME_PATTERN = "^[a-zA-Z]+";
     public static final String GENDER_PATTERN = "(?i)^(male|female)$";
+    public static final String DATE_PATTERN = "^(0[1-9]|[12][0-9]|3[01]).(0[1-9]|1[0-2]).d{4}$";
 
     public void validateLogin(String login) {
         if (!login.matches(LOGIN_LENGTH_PATTERN) || !login.matches(LOGIN_MIN_ONE_LETTER_PATTERN)
@@ -50,5 +53,22 @@ public class UserInputValidationService {
         if (!gender.matches((GENDER_PATTERN))) {
             throw new InputValidationException(INVALID_INPUT_MESSAGE);
         }
+    }
+
+    public void validateRole(String roleNumberFromList) {
+        if (!roleNumberFromList.matches(NUMBER_PATTERN) || isNumberOutOfBoundRolesEnumLength(roleNumberFromList)) {
+            throw new InputValidationException(INVALID_INPUT_MESSAGE);
+        }
+    }
+
+    public void validateDate(String dateInput) {
+        if (!dateInput.matches(DATE_PATTERN)) {
+            throw new InputValidationException(INVALID_INPUT_MESSAGE);
+        }
+    }
+
+    private boolean isNumberOutOfBoundRolesEnumLength(String numberInput) {
+        int number = Integer.parseInt(numberInput);
+        return number < 0 || number > Role.values().length;
     }
 }

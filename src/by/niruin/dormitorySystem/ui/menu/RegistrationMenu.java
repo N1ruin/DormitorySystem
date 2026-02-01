@@ -1,7 +1,7 @@
 package by.niruin.dormitorySystem.ui.menu;
 
 import by.niruin.dormitorySystem.domain.service.RegistrationService;
-import by.niruin.dormitorySystem.domain.model.dto.UserRegistrationDto;
+import by.niruin.dormitorySystem.domain.model.dto.user.UserRegistrationDto;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.logger.Logger;
 import by.niruin.dormitorySystem.logger.LoggerFactory;
@@ -14,16 +14,16 @@ public class RegistrationMenu implements Menu {
     private final PrintService printService;
     private final MenuFactory menuFactory;
     private final RegistrationService registrationService;
-    private final RegistrationFormHandler formHandler;
+    private final RegistrationFormHandler registrationFormHandler;
     private final Logger logger = LoggerFactory.getLogger(RegistrationMenu.class);
 
     public RegistrationMenu(PrintService printService,
-                            MenuFactory menuFactory, RegistrationService registrationService, RegistrationFormHandler formHandler) {
+                            MenuFactory menuFactory, RegistrationService registrationService, RegistrationFormHandler registrationFormHandler) {
         this.printService = printService;
         this.menuFactory = menuFactory;
         this.registrationService = registrationService;
 
-        this.formHandler = formHandler;
+        this.registrationFormHandler = registrationFormHandler;
     }
 
     @Override
@@ -38,7 +38,16 @@ public class RegistrationMenu implements Menu {
     }
 
     private void signUp() {
-        UserRegistrationDto dto = handleRegistrationForm();
+        var dto = registrationFormHandler
+                .handleLogin()
+                .handlePassword()
+                .handleFirstName()
+                .handleLastName()
+                .handleFatherName()
+                .handleGender()
+                .handleUniversityNumber()
+                .handleDormitoryNumber()
+                .createDto();
         try {
             registrationService.signUp(dto);
             printService.printRegistrationSuccessMessage();
@@ -48,18 +57,5 @@ public class RegistrationMenu implements Menu {
             logger.info(USER_REGISTRATION_FAIL_LOG.formatted(dto.login()));
             logger.info(e.getMessage());
         }
-    }
-
-    private UserRegistrationDto handleRegistrationForm() {
-        return formHandler
-                .handleLogin()
-                .handlePassword()
-                .handleFirstName()
-                .processLastName()
-                .handleFatherName()
-                .handleGender()
-                .handleUniversityNumber()
-                .handleDormitoryNumber()
-                .createDto();
     }
 }

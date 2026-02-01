@@ -1,6 +1,6 @@
 package by.niruin.dormitorySystem.ui.formHandler.user;
 
-import by.niruin.dormitorySystem.domain.model.dto.AuthentificationUserDto;
+import by.niruin.dormitorySystem.domain.model.dto.user.AuthentificationUserDto;
 import by.niruin.dormitorySystem.domain.service.validation.UserInputValidationService;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;

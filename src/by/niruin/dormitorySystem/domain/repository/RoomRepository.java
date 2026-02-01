@@ -20,9 +20,11 @@ public interface RoomRepository {
 
     void delete(UUID uuid);
 
-    List<Room> findAllOrderBy(Comparator<Room> comparator);
+    List<Room> findAllByDormitoryIdOrderBy(UUID dormitoryId, Comparator<Room> comparator);
 
-    Optional<Room> findByNumber(int number);
+    Optional<Room> findByNumber(UUID dormitoryId, int number);
 
-    List<Room> findByCurrentDormitoryId();
+    List<Room> findByDormitoryId(UUID dormitoryId);
+
+    Optional<Room> findById(UUID id);
 }

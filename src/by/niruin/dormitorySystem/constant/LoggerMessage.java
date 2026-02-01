@@ -31,7 +31,7 @@ public class LoggerMessage {
 
     public static final String TEST_ENTITIES_CREATE_ERROR_LOG = "Test entities creation error";
 
-    public static final String APP_DATA_LOADED_LOG = "Application data loaded";
+    public static final String APP_DATA_SAVED_LOG = "Application data saved";
 
     public static final String ROOM_CREATED_SUCCESSFUL_LOG = "Room with number %d is created";
 
@@ -62,4 +62,82 @@ public class LoggerMessage {
     public static final String USER_AUTHENTIFICATION_FAIL_LOG = "Authentification attempt failed";
 
     public static final String CLASS_LOADING_ERROR_LOG = "Class '%s' loading error.";
+
+    public static final String DORMITORY_CREATED_SUCCESSFUL_LOG = "Dormitory with number %d is created";
+
+    public static final String DORMITORY_CREATED_FAIL_LOG = "Dormitory with number %d not created";
+
+    public static final String DORMITORY_DELETED_SUCCESSFUL_LOG = "Dormitory with number %d deleted";
+
+    public static final String DORMITORY_DELETED_FAIL_LOG = "Dormitory with number %d not deleted";
+
+    public static final String DORMITORY_UPDATED_SUCCESSFUL_LOG = "Dormitory with number %d updated";
+
+    public static final String DORMITORY_UPDATED_FAIL_LOG = "Dormitory with number %d not updated";
+
+    public static final String DORMITORY_INFO_RECEIVED_SUCCESS_LOG = "Dormitory info received";
+
+    public static final String DORMITORY_INFO_RECEIVED_FAIL_LOG = "Dormitory info not received";
+
+    public static final String UNIVERSITY_CREATED_SUCCESSFUL_LOG = "University with name %s is created";
+
+    public static final String UNIVERSITY_CREATED_FAIL_LOG = "University with name %s not created";
+
+    public static final String UNIVERSITY_DELETED_SUCCESSFUL_LOG = "University deleted";
+
+    public static final String UNIVERSITY_DELETED_FAIL_LOG = "University not deleted";
+
+    public static final String UNIVERSITY_UPDATED_SUCCESSFUL_LOG = "University updated";
+
+    public static final String UNIVERSITY_UPDATED_FAIL_LOG = "University not updated";
+
+    public static final String UNIVERSITY_INFO_RECEIVED_SUCCESS_LOG = "University info received";
+
+    public static final String UNIVERSITY_INFO_RECEIVED_FAIL_LOG = "University info not received";
+
+    public static final String USER_CREATED_SUCCESSFUL_LOG = "User with login %s is created";
+
+    public static final String USER_CREATED_FAIL_LOG = "User with login %s not created";
+
+    public static final String USER_DELETED_SUCCESSFUL_LOG = "User with login %s is deleted";
+
+    public static final String USER_DELETED_FAIL_LOG = "User with login %s is not deleted";
+
+    public static final String USER_UPDATED_SUCCESSFUL_LOG = "User with login %s is updated";
+
+    public static final String USER_UPDATED_FAIL_LOG = "User with login %s is not updated";
+
+    public static final String USER_INFO_RECEIVED_SUCCESS_LOG = "User with login %s info received";
+
+    public static final String USER_INFO_RECEIVED_FAIL_LOG = "User with login %s info not received";
+
+    public static final String CURRENT_DORMITORY_SELECT_SUCCESSFUL_LOG = "Current dormitory updated";
+
+    public static final String CURRENT_DORMITORY_SELECT_FAIL_LOG = "Current dormitory not updated";
+
+    public static final String CURRENT_UNIVERSITY_SELECT_SUCCESSFUL_LOG = "Current university updated";
+
+    public static final String CURRENT_UNIVERSITY_SELECT_FAIL_LOG = "Current university not updated";
+
+    public static final String STUDENT_CREATED_SUCCESSFUL_LOG = "Student with name %s %s %s is created";
+
+    public static final String STUDENT_CREATED_FAIL_LOG = "Student with name %s %s %s not created";
+
+    public static final String STUDENT_DELETED_SUCCESSFUL_LOG = "Student deleted";
+
+    public static final String STUDENT_DELETED_FAIL_LOG = "Student not deleted";
+
+    public static final String STUDENT_UPDATED_SUCCESSFUL_LOG = "Student updated";
+
+    public static final String STUDENT_UPDATED_FAIL_LOG = "Student not updated";
+
+    public static final String STUDENT_DISTRIBUTED_TO_DORMITORY_SUCCESSFUL_LOG = "Student distributed to dormitory success";
+
+    public static final String STUDENT_DISTRIBUTED_FAIL_LOG = "Student not distributed";
+
+    public static final String STUDENT_DISTRIBUTED_TO_ROOM_SUCCESSFUL_LOG = "Student distributed to room success";
+
+    public static final String UNIVERSITY_STATISTICS_RECEIVED_SUCCESS_LOG = "University statistics received success";
+
+    public static final String UNIVERSITY_STATISTICS_RECEIVED_FAIL_LOG = "University statistics received failed";
 }

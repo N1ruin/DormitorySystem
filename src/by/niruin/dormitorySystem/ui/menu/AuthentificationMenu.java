@@ -1,7 +1,7 @@
 package by.niruin.dormitorySystem.ui.menu;
 
-import by.niruin.dormitorySystem.domain.service.AuthentificationService;
-import by.niruin.dormitorySystem.domain.model.dto.AuthentificationUserDto;
+import by.niruin.dormitorySystem.domain.service.AuthenticationService;
+import by.niruin.dormitorySystem.domain.model.dto.user.AuthentificationUserDto;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.logger.Logger;
 import by.niruin.dormitorySystem.logger.LoggerFactory;
@@ -13,15 +13,15 @@ import static by.niruin.dormitorySystem.constant.LoggerMessage.USER_AUTHENTIFICA
 public class AuthentificationMenu implements Menu {
     private final PrintService printService;
     private final MenuFactory menuFactory;
-    private final AuthentificationFormHandler formService;
-    private final AuthentificationService authentificationService;
+    private final AuthentificationFormHandler authentificationFormHandler;
+    private final AuthenticationService authentificationService;
     private final Logger logger = LoggerFactory.getLogger(AuthentificationMenu.class);
 
     public AuthentificationMenu(PrintService printService, MenuFactory menuFactory,
-                                AuthentificationFormHandler menuService, AuthentificationService authentificationService) {
+                                AuthentificationFormHandler menuService, AuthenticationService authentificationService) {
         this.printService = printService;
         this.menuFactory = menuFactory;
-        this.formService = menuService;
+        this.authentificationFormHandler = menuService;
         this.authentificationService = authentificationService;
     }
 
@@ -51,7 +51,7 @@ public class AuthentificationMenu implements Menu {
     }
 
     private AuthentificationUserDto handleAuthorizationForm() {
-        return formService
+        return authentificationFormHandler
                 .handleLogin()
                 .handlePassword()
                 .createDto();

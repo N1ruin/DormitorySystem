@@ -2,6 +2,7 @@ package by.niruin.dormitorySystem.domain.repository;
 
 import by.niruin.dormitorySystem.domain.model.Dormitory;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,5 +22,13 @@ public interface DormitoryRepository {
 
     List<Dormitory> findByUniversityId(UUID universityId);
 
-    Optional<Dormitory> findByDormitoryNumberOrUniversityId(UUID universiryId, int dormitoryNumber);
+    Optional<Dormitory> findByDormitoryNumberOrUniversityId(UUID universityId, int dormitoryNumber);
+
+    List<Dormitory> findAllByUniversityId(UUID universityId);
+
+    Optional<Dormitory> findByUniversityIdAndNumber(UUID universityId, int number);
+
+    List<Dormitory> findAllByUniversityIdOrderBy(UUID universityId, Comparator<Dormitory> dormitoryComparator);
+
+    Optional<Dormitory> findById(UUID id);
 }

@@ -20,7 +20,7 @@ public class FileStudentMapper implements StudentMapper {
     @Override
     public String mapStudentsToString(Collection<Student> students) {
         return students.stream()
-                .map(this::entityFieldsToString)
+                .map(this::studentFieldsToString)
                 .collect(Collectors.joining(NEW_LINE_SYMBOL));
     }
 
@@ -33,40 +33,40 @@ public class FileStudentMapper implements StudentMapper {
         String[] roomsFields = studentsData.split(NEW_LINE_SYMBOL);
 
         return Arrays.stream(roomsFields)
-                .map(this::mapStringToEntity)
+                .map(this::mapStringToStudent)
                 .toList();
     }
 
-    private String entityFieldsToString(Student student) {
+    private String studentFieldsToString(Student student) {
         String dateOfEntering;
-        if (student.getDateOfEntering() == null) {
+        if (student.getDateOfStartEducation() == null) {
             dateOfEntering = NULL_STRING;
         } else {
-            dateOfEntering = student.getDateOfEntering().toString();
+            dateOfEntering = student.getDateOfStartEducation().toString();
         }
         String explusionDate;
-        if (student.getExpulsionDate() == null) {
+        if (student.getDateOfEndingEducation() == null) {
             explusionDate = NULL_STRING;
         } else {
-            explusionDate = student.getExpulsionDate().toString();
+            explusionDate = student.getDateOfEndingEducation().toString();
         }
         String checkInDate;
-        if (student.getRoomCheckIn() == null) {
+        if (student.getDateOfRoomCheckIn() == null) {
             checkInDate = NULL_STRING;
         } else {
-            checkInDate = student.getRoomCheckIn().toString();
+            checkInDate = student.getDateOfRoomCheckIn().toString();
         }
         String checkOutDate;
-        if (student.getRoomCheckOut() == null) {
+        if (student.getDateOfRoomCheckOut() == null) {
             checkOutDate = NULL_STRING;
         } else {
-            checkOutDate = student.getRoomCheckOut().toString();
+            checkOutDate = student.getDateOfRoomCheckOut().toString();
         }
         String universityId;
-        if (student.getUniversityUuid() == null) {
+        if (student.getUniversityId() == null) {
             universityId = NULL_STRING;
         } else {
-            universityId = student.getUniversityUuid().toString();
+            universityId = student.getUniversityId().toString();
         }
         String roomId;
         if (student.getRoomId() == null) {
@@ -96,7 +96,7 @@ public class FileStudentMapper implements StudentMapper {
                 checkOutDate);
     }
 
-    private Student mapStringToEntity(String fields) {
+    private Student mapStringToStudent(String fields) {
         String[] parts = fields.split(FIELDS_DELIMITER);
         if (parts.length != Student.class.getDeclaredFields().length + FullName.class.getDeclaredFields().length - 1) {
             throw new EntityMappingException(NOT_VALID_FIELDS_QUANTITY_MESSAGE);

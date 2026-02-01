@@ -1,6 +1,6 @@
 package by.niruin.dormitorySystem.ui.formHandler.room;
 
-import by.niruin.dormitorySystem.domain.model.dto.UpdateRoomDto;
+import by.niruin.dormitorySystem.domain.model.dto.room.UpdateRoomDto;
 import by.niruin.dormitorySystem.domain.service.RoomService;
 import by.niruin.dormitorySystem.domain.service.validation.RoomInputValidationService;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
@@ -38,7 +38,7 @@ public class UpdateRoomFormHandler {
 
     public UpdateRoomFormHandler handleCapacity() {
         roomCapacity = formHandler.handleInputString(
-                printService::printInputRoomCapacityRequestMessage,
+                printService::printInputDormitoryCapacityRequestMessage,
                 Byte::parseByte,
                 validationService::validateNumber);
         return this;
