@@ -4,9 +4,9 @@ import by.niruin.dormitorySystem.domain.model.Role;
 import by.niruin.dormitorySystem.ui.annotation.MenuItem;
 
 public enum SelectSortStudentsOrderMenuItem {
-    @MenuItem(itemAction = "Sort by universityName in alphabetical order", allowedRoles = {Role.SYSTEM_ADMIN, Role.UNIVERSITY_ADMIN})
+    @MenuItem(itemAction = "Sort by name in alphabetical order", allowedRoles = {Role.SYSTEM_ADMIN, Role.UNIVERSITY_ADMIN})
     SORT_BY_NAME,
-    @MenuItem(itemAction = "Sort by universityName in reverse alphabetical order", allowedRoles = {Role.SYSTEM_ADMIN, Role.UNIVERSITY_ADMIN})
+    @MenuItem(itemAction = "Sort by name in reverse alphabetical order", allowedRoles = {Role.SYSTEM_ADMIN, Role.UNIVERSITY_ADMIN})
     SORT_BY_NAME_DESC,
     @MenuItem(itemAction = "Sort by gender - male first", allowedRoles = {Role.SYSTEM_ADMIN, Role.UNIVERSITY_ADMIN})
     SORT_BY_GENDER_MALE_FIRST,

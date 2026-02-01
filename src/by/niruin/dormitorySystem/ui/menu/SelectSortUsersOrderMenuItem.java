@@ -8,9 +8,9 @@ public enum SelectSortUsersOrderMenuItem {
     SORT_BY_LOGIN,
     @MenuItem(itemAction = "Sort by login in reverse alphabetical order", allowedRoles = {Role.SYSTEM_ADMIN})
     SORT_BY_LOGIN_DESC,
-    @MenuItem(itemAction = "Sort by full universityName in alphabetical order", allowedRoles = {Role.SYSTEM_ADMIN})
+    @MenuItem(itemAction = "Sort by full name in alphabetical order", allowedRoles = {Role.SYSTEM_ADMIN})
     SORT_BY_FULL_NAME,
-    @MenuItem(itemAction = "Sort by full universityName in reverse alphabetical order", allowedRoles = {Role.SYSTEM_ADMIN})
+    @MenuItem(itemAction = "Sort by full name in reverse alphabetical order", allowedRoles = {Role.SYSTEM_ADMIN})
     SORT_BY_FULL_NAME_DESC,
     @MenuItem(itemAction = "Sort by gender - male first", allowedRoles = {Role.SYSTEM_ADMIN})
     SORT_BY_GENDER_MALE_FIRST,

@@ -4,9 +4,9 @@ import by.niruin.dormitorySystem.domain.model.Role;
 import by.niruin.dormitorySystem.ui.annotation.MenuItem;
 
 public enum SelectSortDormitoriesOrderMenuItem {
-    @MenuItem(itemAction = "Sort by numberFromList in ascending order", allowedRoles = {Role.SYSTEM_ADMIN, Role.UNIVERSITY_ADMIN})
+    @MenuItem(itemAction = "Sort by number in ascending order", allowedRoles = {Role.SYSTEM_ADMIN, Role.UNIVERSITY_ADMIN})
     SORT_BY_NUMBER,
-    @MenuItem(itemAction = "Sort by numberFromList in descending order", allowedRoles = {Role.SYSTEM_ADMIN, Role.UNIVERSITY_ADMIN})
+    @MenuItem(itemAction = "Sort by number in descending order", allowedRoles = {Role.SYSTEM_ADMIN, Role.UNIVERSITY_ADMIN})
     SORT_BY_NUMBER_DESC,
     @MenuItem(itemAction = "Sort by rooms count in ascending order", allowedRoles = {Role.SYSTEM_ADMIN, Role.UNIVERSITY_ADMIN})
     SORT_BY_ROOM_CAPACITY,

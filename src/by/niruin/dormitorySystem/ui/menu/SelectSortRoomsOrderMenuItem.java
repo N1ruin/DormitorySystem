@@ -4,16 +4,16 @@ import by.niruin.dormitorySystem.domain.model.Role;
 import by.niruin.dormitorySystem.ui.annotation.MenuItem;
 
 public enum SelectSortRoomsOrderMenuItem {
-    @MenuItem(itemAction = "Sort by numberFromList in ascending order",
+    @MenuItem(itemAction = "Sort by name in ascending order",
             allowedRoles = {Role.SYSTEM_ADMIN, Role.UNIVERSITY_ADMIN, Role.DORMITORY_ADMIN})
     SORT_BY_NUMBER,
-    @MenuItem(itemAction = "Sort by numberFromList in descending order",
+    @MenuItem(itemAction = "Sort by name in descending order",
             allowedRoles = {Role.SYSTEM_ADMIN, Role.UNIVERSITY_ADMIN, Role.DORMITORY_ADMIN})
     SORT_BY_NUMBER_DESC,
-    @MenuItem(itemAction = "Sort by numberFromList of available seats in ascending order",
+    @MenuItem(itemAction = "Sort by name of available seats in ascending order",
             allowedRoles = {Role.SYSTEM_ADMIN, Role.UNIVERSITY_ADMIN, Role.DORMITORY_ADMIN})
     SORT_BY_FREE_QUANTITY,
-    @MenuItem(itemAction = "Sort by numberFromList of available seats in descending order",
+    @MenuItem(itemAction = "Sort by name of available seats in descending order",
             allowedRoles = {Role.SYSTEM_ADMIN, Role.UNIVERSITY_ADMIN, Role.DORMITORY_ADMIN})
     SORT_BY_FREE_QUANTITY_DESC,
     @MenuItem(itemAction = "Sort by gender - men's rooms first",
