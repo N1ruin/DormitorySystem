@@ -42,10 +42,7 @@ public class UniversityValidationService {
 
     public void validateNumberInList(int inputNumberInList, List<String> universityNames) {
         if (inputNumberInList < 1 || inputNumberInList > universityNames.size()) {
-            throw new EntityNotFoundException(
-                    String.format("University with number %d not found. Available numbers: 1-%d",
-                            inputNumberInList, universityNames.size())
-            );
+            throw new EntityNotFoundException(UNIVERSITY_WITH_NUMBER_NOT_FOUND_MESSAGE.formatted(inputNumberInList, universityNames.size()));
         }
     }
 

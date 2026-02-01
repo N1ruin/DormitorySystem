@@ -144,30 +144,6 @@ public class RoomService {
         return new RoomNumbersDto(roomNumbers);
     }
 
-    public List<Room> getFreeRooms() {
-        UUID currentDormitoryId = ApplicationContextUtil.getCurrentDormitoryId();
-        List<Student> studentsWithoutRoom = getStudentsWithoutRoom(currentDormitoryId);
-
-        if (studentsWithoutRoom.isEmpty()) {
-            return List.of();
-        }
-
-        Map<Gender, List<Student>> studentsByGender = studentsWithoutRoom.stream()
-                .collect(Collectors.groupingBy(Student::getGender));
-
-        List<Room> allFreeRooms = new ArrayList<>();
-
-        for (Gender gender : studentsByGender.keySet()) {
-            List<Room> freeRoomsForGender = getFreeRooms(gender, currentDormitoryId);
-            allFreeRooms.addAll(freeRoomsForGender);
-        }
-
-        return allFreeRooms.stream()
-                .distinct()
-                .sorted(Comparator.comparingInt(Room::getNumber))
-                .toList();
-    }
-
     private RoomInfoDto buildRoomInfoDto(Room room) {
         var number = room.getNumber();
         var gender = room.isMaleOnly() ? Gender.MALE : Gender.FEMALE;
@@ -181,11 +157,5 @@ public class RoomService {
                 .toList();
 
         return new RoomInfoDto(number, gender, capacity, isFull, inhabitantsCount, availableForLiving, studentsFromRoomList);
-    }
-
-    private List<Student> getStudentsWithoutRoom(UUID dormitoryId) {
-        return studentRepository.findByDormitoryId(dormitoryId).stream()
-                .filter(student -> student.getRoomId() == null)
-                .toList();
     }
 }

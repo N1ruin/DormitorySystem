@@ -58,29 +58,22 @@ public class StudentValidationService {
     }
 
     public void validateRoomForStudent(Student student, Room room) {
-        // Проверка пола
         if ((student.getGender() == Gender.MALE && !room.isMaleOnly()) ||
             (student.getGender() == Gender.FEMALE && room.isMaleOnly())) {
-            throw new EntityValidationException(
-                    String.format("Room is for %s students only",
-                            room.isMaleOnly() ? "male" : "female")
-            );
+            throw new EntityValidationException(INVALID_STUDENT_GENDER_FROM_ROOM_MESSAGE.formatted(room.isMaleOnly() ? "male" : "female"));
         }
 
-        // Проверка доступности
         if (!room.isAvailableForLiving()) {
-            throw new EntityValidationException("Room is not available for living");
+            throw new EntityValidationException(ROOM_IS_NOT_AVAILABLE_FOR_LIVING_MESSAGE);
         }
 
-        // Проверка свободных мест
         int freePlaces = roomService.getFreePlaces(room.getId());
         if (freePlaces <= 0) {
-            throw new EntityValidationException("Room is full");
+            throw new EntityValidationException(ROOM_IS_FULL_MESSAGE);
         }
 
-        // Проверка что комната в том же общежитии что и студент
         if (!room.getDormitoryId().equals(student.getDormitoryId())) {
-            throw new EntityValidationException("Room is in different dormitory");
+            throw new EntityValidationException(ROOM_IS_IN_DIFFERENT_DORMITORY_MESSAGE);
         }
     }
 }

@@ -155,4 +155,5 @@ public class ConsoleMessage {
 
     public static final String STUDENT_MUST_BE_ASSIGNED_TO_A_DORMITORY_FIRST_MESSAGE = "Student must be assigned to a dormitory first";
 
+
 }
