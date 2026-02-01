@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class RoomService {
+    public static final String ROOM_FREE_PLACES_PATTERN = "Room №%d - Free places: %d/%d";
     private final RoomValidationService roomValidationService;
     private final RoomRepository roomRepository;
     private final StudentRepository studentRepository;
@@ -134,7 +135,7 @@ public class RoomService {
         }
 
         String roomNumbers = freeRooms.stream()
-                .map(room -> String.format("Room №%d - Free places: %d/%d",
+                .map(room -> ROOM_FREE_PLACES_PATTERN.formatted(
                         room.getNumber(),
                         getFreePlaces(room.getId()),
                         room.getCapacity()))

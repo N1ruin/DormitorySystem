@@ -142,4 +142,17 @@ public class ConsoleMessage {
     public static final String GET_STUDENT_FROM_LIST_FAIL_MESSAGE = "Input out of list items";
 
     public static final String STUDENT_DISTRIBUTED_TO_DORMITORY_SUCCESS_MESSAGE = "Student distributed to dormitory success";
+
+    public static final String INVALID_STUDENT_GENDER_FROM_ROOM_MESSAGE = "Room is for %s students only";
+
+    public static final String ROOM_IS_NOT_AVAILABLE_FOR_LIVING_MESSAGE = "Room is not available for living";
+
+    public static final String ROOM_IS_FULL_MESSAGE = "Room is full";
+
+    public static final String ROOM_IS_IN_DIFFERENT_DORMITORY_MESSAGE = "Room is in different dormitory";
+
+    public static final String UNIVERSITY_WITH_NUMBER_NOT_FOUND_MESSAGE = "University with number %d not found. Available numbers: 1-%d";
+
+    public static final String STUDENT_MUST_BE_ASSIGNED_TO_A_DORMITORY_FIRST_MESSAGE = "Student must be assigned to a dormitory first";
+
 }
