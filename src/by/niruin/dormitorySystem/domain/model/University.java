@@ -2,19 +2,21 @@ package by.niruin.dormitorySystem.domain.model;
 
 import by.niruin.dormitorySystem.domain.repository.Identity;
 
-public class University<ID> implements Identity<ID> {
-    private final ID id;
+import java.util.UUID;
+
+public class University implements Identity {
+    private final UUID id;
     private String name;
     private byte studyDuration;
 
-    public University(ID uuid, String name, byte studyDuration) {
+    public University(UUID uuid, String name, byte studyDuration) {
         this.id = uuid;
         this.name = name;
         this.studyDuration = studyDuration;
     }
 
     @Override
-    public ID getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -33,5 +35,4 @@ public class University<ID> implements Identity<ID> {
     public void setStudyDuration(byte studyDuration) {
         this.studyDuration = studyDuration;
     }
-
 }

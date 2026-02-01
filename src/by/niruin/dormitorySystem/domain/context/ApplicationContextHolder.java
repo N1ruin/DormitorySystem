@@ -1,4 +1,4 @@
-package by.niruin.dormitorySystem.domain.authorization;
+package by.niruin.dormitorySystem.domain.context;
 
 public class ApplicationContextHolder {
     private static ApplicationContext applicationContext;

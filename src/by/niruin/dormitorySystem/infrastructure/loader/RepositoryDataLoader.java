@@ -1,6 +1,5 @@
 package by.niruin.dormitorySystem.infrastructure.loader;
 
-import by.niruin.dormitorySystem.infrastructure.annotation.Autowired;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import by.niruin.dormitorySystem.infrastructure.repository.*;
 
@@ -12,7 +11,6 @@ public class RepositoryDataLoader {
     private final InMemoryRoomRepository roomRepository;
     private final InMemoryDormitoryRepository dormitoryRepository;
 
-    @Autowired
     public RepositoryDataLoader(InMemoryDormitoryRepository dormitoryRepository,
                                 InMemoryUserRepository userRepository,
                                 InMemoryUniversityRepository universityRepository,
@@ -25,11 +23,11 @@ public class RepositoryDataLoader {
     }
 
     public void loadData() {
-        userRepository.loadAllEntitiesFromFile();
-        universityRepository.loadAllEntitiesFromFile();
-        studentRepository.loadAllEntitiesFromFile();
-        roomRepository.loadAllEntitiesFromFile();
-        dormitoryRepository.loadAllEntitiesFromFile();
+        userRepository.fetchEntities();
+        universityRepository.fetchEntities();
+        studentRepository.fetchEntities();
+        roomRepository.fetchEntities();
+        dormitoryRepository.fetchEntities();
     }
 
     public void persistData() {

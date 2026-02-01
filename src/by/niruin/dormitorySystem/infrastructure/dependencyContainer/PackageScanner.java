@@ -1,15 +1,22 @@
 package by.niruin.dormitorySystem.infrastructure.dependencyContainer;
 
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
+import by.niruin.dormitorySystem.logger.Logger;
+import by.niruin.dormitorySystem.logger.LoggerFactory;
 
 import java.io.File;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static by.niruin.dormitorySystem.constant.LoggerMessage.FIND_COMPONENT_CLASS_FILE_LOG;
+import static by.niruin.dormitorySystem.constant.LoggerMessage.START_SCANNING_DIRECTORY_LOG;
+
 public class PackageScanner {
+    private final Logger logger = LoggerFactory.getLogger(PackageScanner.class);
 
     public Set<Class<?>> scanPackage(String packageName) {
         Set<Class<?>> findedClasses = new HashSet<>();
@@ -27,8 +34,9 @@ public class PackageScanner {
 
         return findedClasses;
     }
-
+    //todo декомпозировать
     private void scanDirectory(File directory, String packageName, Set<Class<?>> findedClasses, ClassLoader classLoader) {
+        logger.info(START_SCANNING_DIRECTORY_LOG.formatted(directory.getPath()));
         File[] files = directory.listFiles();
         if (files == null) {
             return;
@@ -45,9 +53,11 @@ public class PackageScanner {
                     Class<?> clazz = classLoader.loadClass(className);
                     if (clazz.isAnnotationPresent(Component.class)) {
                         findedClasses.add(clazz);
+                        logger.info(FIND_COMPONENT_CLASS_FILE_LOG.formatted(className));
                     }
                 } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                    logger.warn(e.getMessage());
+                    logger.warn(Arrays.toString(e.getStackTrace()));
                 }
             }
         }

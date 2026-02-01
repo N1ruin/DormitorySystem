@@ -3,29 +3,36 @@ package by.niruin.dormitorySystem.domain.model;
 import by.niruin.dormitorySystem.domain.repository.Identity;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
-public class Student<ID> implements Identity<ID> {
-    private final ID id;
+public class Student implements Identity {
+    private final UUID id;
     private final FullName fullName;
     private final Gender gender;
-    private final ID universityUuid;
-    private ID roomId;
-    private int yearOfEntering;
-    private final LocalDate deductionDate;
+    private UUID universityUuid;
+    private UUID roomId;
+    private UUID dormitoryId;
+    private final LocalDate dateOfEntering; //дата поступления в ВУЗ
+    private final LocalDate expulsionDate; //дата отчисления из ВУЗа
+    private final LocalDate roomCheckIn; // дата заселения в общежитие
+    private final LocalDate roomCheckOut; //дата выселения из ВУЗа
 
-    public Student(ID uuid, String firstName, String lastName, String fatherName, Gender gender,
-                   LocalDate deductionDate, int yearOfEntering, ID roomUuid, ID universityUuid) {
-        this.id = uuid;
-        this.fullName = new FullName(firstName, fatherName, lastName);
+    public Student(UUID id, FullName fullName, Gender gender, UUID universityUuid, UUID roomId, UUID dormitoryId,
+                   LocalDate dateOfEntering, LocalDate expulsionDate, LocalDate roomCheckIn, LocalDate roomCheckOut) {
+        this.id = id;
+        this.fullName = fullName;
         this.gender = gender;
-        this.deductionDate = deductionDate;
-        this.yearOfEntering = yearOfEntering;
-        this.roomId = roomUuid;
         this.universityUuid = universityUuid;
+        this.roomId = roomId;
+        this.dormitoryId = dormitoryId;
+        this.dateOfEntering = dateOfEntering;
+        this.expulsionDate = expulsionDate;
+        this.roomCheckIn = roomCheckIn;
+        this.roomCheckOut = roomCheckOut;
     }
 
     @Override
-    public ID getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -37,27 +44,43 @@ public class Student<ID> implements Identity<ID> {
         return gender;
     }
 
-    public ID getUniversityUuid() {
+    public UUID getUniversityUuid() {
         return universityUuid;
     }
 
-    public ID getRoomId() {
+    public void setUniversityUuid(UUID universityUuid) {
+        this.universityUuid = universityUuid;
+    }
+
+    public UUID getRoomId() {
         return roomId;
     }
 
-    public int getYearOfEntering() {
-        return yearOfEntering;
-    }
-
-    public LocalDate getDeductionDate() {
-        return deductionDate;
-    }
-
-    public void setRoomId(ID roomUuid) {
+    public void setRoomId(UUID roomUuid) {
         this.roomId = roomUuid;
     }
 
-    public void setYearOfEntering(int yearOfEntering) {
-        this.yearOfEntering = yearOfEntering;
+    public UUID getDormitoryId() {
+        return dormitoryId;
+    }
+
+    public void setDormitoryId(UUID dormitoryId) {
+        this.dormitoryId = dormitoryId;
+    }
+
+    public LocalDate getDateOfEntering() {
+        return dateOfEntering;
+    }
+
+    public LocalDate getExpulsionDate() {
+        return expulsionDate;
+    }
+
+    public LocalDate getRoomCheckOut() {
+        return roomCheckOut;
+    }
+
+    public LocalDate getRoomCheckIn() {
+        return roomCheckIn;
     }
 }

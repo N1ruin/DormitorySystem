@@ -5,9 +5,6 @@ import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import java.util.Scanner;
 @Component
 public class InputService {
-    public InputService() {
-    }
-
     private final Scanner scanner = new Scanner(System.in);
 
     public String inputLine() {
