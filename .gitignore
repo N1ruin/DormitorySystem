@@ -30,4 +30,5 @@ bin/
 /resources/entity/dormitory.txt
 /resources/entity/room.txt
 /resources/entity/student.txt
+/resources/entity/university.txt
 /resources/entity/
