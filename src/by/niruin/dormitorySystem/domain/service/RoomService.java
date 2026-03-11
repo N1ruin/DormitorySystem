@@ -63,8 +63,8 @@ public class RoomService {
     }
 
     public String getRoomInfo(RoomNumberFromListDto dto) {
-        var room = roomRepository.findByNumber(ApplicationContextUtil.getCurrentDormitoryId(), dto.numberFromList()).orElseThrow(
-                () -> new EntityNotFoundException(dto.numberFromList(), Room.class));
+        var room = roomRepository.findByNumber(ApplicationContextUtil.getCurrentDormitoryId(), dto.numberFromList())
+                .orElseThrow(() -> new EntityNotFoundException(dto.numberFromList(), Room.class));
 
         var roomInfoDto = buildRoomInfoDto(room);
 
@@ -74,7 +74,8 @@ public class RoomService {
     public String getSortedRoomsInfo(Comparator<Room> comparator) {
         var roomList = roomRepository.findAllByDormitoryIdOrderBy(ApplicationContextUtil.getCurrentDormitoryId(), comparator);
 
-        var roomInfoDtos = roomList.stream()
+        var roomInfoDtos = roomList
+                .stream()
                 .map(this::buildRoomInfoDto)
                 .toList();
 
@@ -82,7 +83,8 @@ public class RoomService {
     }
 
     public RoomNumbersDto getRoomNumbers() {
-        String numbers = roomRepository.findByDormitoryId(ApplicationContextUtil.getCurrentDormitoryId()).stream()
+        String numbers = roomRepository.findByDormitoryId(ApplicationContextUtil.getCurrentDormitoryId())
+                .stream()
                 .map(Room::getNumber)
                 .sorted()
                 .map(String::valueOf)
@@ -92,7 +94,8 @@ public class RoomService {
     }
 
     public UUID getRoomIdFromCurrentUniversityByListNumber(int numberFromList) {
-        return roomRepository.findByDormitoryId(ApplicationContextUtil.getCurrentDormitoryId()).stream()
+        return roomRepository.findByDormitoryId(ApplicationContextUtil.getCurrentDormitoryId())
+                .stream()
                 .sorted()
                 .toList()
                 .get(numberFromList - 1)
@@ -100,16 +103,20 @@ public class RoomService {
     }
 
     public int getFreePlaces(UUID roomId) {
-        var room = roomRepository.findById(roomId).orElseThrow(() -> new EntityNotFoundException(roomId, Room.class));
+        var room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new EntityNotFoundException(roomId, Room.class));
+        var studentsList = studentRepository
+                .findByDormitoryIdGroupingByRoomId(ApplicationContextUtil.getCurrentDormitoryId(), roomId)
+                .get(roomId);
+        var studentsInRoom = studentsList != null ? studentsList.size() : 0;
 
-        var studentsList = studentRepository.findByDormitoryIdGroupingByRoomId(ApplicationContextUtil.getCurrentDormitoryId(), roomId).get(roomId);
-
-        return room.getCapacity() - (studentsList != null ? studentsList.size() : 0);
+        return room.getCapacity() - studentsInRoom;
     }
 
     public List<Room> getFreeRooms(Gender gender, UUID dormitoryId) {
         var roomsOccupancy = studentRepository
-                .findByDormitoryId(dormitoryId).stream()
+                .findByDormitoryId(dormitoryId)
+                .stream()
                 .filter(student -> student.getRoomId() != null)
                 .collect(Collectors.groupingBy(
                         Student::getRoomId,
@@ -152,7 +159,8 @@ public class RoomService {
         var inhabitantsCount = capacity - getFreePlaces(room.getId());
         var availableForLiving = room.isAvailableForLiving();
 
-        var studentsFromRoomList = studentRepository.findByRoomId(room.getId()).stream()
+        var studentsFromRoomList = studentRepository.findByRoomId(room.getId())
+                .stream()
                 .map(student -> student.getFullName().getFullNameString())
                 .toList();
 

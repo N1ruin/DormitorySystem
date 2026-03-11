@@ -29,12 +29,14 @@ public class UserService {
     }
 
     public void deleteUser(DeleteUserDto dto) {
-        var user = userRepository.findByLogin(dto.login()).orElseThrow(() -> new EntityNotFoundException(dto.login(), User.class));
+        var user = userRepository.findByLogin(dto.login())
+                .orElseThrow(() -> new EntityNotFoundException(dto.login(), User.class));
         userRepository.delete(user.getId());
     }
 
     public void updateUser(UpdateUserDto dto) {
-        var user = userRepository.findByLogin(dto.login()).orElseThrow(() -> new EntityNotFoundException(dto.login(), User.class));
+        var user = userRepository.findByLogin(dto.login())
+                .orElseThrow(() -> new EntityNotFoundException(dto.login(), User.class));
 
         user.setLogin(dto.login());
         user.setPasswordHash(dto.password());
@@ -44,7 +46,8 @@ public class UserService {
     }
 
     public String getUserInfo(UserLoginDto dto) {
-        var user = userRepository.findByLogin(dto.login()).orElseThrow(() -> new EntityNotFoundException(dto.login(), User.class));
+        var user = userRepository.findByLogin(dto.login())
+                .orElseThrow(() -> new EntityNotFoundException(dto.login(), User.class));
 
         var infoDto = buildInfoDto(user);
 

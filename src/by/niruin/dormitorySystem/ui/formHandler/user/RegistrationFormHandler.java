@@ -11,14 +11,12 @@ import by.niruin.dormitorySystem.domain.service.validation.RoomInputValidationSe
 import by.niruin.dormitorySystem.domain.service.validation.UniversityInputValidationService;
 import by.niruin.dormitorySystem.domain.service.validation.UserInputValidationService;
 import by.niruin.dormitorySystem.exception.EntityNotFoundException;
-import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.ui.formHandler.FormHandler;
 
 import java.util.UUID;
 import java.util.function.Function;
 
-@Component
 public class RegistrationFormHandler {
     private final FormHandler formHandler;
     private final UserInputValidationService userInputValidationService;
@@ -26,10 +24,9 @@ public class RegistrationFormHandler {
     private final UniversityService universityService;
     private final UniversityRepository universityRepository;
     private final DormitoryRepository dormitoryRepository;
-    private final UniversityInputValidationService universityValidationService;
-    private final RoomInputValidationService dormitoryValidationService;
+    private final UniversityInputValidationService universityInputValidationService;
+    private final RoomInputValidationService roomInputValidationService;
     private final DormitoryService dormitoryService;
-
     private String login;
     private String password;
     private String firstName;
@@ -39,18 +36,20 @@ public class RegistrationFormHandler {
     private UUID universityId;
     private UUID dormitoryId;
 
-    public RegistrationFormHandler(FormHandler formHandler, UserInputValidationService userDataValidationService,
+    public RegistrationFormHandler(FormHandler formHandler, UserInputValidationService userInputValidationService,
                                    PrintService printService, UniversityService universityService,
-                                   UniversityRepository universityRepository,
-                                   DormitoryRepository dormitoryRepository, UniversityInputValidationService universityValidationService, RoomInputValidationService dormitoryValidationService, DormitoryService dormitoryService) {
+                                   UniversityRepository universityRepository, DormitoryRepository dormitoryRepository,
+                                   UniversityInputValidationService universityInputValidationService,
+                                   RoomInputValidationService roomInputValidationService,
+                                   DormitoryService dormitoryService) {
         this.formHandler = formHandler;
-        this.userInputValidationService = userDataValidationService;
+        this.userInputValidationService = userInputValidationService;
         this.printService = printService;
         this.universityService = universityService;
         this.universityRepository = universityRepository;
         this.dormitoryRepository = dormitoryRepository;
-        this.universityValidationService = universityValidationService;
-        this.dormitoryValidationService = dormitoryValidationService;
+        this.universityInputValidationService = universityInputValidationService;
+        this.roomInputValidationService = roomInputValidationService;
         this.dormitoryService = dormitoryService;
     }
 
@@ -101,7 +100,7 @@ public class RegistrationFormHandler {
                 userInputValidationService::validateGender
         );
 
-        gender = genderInput.matches("male") ? Gender.MALE : Gender.FEMALE;
+        gender = genderInput.equalsIgnoreCase("male") ? Gender.MALE : Gender.FEMALE;
         return this;
     }
 
@@ -109,7 +108,7 @@ public class RegistrationFormHandler {
         int universityNumber = formHandler.handleInputString(
                 () -> printService.printSelectUniversityRequestMessage(universityService.getUniversitiesNames()),
                 Integer::parseInt,
-                universityValidationService::validateNumber
+                universityInputValidationService::validateNumber
         );
 
         var university = universityRepository.findAll().get(universityNumber - 1);
@@ -121,7 +120,7 @@ public class RegistrationFormHandler {
         int dormitoryNumber = formHandler.handleInputString(
                 () -> printService.printDormitoriesNumbersRequestMessage(dormitoryService.getDormitoryNumbers(universityId)),
                 Integer::parseInt,
-                dormitoryValidationService::validateNumber);
+                roomInputValidationService::validateNumber);
 
         var dormitory = dormitoryRepository.findByDormitoryNumberOrUniversityId(universityId, dormitoryNumber)
                 .orElseThrow(() -> new EntityNotFoundException(dormitoryNumber, Dormitory.class));

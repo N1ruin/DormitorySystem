@@ -4,6 +4,7 @@ import by.niruin.dormitorySystem.domain.model.dto.room.RoomInfoDto;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -22,27 +23,32 @@ public class RoomFormatterImpl implements RoomFormatter {
     @Override
     public String formatRoomsToRoomsInfo(RoomInfoDto... dtos) {
         return Arrays.stream(dtos)
-                .map(dto -> {
-                    int freeCapacity = dto.roomCapacity() - dto.inhabitantsCount();
-
-                    String studentsNames = IntStream.range(0, dto.studentsNames().size())
-                            .mapToObj(i -> STUDENT_NAME_WITH_NUMBER_ORDER_PATTERN.formatted(
-                                    i + 1,
-                                    dto.studentsNames().get(i)
-                            ))
-                            .collect(Collectors.joining(NEW_LINE_SYMBOL));
-
-                    return String.join("",
-                            ROOM_INFO.formatted(dto.number()),
-                            ROOM_CAPACITY_INFO.formatted(dto.roomCapacity()),
-                            GENDER_INFO.formatted(dto.gender()),
-                            FREE_CAPACITY_INFO.formatted(freeCapacity),
-                            dto.studentsNames().isEmpty()
-                                    ? ROOM_EMPTY_INFO
-                                    : STUDENTS_IN_ROOM_LIST_INFO + NEW_LINE_SYMBOL + studentsNames,
-                            IS_AVAILABLE_FOR_LIVING_INFO.formatted(dto.availableForLiving())
-                    );
-                })
+                .map(this::buildRoomInfo)
                 .collect(Collectors.joining());
+    }
+
+    private String buildRoomInfo(RoomInfoDto dto) {
+        int freeCapacity = dto.roomCapacity() - dto.inhabitantsCount();
+        var studentNames = formatStudentNamesToString(dto.studentsNames());
+
+        return String.join("",
+                ROOM_INFO.formatted(dto.number()),
+                ROOM_CAPACITY_INFO.formatted(dto.roomCapacity()),
+                GENDER_INFO.formatted(dto.gender()),
+                FREE_CAPACITY_INFO.formatted(freeCapacity),
+                dto.studentsNames().isEmpty()
+                        ? ROOM_EMPTY_INFO
+                        : STUDENTS_IN_ROOM_LIST_INFO + NEW_LINE_SYMBOL + studentNames,
+                IS_AVAILABLE_FOR_LIVING_INFO.formatted(dto.availableForLiving())
+        );
+    }
+
+    private String formatStudentNamesToString(List<String> studentNames) {
+        return IntStream.range(0, studentNames.size())
+                .mapToObj(i -> STUDENT_NAME_WITH_NUMBER_ORDER_PATTERN.formatted(
+                        i + 1,
+                        studentNames.get(i)
+                ))
+                .collect(Collectors.joining(NEW_LINE_SYMBOL));
     }
 }

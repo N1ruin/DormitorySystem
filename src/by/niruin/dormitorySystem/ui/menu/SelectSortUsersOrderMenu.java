@@ -6,7 +6,8 @@ import by.niruin.dormitorySystem.infrastructure.service.InputService;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.logger.Logger;
 import by.niruin.dormitorySystem.logger.LoggerFactory;
-import by.niruin.dormitorySystem.util.MenuItemUtil;
+import by.niruin.dormitorySystem.ui.menu.item.SelectSortUsersOrderMenuItem;
+import by.niruin.dormitorySystem.ui.menu.service.MenuItemService;
 
 import java.util.Comparator;
 
@@ -18,33 +19,36 @@ public class SelectSortUsersOrderMenu implements Menu {
     private final InputService inputService;
     private final MenuFactory menuFactory;
     private final UserService userService;
-    private final Logger logger = LoggerFactory.getLogger(SelectSortUsersOrderMenu.class);
+    private final MenuItemService menuItemService;
+    private static final Logger logger = LoggerFactory.getLogger(SelectSortUsersOrderMenu.class);
 
-    public SelectSortUsersOrderMenu(PrintService printService, InputService inputService, MenuFactory menuFactory, UserService userService) {
+    public SelectSortUsersOrderMenu(PrintService printService, InputService inputService, MenuFactory menuFactory,
+                                    UserService userService, MenuItemService menuItemService) {
         this.printService = printService;
         this.inputService = inputService;
         this.menuFactory = menuFactory;
         this.userService = userService;
+        this.menuItemService = menuItemService;
     }
 
     @Override
     public void display() {
-        printService.printMenu(MenuItemUtil.buildMenu(SelectSortUsersOrderMenuItem.class));
+        printService.printMenu(menuItemService.buildMenu(SelectSortUsersOrderMenuItem.class));
     }
 
     @Override
     public Menu handleInput() {
         String userInput = inputService.inputLine();
         try {
-            var item = MenuItemUtil.getItem(SelectSortUsersOrderMenuItem.class, Integer.parseInt(userInput));
+            var item = menuItemService.getItem(SelectSortUsersOrderMenuItem.class, Integer.parseInt(userInput));
             String sortedUniversitiesInfo = userService.getUsersInfo(getUserComparator(item));
             printService.printSortedUniversitiesInfo(sortedUniversitiesInfo);
             logger.info(SELECTED_ITEM_LOG.formatted(item.name()));
-            return menuFactory.createUserMenu();
+            return menuFactory.createMenu(UserMenu.class);
         } catch (Exception e) {
             printService.printInvalidInputMessage();
             logger.info(ENTERED_INVALID_VALUE_LOG.formatted(userInput));
-            return menuFactory.createUserMenu();
+            return menuFactory.createMenu(UserMenu.class);
         }
     }
 

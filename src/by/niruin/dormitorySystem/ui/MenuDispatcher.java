@@ -7,6 +7,7 @@ import by.niruin.dormitorySystem.logger.LoggerFactory;
 import by.niruin.dormitorySystem.ui.menu.ExitMenu;
 import by.niruin.dormitorySystem.ui.menu.Menu;
 import by.niruin.dormitorySystem.ui.menu.MenuFactory;
+import by.niruin.dormitorySystem.ui.menu.StartMenu;
 
 import static by.niruin.dormitorySystem.constant.LoggerMessage.STARTED_MENU_CREATED_LOG;
 import static by.niruin.dormitorySystem.constant.LoggerMessage.USER_NAVIGATE_TO_MENU_LOG;
@@ -24,7 +25,7 @@ public class MenuDispatcher {
 
     public void dispatch() {
         printService.printWelcomeApplicationMessage();
-        Menu currentMenu = menuFactory.createStartMenu();
+        Menu currentMenu = menuFactory.createMenu(StartMenu.class);
         logger.info(STARTED_MENU_CREATED_LOG);
         while (!(currentMenu instanceof ExitMenu)) {
             currentMenu.display();

@@ -4,13 +4,11 @@ import by.niruin.dormitorySystem.domain.model.dto.student.UpdateStudentDto;
 import by.niruin.dormitorySystem.domain.service.DormitoryService;
 import by.niruin.dormitorySystem.domain.service.StudentService;
 import by.niruin.dormitorySystem.domain.service.validation.StudentInputValidationService;
-import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.ui.formHandler.FormHandler;
 
 import java.util.function.Function;
 
-@Component
 public class UpdateStudentFormHandler {
     private final FormHandler formHandler;
     private final StudentInputValidationService studentInputValidationService;

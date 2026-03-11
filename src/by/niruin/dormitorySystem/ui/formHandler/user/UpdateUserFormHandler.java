@@ -3,13 +3,11 @@ package by.niruin.dormitorySystem.ui.formHandler.user;
 import by.niruin.dormitorySystem.domain.model.Role;
 import by.niruin.dormitorySystem.domain.model.dto.user.UpdateUserDto;
 import by.niruin.dormitorySystem.domain.service.validation.UserInputValidationService;
-import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.ui.formHandler.FormHandler;
 
 import java.util.function.Function;
 
-@Component
 public class UpdateUserFormHandler {
     private final FormHandler formHandler;
     private final PrintService printService;

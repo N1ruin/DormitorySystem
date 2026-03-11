@@ -52,16 +52,16 @@ public class StudentService {
 
     public void createStudent(CreateStudentDto dto) {
         var fullName = new FullName(dto.firstName(), dto.fatherName(), dto.lastName());
-        studentValidationService.validateStudentExist(fullName, dto.dateOfEntering());
+        studentValidationService.validateStudentExist(fullName, dto.enteringDate());
 
         var uuid = UUID.randomUUID();
         var currentUniversity = universityRepository.findById(ApplicationContextUtil.getCurrentUniversityId())
                 .orElseThrow(() -> new EntityNotFoundException(fullName.getFullNameString(), Student.class));
-        LocalDate dateOfStartEducation = dto.dateOfEntering();
-        var dateOfEducationEnding = dateOfStartEducation.plusYears(currentUniversity.getStudyDuration());
+        LocalDate startEducationDate = dto.enteringDate();
+        var endingEducationDate = startEducationDate.plusYears(currentUniversity.getStudyDuration());
 
         var student = new Student(uuid, fullName, dto.gender(), ApplicationContextUtil.getCurrentUniversityId(),
-                null, null, dateOfStartEducation, dateOfEducationEnding, null, null);
+                null, null, startEducationDate, endingEducationDate, null, null);
 
         studentRepository.save(student);
     }
@@ -96,7 +96,8 @@ public class StudentService {
     }
 
     public String getStudentsSortedInfo(Comparator<Student> comparator) {
-        var sortedStudentList = studentRepository.findAllByUniversityIdOrderBy(ApplicationContextUtil.getCurrentUniversityId(), comparator);
+        var sortedStudentList = studentRepository
+                .findAllByUniversityIdOrderBy(ApplicationContextUtil.getCurrentUniversityId(), comparator);
 
         var infoDtoList = sortedStudentList.stream()
                 .map(this::buildInfoDto)
@@ -106,7 +107,11 @@ public class StudentService {
     }
 
     public String getCurrentUniversityStudentNames() {
-        return getFilteredStudentNames(student -> student.getUniversityId().equals(ApplicationContextUtil.getCurrentUniversityId()), LIST_OF_STUDENTS_TITLE);
+        var currentUniversityId = ApplicationContextUtil.getCurrentUniversityId();
+        Predicate<Student> isStudentFromCurrentUniversity =
+                student -> student.getUniversityId().equals(currentUniversityId);
+
+        return getFilteredStudentNames(isStudentFromCurrentUniversity, LIST_OF_STUDENTS_TITLE);
     }
 
     public String getStudentsNamesWithoutDormitory() {
@@ -183,7 +188,7 @@ public class StudentService {
     private String getStudentNameByListNumber(int numberFromList, Predicate<Student> filter) {
         var studentsNames = getFilteredStudentNames(filter);
         studentValidationService.validateGetStudentNamesFromList(studentsNames, numberFromList);
-        return studentsNames.get(numberFromList - 1);
+        return studentsNames.getLast();
     }
 
     private String getWithoutDormitoryStudentNameByListNumber(int numberFromList) {
@@ -194,7 +199,7 @@ public class StudentService {
         return getStudentNameByListNumber(numberFromList, _ -> true);
     }
 
-    private List<String> getFilteredStudentNames(java.util.function.Predicate<Student> filter) {
+    private List<String> getFilteredStudentNames(Predicate<Student> filter) {
         return studentRepository.findByUniversityId(ApplicationContextUtil.getCurrentUniversityId()).stream()
                 .filter(filter)
                 .map(this::mapStudentToNames)
@@ -202,7 +207,7 @@ public class StudentService {
                 .toList();
     }
 
-    private String getFilteredStudentNames(java.util.function.Predicate<Student> filter, String title) {
+    private String getFilteredStudentNames(Predicate<Student> filter, String title) {
         var students = studentRepository.findByUniversityId(ApplicationContextUtil.getCurrentUniversityId()).stream()
                 .filter(filter)
                 .toList();
@@ -225,24 +230,26 @@ public class StudentService {
                 .map(University::getName)
                 .orElse(null);
 
-        LocalDate dateOfStartEducation = student.getDateOfStartEducation();
-        LocalDate dateOfEndingEducation = student.getDateOfEndingEducation();
+        LocalDate startEducationDate = student.getStartEducationDate();
+        LocalDate endingEducationDate = student.getEndingEducationDate();
         Integer dormitoryNumber = getDormitoryNumber(student);
         Integer roomNumber = getRoomNumber(student);
-        LocalDate dateOfRoomCheckIn = student.getDateOfRoomCheckIn();
-        LocalDate dateOfRoomCheckOut = student.getDateOfRoomCheckOut();
+        LocalDate roomCheckInDate = student.getRoomCheckInDate();
+        LocalDate roomCheckOutDate = student.getRoomCheckOutDate();
 
-        return new StudentInfoDto(fullName, gender, dormitoryNumber, dateOfRoomCheckIn, dateOfRoomCheckOut, roomNumber,
-                dateOfStartEducation, dateOfEndingEducation, universityName);
+        return new StudentInfoDto(fullName, gender, dormitoryNumber, roomCheckInDate, roomCheckOutDate, roomNumber,
+                startEducationDate, endingEducationDate, universityName);
     }
 
     private Integer getDormitoryNumber(Student student) {
-        if (student.getDormitoryId() != null) {
-            return dormitoryRepository.findById(student.getDormitoryId())
-                    .map(Dormitory::getNumber)
-                    .orElse(null);
+        if (student.getDormitoryId() == null) {
+            return null;
         }
-        return null;
+
+        return dormitoryRepository.findById(student.getDormitoryId())
+                .map(Dormitory::getNumber)
+                .orElse(null);
+
     }
 
     public List<Student> getStudentsWithoutRoom() {

@@ -1,4 +1,4 @@
-package by.niruin.dormitorySystem.ui.annotation;
+package by.niruin.dormitorySystem.ui.menu.item;
 
 import by.niruin.dormitorySystem.domain.model.Role;
 

@@ -1,6 +1,4 @@
-package by.niruin.dormitorySystem.ui.menu;
-
-import by.niruin.dormitorySystem.ui.annotation.MenuItem;
+package by.niruin.dormitorySystem.ui.menu.item;
 
 public enum StartMenuItem {
     @MenuItem(itemAction = "Sign in")

@@ -2,13 +2,11 @@ package by.niruin.dormitorySystem.ui.formHandler.user;
 
 import by.niruin.dormitorySystem.domain.model.dto.user.DeleteUserDto;
 import by.niruin.dormitorySystem.domain.service.validation.UserInputValidationService;
-import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.ui.formHandler.FormHandler;
 
 import java.util.function.Function;
 
-@Component
 public class DeleteUserFormHandler {
     private final PrintService printService;
     private final FormHandler formHandler;

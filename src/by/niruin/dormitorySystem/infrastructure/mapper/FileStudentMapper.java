@@ -39,28 +39,28 @@ public class FileStudentMapper implements StudentMapper {
 
     private String studentFieldsToString(Student student) {
         String dateOfEntering;
-        if (student.getDateOfStartEducation() == null) {
+        if (student.getStartEducationDate() == null) {
             dateOfEntering = NULL_STRING;
         } else {
-            dateOfEntering = student.getDateOfStartEducation().toString();
+            dateOfEntering = student.getStartEducationDate().toString();
         }
         String explusionDate;
-        if (student.getDateOfEndingEducation() == null) {
+        if (student.getEndingEducationDate() == null) {
             explusionDate = NULL_STRING;
         } else {
-            explusionDate = student.getDateOfEndingEducation().toString();
+            explusionDate = student.getEndingEducationDate().toString();
         }
         String checkInDate;
-        if (student.getDateOfRoomCheckIn() == null) {
+        if (student.getRoomCheckInDate() == null) {
             checkInDate = NULL_STRING;
         } else {
-            checkInDate = student.getDateOfRoomCheckIn().toString();
+            checkInDate = student.getRoomCheckInDate().toString();
         }
         String checkOutDate;
-        if (student.getDateOfRoomCheckOut() == null) {
+        if (student.getRoomCheckOutDate() == null) {
             checkOutDate = NULL_STRING;
         } else {
-            checkOutDate = student.getDateOfRoomCheckOut().toString();
+            checkOutDate = student.getRoomCheckOutDate().toString();
         }
         String universityId;
         if (student.getUniversityId() == null) {

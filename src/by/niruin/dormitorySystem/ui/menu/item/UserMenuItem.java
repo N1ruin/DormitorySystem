@@ -1,7 +1,6 @@
-package by.niruin.dormitorySystem.ui.menu;
+package by.niruin.dormitorySystem.ui.menu.item;
 
 import by.niruin.dormitorySystem.domain.model.Role;
-import by.niruin.dormitorySystem.ui.annotation.MenuItem;
 
 public enum UserMenuItem {
     @MenuItem(itemAction = "Create user", allowedRoles = {Role.SYSTEM_ADMIN})

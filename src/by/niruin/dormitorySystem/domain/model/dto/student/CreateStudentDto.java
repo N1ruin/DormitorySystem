@@ -8,5 +8,5 @@ public record CreateStudentDto(String firstName,
                                String lastName,
                                String fatherName,
                                Gender gender,
-                               LocalDate dateOfEntering) {
+                               LocalDate enteringDate) {
 }

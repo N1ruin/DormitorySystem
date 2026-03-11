@@ -40,7 +40,7 @@ public class PrintService {
 
     public void printSelectUniversityRequestMessage(UniversityNamesDto dto) {
         System.out.println(SELECT_UNIVERSITY_NUMBER_FROM_LIST_MESSAGE);
-        System.out.println(dto.names());
+        System.out.println(dto.formattedNamesData());
     }
 
     public void printDormitoriesNumbersRequestMessage(String numbers) {
@@ -175,10 +175,10 @@ public class PrintService {
     public void printUniversityNumbers(UniversityNamesDto dto) {
         System.out.println(SELECT_UNIVERSITY_NUMBER_FROM_LIST_MESSAGE);
 
-        if (dto.names().isEmpty()) {
+        if (dto.formattedNamesData().isEmpty()) {
             System.out.println(UNIVERSITY_NOT_FOUND_MESSAGE);
         } else {
-            System.out.println(dto.names());
+            System.out.println(dto.formattedNamesData());
         }
     }
 
@@ -241,7 +241,7 @@ public class PrintService {
         System.out.println(STUDENT_DELETED_SUCCESSFUL_MESSAGE);
     }
 
-    public void printInputDateOfEnteringMessage() {
+    public void printEnteringDateInputMessage() {
         System.out.println(INPUT_DATE_OF_ENTERING_REQUEST_MESSAGE);
     }
 
@@ -267,7 +267,7 @@ public class PrintService {
     }
 
     public void printStudentDistributedToRoomSuccessfulMessage() {
-
+        System.out.println(STUDENT_DISTRIBUTED_TO_ROOM_SUCCESS_MESSAGE);
     }
 
     public void printStatistics(String statistics) {

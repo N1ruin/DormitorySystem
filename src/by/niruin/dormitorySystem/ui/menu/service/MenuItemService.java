@@ -1,21 +1,26 @@
-package by.niruin.dormitorySystem.util;
+package by.niruin.dormitorySystem.ui.menu.service;
 
 import by.niruin.dormitorySystem.domain.context.ApplicationContextHolder;
 import by.niruin.dormitorySystem.domain.model.Role;
 import by.niruin.dormitorySystem.domain.model.User;
+import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import by.niruin.dormitorySystem.logger.Logger;
 import by.niruin.dormitorySystem.logger.LoggerFactory;
-import by.niruin.dormitorySystem.ui.annotation.MenuItem;
+import by.niruin.dormitorySystem.ui.menu.item.MenuItem;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MenuItemUtil {
-    private static final Logger logger = LoggerFactory.getLogger(MenuItemUtil.class);
+import static by.niruin.dormitorySystem.constant.ConsoleMessage.INVALID_INPUT_MESSAGE;
+import static by.niruin.dormitorySystem.constant.LoggerMessage.FIELD_NOT_FOUND_FOR_ENUM_LOG;
 
-    public static <E extends Enum<E>> String buildMenu(Class<E> enumClass) {
+@Component
+public class MenuItemService {
+    private static final Logger logger = LoggerFactory.getLogger(MenuItemService.class);
+
+    public <E extends Enum<E>> String buildMenu(Class<E> enumClass) {
         List<String> allowedItems = getItemsActions(enumClass);
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -29,17 +34,17 @@ public class MenuItemUtil {
         return stringBuilder.toString();
     }
 
-    public static <E extends Enum<E>> E getItem(Class<E> enumClass, int number) {
+    public <E extends Enum<E>> E getItem(Class<E> enumClass, int number) {
         List<E> allowedItems = getAllowedItems(enumClass);
 
         if (number < 1 || number > allowedItems.size()) {
-            throw new RuntimeException("Incorrent input, please try again");
+            throw new RuntimeException(INVALID_INPUT_MESSAGE);
         }
 
         return allowedItems.get(number - 1);
     }
 
-    private static <E extends Enum<E>> List<String> getItemsActions(Class<E> enumClass) {
+    private <E extends Enum<E>> List<String> getItemsActions(Class<E> enumClass) {
         List<E> allowedItems = getAllowedItems(enumClass);
         List<String> actions = new ArrayList<>();
 
@@ -49,14 +54,14 @@ public class MenuItemUtil {
                 MenuItem annotation = field.getAnnotation(MenuItem.class);
                 actions.add(annotation.itemAction());
             } catch (NoSuchFieldException e) {
-                logger.warn("Field not found for enum constant:" + item.name());
+                logger.warn(FIELD_NOT_FOUND_FOR_ENUM_LOG.formatted(item.name()));
                 throw new RuntimeException(e);
             }
         }
         return actions;
     }
 
-    private static <E extends Enum<E>> List<E> getAllowedItems(Class<E> enumClass) {
+    private <E extends Enum<E>> List<E> getAllowedItems(Class<E> enumClass) {
         List<E> allowedItems = new ArrayList<>();
         User currentUser = ApplicationContextHolder.getContext().getActiveUser();
 
@@ -80,14 +85,14 @@ public class MenuItemUtil {
                     allowedItems.add(enumConstant);
                 }
             } catch (NoSuchFieldException e) {
-                logger.warn("Field not found for enum constant:" + enumConstant.name());
+                logger.warn(FIELD_NOT_FOUND_FOR_ENUM_LOG.formatted(enumConstant.name()));
                 throw new RuntimeException(e);
             }
         }
         return allowedItems;
     }
 
-    private static boolean isUserHasPermission(Role userRole, Role[] allowedRoles) {
+    private boolean isUserHasPermission(Role userRole, Role[] allowedRoles) {
         if (allowedRoles.length == 0) {
             return true;
         } else {

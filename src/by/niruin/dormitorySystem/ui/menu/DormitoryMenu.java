@@ -5,8 +5,9 @@ import by.niruin.dormitorySystem.infrastructure.service.InputService;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.logger.Logger;
 import by.niruin.dormitorySystem.logger.LoggerFactory;
-import by.niruin.dormitorySystem.ui.formHandler.dormitory.*;
-import by.niruin.dormitorySystem.util.MenuItemUtil;
+import by.niruin.dormitorySystem.ui.formHandler.factory.DormitoryFormHandlerFactory;
+import by.niruin.dormitorySystem.ui.menu.item.DormitoryMenuItem;
+import by.niruin.dormitorySystem.ui.menu.service.MenuItemService;
 
 import static by.niruin.dormitorySystem.constant.LoggerMessage.*;
 
@@ -15,36 +16,32 @@ public class DormitoryMenu implements Menu {
     private final InputService inputService;
     private final MenuFactory menuFactory;
     private final DormitoryService dormitoryService;
-    private final SelectCurrentDormitoryFormHandler selectCurrentDormitoryFormHandler;
-    private final CreateDormitoryFormHandler createDormitoryFormHandler;
-    private final DeleteDormitoryFormHandler deleteDormitoryFormHandler;
-    private final UpdateDormitoryFormHandler updateDormitoryFormHandler;
-    private final DormitoryInfoFormHandler dormitoryInfoFormHandler;
-    private final Logger logger = LoggerFactory.getLogger(DormitoryMenu.class);
+    private final MenuItemService menuItemService;
+    private final DormitoryFormHandlerFactory dormitoryFormHandlerFactory;
+    private static final Logger logger = LoggerFactory.getLogger(DormitoryMenu.class);
 
-    public DormitoryMenu(PrintService printService, InputService inputService, MenuFactory menuFactory, DormitoryService dormitoryService, SelectCurrentDormitoryFormHandler selectCurrentDormitoryFormHandler, CreateDormitoryFormHandler createDormitoryFormHandler, DeleteDormitoryFormHandler deleteDormitoryFormHandler, UpdateDormitoryFormHandler updateDormitoryFormHandler, DormitoryInfoFormHandler dormitoryInfoFormHandler) {
+    public DormitoryMenu(PrintService printService, InputService inputService, MenuFactory menuFactory,
+                         DormitoryService dormitoryService, MenuItemService menuItemService,
+                         DormitoryFormHandlerFactory dormitoryFormHandlerFactory) {
         this.printService = printService;
         this.inputService = inputService;
         this.menuFactory = menuFactory;
         this.dormitoryService = dormitoryService;
-        this.selectCurrentDormitoryFormHandler = selectCurrentDormitoryFormHandler;
-        this.createDormitoryFormHandler = createDormitoryFormHandler;
-        this.deleteDormitoryFormHandler = deleteDormitoryFormHandler;
-        this.updateDormitoryFormHandler = updateDormitoryFormHandler;
-        this.dormitoryInfoFormHandler = dormitoryInfoFormHandler;
+        this.menuItemService = menuItemService;
+        this.dormitoryFormHandlerFactory = dormitoryFormHandlerFactory;
     }
 
     @Override
     public void display() {
         printService.printSelectActionMessage();
-        printService.printMenu(MenuItemUtil.buildMenu(DormitoryMenuItem.class));
+        printService.printMenu(menuItemService.buildMenu(DormitoryMenuItem.class));
     }
 
     @Override
     public Menu handleInput() {
         String userInput = inputService.inputLine();
         try {
-            var item = MenuItemUtil.getItem(DormitoryMenuItem.class, Integer.parseInt(userInput));
+            var item = menuItemService.getItem(DormitoryMenuItem.class, Integer.parseInt(userInput));
             logger.info(SELECTED_ITEM_LOG.formatted(item.name()));
             return executeMenuItem(item);
         } catch (Exception e) {
@@ -61,15 +58,17 @@ public class DormitoryMenu implements Menu {
             case CREATE_DORMITORY -> createDormitory();
             case DELETE_DORMITORY -> deleteDormitory();
             case UPDATE_DORMITORY -> updateDormitory();
-            case GET_SORTED_DORMITORIES -> nextMenu = menuFactory.createSelectSortDormitoriesOrderMenu();
+            case GET_SORTED_DORMITORIES -> nextMenu = menuFactory.createMenu(SelectSortDormitoriesOrderMenu.class);
             case GET_DORMITORY_INFO -> getDormitoryInfo();
-            case GO_BACK -> nextMenu = menuFactory.createMainMenu();
+            case GO_BACK -> nextMenu = menuFactory.createMenu(MainMenu.class);
         }
         return nextMenu;
     }
 
     private void selectCurrentDormitory() {
-        var dto = selectCurrentDormitoryFormHandler.handleDormitoryNumber().createDto();
+        var dto = dormitoryFormHandlerFactory.getSelectCurrentDormitoryFormHandler()
+                .handleDormitoryNumber()
+                .createDto();
 
         try {
             dormitoryService.updateCurrentDormitory(dto);
@@ -83,7 +82,7 @@ public class DormitoryMenu implements Menu {
     }
 
     private void createDormitory() {
-        var dto = createDormitoryFormHandler
+        var dto = dormitoryFormHandlerFactory.getCreateDormitoryFormHandler()
                 .handleDormitoryNumber()
                 .handleDormitoryCapacity()
                 .handleAvailable()
@@ -101,7 +100,9 @@ public class DormitoryMenu implements Menu {
     }
 
     private void deleteDormitory() {
-        var dto = deleteDormitoryFormHandler.handleDormitoryNumber().createDto();
+        var dto = dormitoryFormHandlerFactory.getDeleteDormitoryFormHandler()
+                .handleDormitoryNumber()
+                .createDto();
 
         try {
             dormitoryService.deleteDormitory(dto);
@@ -115,7 +116,7 @@ public class DormitoryMenu implements Menu {
     }
 
     private void updateDormitory() {
-        var dto = updateDormitoryFormHandler
+        var dto = dormitoryFormHandlerFactory.getUpdateDormitoryFormHandler()
                 .handleNumber()
                 .handleAvailable()
                 .createDto();
@@ -131,7 +132,9 @@ public class DormitoryMenu implements Menu {
     }
 
     private void getDormitoryInfo() {
-        var dto = dormitoryInfoFormHandler.handleDormitoryNumber().createDto();
+        var dto = dormitoryFormHandlerFactory.getDormitoryInfoFormHandler()
+                .handleDormitoryNumber()
+                .createDto();
 
         try {
             String dormitoryInfo = dormitoryService.getDormitoryInfo(dto);

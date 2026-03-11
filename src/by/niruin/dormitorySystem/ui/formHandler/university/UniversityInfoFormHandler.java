@@ -13,9 +13,10 @@ public class UniversityInfoFormHandler {
     private final UniversityInputValidationService universityInputValidationService;
     private int universityNumber;
 
-    public UniversityInfoFormHandler(FormHandler formHandleService, PrintService printService, UniversityService universityService,
+    public UniversityInfoFormHandler(FormHandler formHandler, PrintService printService,
+                                     UniversityService universityService,
                                      UniversityInputValidationService universityInputValidationService) {
-        this.formHandleService = formHandleService;
+        this.formHandleService = formHandler;
         this.printService = printService;
         this.universityService = universityService;
         this.universityInputValidationService = universityInputValidationService;

@@ -3,27 +3,25 @@ package by.niruin.dormitorySystem.ui.formHandler.room;
 import by.niruin.dormitorySystem.domain.model.dto.room.UpdateRoomDto;
 import by.niruin.dormitorySystem.domain.service.RoomService;
 import by.niruin.dormitorySystem.domain.service.validation.RoomInputValidationService;
-import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.ui.formHandler.FormHandler;
 
 import java.util.function.Function;
 
-@Component
 public class UpdateRoomFormHandler {
     private final FormHandler formHandler;
-    private final RoomInputValidationService validationService;
+    private final RoomInputValidationService roomInputValidationService;
     private final PrintService printService;
     private final RoomService roomService;
-
     private int roomNumber;
     private byte roomCapacity;
     private boolean availableForLiving;
     private boolean gender;
 
-    public UpdateRoomFormHandler(FormHandler formHandler, RoomInputValidationService validationService, PrintService printService, RoomService roomService) {
+    public UpdateRoomFormHandler(FormHandler formHandler, RoomInputValidationService roomInputValidationService,
+                                 PrintService printService, RoomService roomService) {
         this.formHandler = formHandler;
-        this.validationService = validationService;
+        this.roomInputValidationService = roomInputValidationService;
         this.printService = printService;
         this.roomService = roomService;
     }
@@ -32,7 +30,7 @@ public class UpdateRoomFormHandler {
         roomNumber = formHandler.handleInputString(
                 () -> printService.printRoomNumbers(roomService.getRoomNumbers()),
                 Integer::parseInt,
-                validationService::validateNumber);
+                roomInputValidationService::validateNumber);
         return this;
     }
 
@@ -40,7 +38,7 @@ public class UpdateRoomFormHandler {
         roomCapacity = formHandler.handleInputString(
                 printService::printInputDormitoryCapacityRequestMessage,
                 Byte::parseByte,
-                validationService::validateNumber);
+                roomInputValidationService::validateNumber);
         return this;
     }
 
@@ -48,7 +46,7 @@ public class UpdateRoomFormHandler {
         String availableForLivingInput = formHandler.handleInputString(
                 printService::printInputAvailableForLivingRequestMessage,
                 Function.identity(),
-                validationService::validateAvailableForLiving);
+                roomInputValidationService::validateAvailableForLiving);
         availableForLiving = availableForLivingInput.equalsIgnoreCase("yes");
         return this;
     }
@@ -57,7 +55,7 @@ public class UpdateRoomFormHandler {
         String genderInput = formHandler.handleInputString(
                 printService::printInputGenderRoomRequestMessage,
                 Function.identity(),
-                validationService::validateGender);
+                roomInputValidationService::validateGender);
         gender = genderInput.equalsIgnoreCase("male");
         return this;
     }

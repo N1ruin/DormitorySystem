@@ -2,15 +2,13 @@ package by.niruin.dormitorySystem.ui.menu;
 
 import by.niruin.dormitorySystem.domain.service.RoomService;
 import by.niruin.dormitorySystem.domain.service.StudentService;
-
-import by.niruin.dormitorySystem.infrastructure.service.*;
+import by.niruin.dormitorySystem.infrastructure.service.InputService;
+import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.logger.Logger;
 import by.niruin.dormitorySystem.logger.LoggerFactory;
-import by.niruin.dormitorySystem.ui.formHandler.room.CreateRoomFormHandler;
-import by.niruin.dormitorySystem.ui.formHandler.room.DeleteRoomFormHandler;
-import by.niruin.dormitorySystem.ui.formHandler.room.RoomInfoFormHandler;
-import by.niruin.dormitorySystem.ui.formHandler.room.UpdateRoomFormHandler;
-import by.niruin.dormitorySystem.util.MenuItemUtil;
+import by.niruin.dormitorySystem.ui.formHandler.factory.RoomFormHandlerFactory;
+import by.niruin.dormitorySystem.ui.menu.item.RoomMenuItem;
+import by.niruin.dormitorySystem.ui.menu.service.MenuItemService;
 
 import static by.niruin.dormitorySystem.constant.LoggerMessage.*;
 
@@ -20,38 +18,33 @@ public class RoomMenu implements Menu {
     private final RoomService roomService;
     private final StudentService studentService;
     private final MenuFactory menuFactory;
-    private final CreateRoomFormHandler createRoomFormHandler;
-    private final DeleteRoomFormHandler deleteRoomFormHandler;
-    private final UpdateRoomFormHandler updateRoomFormHandler;
-    private final RoomInfoFormHandler getRoomInfoFormHandleService;
-    private final Logger logger = LoggerFactory.getLogger(RoomMenu.class);
+    private final MenuItemService menuItemService;
+    private final RoomFormHandlerFactory roomFormHandlerFactory;
+    private static final Logger logger = LoggerFactory.getLogger(RoomMenu.class);
 
     public RoomMenu(InputService inputService, PrintService printService, RoomService roomService,
-                    MenuFactory menuFactory, StudentService studentService,
-                    CreateRoomFormHandler createRoomFormHandler, UpdateRoomFormHandler updateRoomFormHandler,
-                    RoomInfoFormHandler getRoomInfoFormHandler, DeleteRoomFormHandler deleteRoomFormHandler) {
+                    MenuFactory menuFactory, StudentService studentService, MenuItemService menuItemService,
+                    RoomFormHandlerFactory roomFormHandlerFactory) {
         this.inputService = inputService;
         this.printService = printService;
         this.roomService = roomService;
         this.menuFactory = menuFactory;
         this.studentService = studentService;
-        this.createRoomFormHandler = createRoomFormHandler;
-        this.updateRoomFormHandler = updateRoomFormHandler;
-        this.getRoomInfoFormHandleService = getRoomInfoFormHandler;
-        this.deleteRoomFormHandler = deleteRoomFormHandler;
+        this.menuItemService = menuItemService;
+        this.roomFormHandlerFactory = roomFormHandlerFactory;
     }
 
     @Override
     public void display() {
         printService.printSelectActionMessage();
-        printService.printMenu(MenuItemUtil.buildMenu(RoomMenuItem.class));
+        printService.printMenu(menuItemService.buildMenu(RoomMenuItem.class));
     }
 
     @Override
     public Menu handleInput() {
         String userInput = inputService.inputLine();
         try {
-            var item = MenuItemUtil.getItem(RoomMenuItem.class, Integer.parseInt(userInput));
+            var item = menuItemService.getItem(RoomMenuItem.class, Integer.parseInt(userInput));
             logger.info(SELECTED_ITEM_LOG.formatted(item.name()));
             return executeMenuItem(item);
         } catch (Exception e) {
@@ -67,16 +60,17 @@ public class RoomMenu implements Menu {
             case CREATE_ROOM -> createRoom();
             case DELETE_ROOM -> deleteRoom();
             case UPDATE_ROOM -> updateRoom();
-            case GET_SORTED_ROOMS -> nextMenu = menuFactory.createSelectSortRoomsOrderMenu();
+            case GET_SORTED_ROOMS -> nextMenu = menuFactory.createMenu(SelectSortRoomsOrderMenu.class);
             case GET_ROOM_INFO -> getRoomInfo();
             case GET_INHABILITIES_STUDENTS -> getInhabitedStudents();
-            case GO_BACK -> nextMenu = menuFactory.createMainMenu();
+            case GO_BACK -> nextMenu = menuFactory.createMenu(MainMenu.class);
         }
         return nextMenu;
     }
 
     private void createRoom() {
-        var dto = createRoomFormHandler.handleRoomNumber()
+        var dto = roomFormHandlerFactory.getCreateRoomFormHandler()
+                .handleRoomNumber()
                 .handleRoomCapacity()
                 .handleAvailable()
                 .handleGender()
@@ -94,7 +88,7 @@ public class RoomMenu implements Menu {
     }
 
     private void deleteRoom() {
-        var dto = deleteRoomFormHandler
+        var dto = roomFormHandlerFactory.getDeleteRoomFormHandler()
                 .handleRoomNumber()
                 .createDto();
         try {
@@ -109,7 +103,7 @@ public class RoomMenu implements Menu {
     }
 
     private void updateRoom() {
-        var dto = updateRoomFormHandler
+        var dto = roomFormHandlerFactory.getUpdateRoomFormHandler()
                 .handleNumber()
                 .handleCapacity()
                 .handleAvailable()
@@ -127,7 +121,7 @@ public class RoomMenu implements Menu {
     }
 
     private void getRoomInfo() {
-        var dto = getRoomInfoFormHandleService
+        var dto = roomFormHandlerFactory.getRoomInfoFormHandler()
                 .handleRoomNumber()
                 .createDto();
         try {
@@ -142,7 +136,7 @@ public class RoomMenu implements Menu {
     }
 
     private void getInhabitedStudents() {
-       var studentNames = studentService.getStudentNamesWithoutRoom();
+        var studentNames = studentService.getStudentNamesWithoutRoom();
         try {
             printService.printStudentsWithoutRoom(studentNames);
             logger.info(DORMITORY_INHABITED_STUDENTS_INFO_RECEIVED_SUCCESS_LOG);

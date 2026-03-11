@@ -27,7 +27,7 @@ public class StudentValidationService {
     public void validateStudentExist(FullName fullName, LocalDate dateOfEntering) {
         boolean isStudentExist = studentRepository.findAll().stream()
                 .filter(student -> student.getFullName().equals(fullName))
-                .anyMatch(student -> student.getDateOfStartEducation().equals(dateOfEntering));
+                .anyMatch(student -> student.getStartEducationDate().equals(dateOfEntering));
 
         if (isStudentExist) {
             throw new EntityValidationException(CREATING_STUDENT_FAIL_MESSAGE);

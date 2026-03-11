@@ -6,7 +6,8 @@ import by.niruin.dormitorySystem.infrastructure.service.InputService;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.logger.Logger;
 import by.niruin.dormitorySystem.logger.LoggerFactory;
-import by.niruin.dormitorySystem.util.MenuItemUtil;
+import by.niruin.dormitorySystem.ui.menu.item.SelectSortUniversitiesOrderMenuItem;
+import by.niruin.dormitorySystem.ui.menu.service.MenuItemService;
 
 import java.util.Comparator;
 
@@ -17,30 +18,33 @@ public class SelectSortUniversitiesOrderMenu implements Menu {
     private final PrintService printService;
     private final InputService inputService;
     private final MenuFactory menuFactory;
+    private final MenuItemService menuItemService;
     private final UniversityService universityService;
-    private final Logger logger = LoggerFactory.getLogger(SelectSortUniversitiesOrderMenu.class);
+    private static final Logger logger = LoggerFactory.getLogger(SelectSortUniversitiesOrderMenu.class);
 
-    public SelectSortUniversitiesOrderMenu(PrintService printService, InputService inputService, MenuFactory menuFactory, UniversityService universityService) {
+    public SelectSortUniversitiesOrderMenu(PrintService printService, InputService inputService,
+                                           MenuFactory menuFactory, MenuItemService menuItemService, UniversityService universityService) {
         this.printService = printService;
         this.inputService = inputService;
         this.menuFactory = menuFactory;
+        this.menuItemService = menuItemService;
         this.universityService = universityService;
     }
 
     @Override
     public void display() {
-        printService.printMenu(MenuItemUtil.buildMenu(SelectSortUniversitiesOrderMenuItem.class));
+        printService.printMenu(menuItemService.buildMenu(SelectSortUniversitiesOrderMenuItem.class));
     }
 
     @Override
     public Menu handleInput() {
         String userInput = inputService.inputLine();
         try {
-            var item = MenuItemUtil.getItem(SelectSortUniversitiesOrderMenuItem.class, Integer.parseInt(userInput));
+            var item = menuItemService.getItem(SelectSortUniversitiesOrderMenuItem.class, Integer.parseInt(userInput));
             String sortedUniversitiesInfo = universityService.getSortedUniversitiesInfo(getUniversityComparator(item));
             printService.printSortedUniversitiesInfo(sortedUniversitiesInfo);
             logger.info(SELECTED_ITEM_LOG.formatted(item.name()));
-            return menuFactory.createUniversityMenu();
+            return menuFactory.createMenu(UniversityMenu.class);
         } catch (Exception e) {
             printService.printInvalidInputMessage();
             logger.info(ENTERED_INVALID_VALUE_LOG.formatted(userInput));

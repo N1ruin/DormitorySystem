@@ -14,9 +14,11 @@ public class CreateUniversityFormHandler {
     private String universityName;
     private byte studyDuration;
 
-    public CreateUniversityFormHandler(FormHandler formHandler, UniversityInputValidationService validationService, PrintService printService) {
+    public CreateUniversityFormHandler(FormHandler formHandler,
+                                       UniversityInputValidationService universityInputValidationService,
+                                       PrintService printService) {
         this.formHandler = formHandler;
-        this.validationService = validationService;
+        this.validationService = universityInputValidationService;
         this.printService = printService;
     }
 

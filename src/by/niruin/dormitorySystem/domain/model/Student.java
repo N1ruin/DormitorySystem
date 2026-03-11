@@ -12,23 +12,23 @@ public class Student implements Identity {
     private final UUID universityUuid;
     private UUID roomId;
     private UUID dormitoryId;
-    private final LocalDate dateOfStartEducation;
-    private final LocalDate dateOfEndingEducation;
-    private final LocalDate dateOfRoomCheckIn;
-    private final LocalDate dateOfRoomCheckOut;
+    private final LocalDate startEducationDate;
+    private final LocalDate endingEducationDate;
+    private final LocalDate roomCheckInDate;
+    private final LocalDate roomCheckOutDate;
 
     public Student(UUID id, FullName fullName, Gender gender, UUID universityUuid, UUID roomId, UUID dormitoryId,
-                   LocalDate dateOfEntering, LocalDate expulsionDate, LocalDate dateOfRoomCheckIn, LocalDate dateOfRoomCheckOut) {
+                   LocalDate startEducationDate, LocalDate expulsionDate, LocalDate roomCheckInDate, LocalDate roomCheckOutDate) {
         this.id = id;
         this.fullName = fullName;
         this.gender = gender;
         this.universityUuid = universityUuid;
         this.roomId = roomId;
         this.dormitoryId = dormitoryId;
-        this.dateOfStartEducation = dateOfEntering;
-        this.dateOfEndingEducation = expulsionDate;
-        this.dateOfRoomCheckIn = dateOfRoomCheckIn;
-        this.dateOfRoomCheckOut = dateOfRoomCheckOut;
+        this.startEducationDate = startEducationDate;
+        this.endingEducationDate = expulsionDate;
+        this.roomCheckInDate = roomCheckInDate;
+        this.roomCheckOutDate = roomCheckOutDate;
     }
 
     @Override
@@ -64,19 +64,19 @@ public class Student implements Identity {
         this.dormitoryId = dormitoryId;
     }
 
-    public LocalDate getDateOfStartEducation() {
-        return dateOfStartEducation;
+    public LocalDate getStartEducationDate() {
+        return startEducationDate;
     }
 
-    public LocalDate getDateOfEndingEducation() {
-        return dateOfEndingEducation;
+    public LocalDate getEndingEducationDate() {
+        return endingEducationDate;
     }
 
-    public LocalDate getDateOfRoomCheckOut() {
-        return dateOfRoomCheckOut;
+    public LocalDate getRoomCheckOutDate() {
+        return roomCheckOutDate;
     }
 
-    public LocalDate getDateOfRoomCheckIn() {
-        return dateOfRoomCheckIn;
+    public LocalDate getRoomCheckInDate() {
+        return roomCheckInDate;
     }
 }

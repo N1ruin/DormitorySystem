@@ -3,21 +3,18 @@ package by.niruin.dormitorySystem.ui.formHandler.student;
 import by.niruin.dormitorySystem.domain.model.dto.student.DeleteStudentDto;
 import by.niruin.dormitorySystem.domain.service.StudentService;
 import by.niruin.dormitorySystem.domain.service.validation.StudentInputValidationService;
-import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.ui.formHandler.FormHandler;
 
-@Component
 public class DeleteStudentFormHandler {
     private final FormHandler formHandler;
     private final StudentInputValidationService studentInputValidationService;
     private final PrintService printService;
     private final StudentService studentService;
-
     private int numberFromList;
 
-
-    public DeleteStudentFormHandler(FormHandler formHandler, StudentInputValidationService studentInputValidationService, PrintService printService, StudentService studentService) {
+    public DeleteStudentFormHandler(FormHandler formHandler, StudentInputValidationService studentInputValidationService,
+                                    PrintService printService, StudentService studentService) {
         this.formHandler = formHandler;
         this.studentInputValidationService = studentInputValidationService;
         this.printService = printService;

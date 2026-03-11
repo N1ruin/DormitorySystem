@@ -14,7 +14,8 @@ public class UpdateUniversityFormHandler {
     private int universityNumber;
     private byte studyDuration;
 
-    public UpdateUniversityFormHandler(FormHandler formHandler, PrintService printService, UniversityService universityService,
+    public UpdateUniversityFormHandler(FormHandler formHandler, PrintService printService,
+                                       UniversityService universityService,
                                        UniversityInputValidationService universityInputValidationService) {
         this.formHandler = formHandler;
         this.printService = printService;

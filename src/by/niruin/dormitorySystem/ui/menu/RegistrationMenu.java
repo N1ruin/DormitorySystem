@@ -1,11 +1,10 @@
 package by.niruin.dormitorySystem.ui.menu;
 
 import by.niruin.dormitorySystem.domain.service.RegistrationService;
-import by.niruin.dormitorySystem.domain.model.dto.user.UserRegistrationDto;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.logger.Logger;
 import by.niruin.dormitorySystem.logger.LoggerFactory;
-import by.niruin.dormitorySystem.ui.formHandler.user.RegistrationFormHandler;
+import by.niruin.dormitorySystem.ui.formHandler.factory.UserFormHandlerFactory;
 
 import static by.niruin.dormitorySystem.constant.LoggerMessage.USER_REGISTRATION_FAIL_LOG;
 import static by.niruin.dormitorySystem.constant.LoggerMessage.USER_REGISTRATION_SUCCESS_LOG;
@@ -13,17 +12,16 @@ import static by.niruin.dormitorySystem.constant.LoggerMessage.USER_REGISTRATION
 public class RegistrationMenu implements Menu {
     private final PrintService printService;
     private final MenuFactory menuFactory;
+    private final UserFormHandlerFactory userFormHandlerFactory;
     private final RegistrationService registrationService;
-    private final RegistrationFormHandler registrationFormHandler;
     private final Logger logger = LoggerFactory.getLogger(RegistrationMenu.class);
 
-    public RegistrationMenu(PrintService printService,
-                            MenuFactory menuFactory, RegistrationService registrationService, RegistrationFormHandler registrationFormHandler) {
+    public RegistrationMenu(PrintService printService, MenuFactory menuFactory,
+                            UserFormHandlerFactory userFormHandlerFactory, RegistrationService registrationService) {
         this.printService = printService;
         this.menuFactory = menuFactory;
+        this.userFormHandlerFactory = userFormHandlerFactory;
         this.registrationService = registrationService;
-
-        this.registrationFormHandler = registrationFormHandler;
     }
 
     @Override
@@ -34,11 +32,11 @@ public class RegistrationMenu implements Menu {
     @Override
     public Menu handleInput() {
         signUp();
-        return menuFactory.createStartMenu();
+        return menuFactory.createMenu(StartMenu.class);
     }
 
     private void signUp() {
-        var dto = registrationFormHandler
+        var dto = userFormHandlerFactory.getRegistrationFormHandler()
                 .handleLogin()
                 .handlePassword()
                 .handleFirstName()

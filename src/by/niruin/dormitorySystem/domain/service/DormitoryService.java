@@ -95,14 +95,15 @@ public class DormitoryService {
     public void updateCurrentDormitory(SelectCurrentDormitoryDto dto) {
         if (dto == null) {
             ApplicationContextUtil.getActiveUser().setDormitoryId(null);
-        } else {
-            int dormitoryNumber = dto.number();
-
-            var dormitory = dormitoryRepository.findByUniversityIdAndNumber(ApplicationContextUtil.getCurrentUniversityId(), dormitoryNumber)
-                    .orElseThrow(() -> new EntityNotFoundException(dto.number(), Dormitory.class));
-
-            ApplicationContextUtil.getActiveUser().setDormitoryId(dormitory.getId());
+            return;
         }
+
+        int dormitoryNumber = dto.number();
+
+        var dormitory = dormitoryRepository.findByUniversityIdAndNumber(ApplicationContextUtil.getCurrentUniversityId(), dormitoryNumber)
+                .orElseThrow(() -> new EntityNotFoundException(dto.number(), Dormitory.class));
+
+        ApplicationContextUtil.getActiveUser().setDormitoryId(dormitory.getId());
     }
 
     public UUID getDormitoryIdFromCurrentUniversityByListNumber(int numberFromList) {

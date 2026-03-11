@@ -1,167 +1,105 @@
 package by.niruin.dormitorySystem.ui.menu;
 
 import by.niruin.dormitorySystem.domain.service.*;
+import by.niruin.dormitorySystem.domain.service.statistic.UniversityStatisticService;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import by.niruin.dormitorySystem.infrastructure.service.*;
-import by.niruin.dormitorySystem.ui.formHandler.dormitory.*;
-import by.niruin.dormitorySystem.ui.formHandler.room.*;
-import by.niruin.dormitorySystem.ui.formHandler.student.*;
-import by.niruin.dormitorySystem.ui.formHandler.university.*;
-import by.niruin.dormitorySystem.ui.formHandler.user.*;
+import by.niruin.dormitorySystem.ui.formHandler.factory.*;
+import by.niruin.dormitorySystem.ui.menu.service.MenuItemService;
 
-//мне страшно уже от количества зависимостей, надо чота делать, а что не придумал пока;D
 @Component
 public class MenuFactory {
     private final InputService inputService;
     private final PrintService printService;
-    private final AuthenticationService authentificationService;
     private final RegistrationService registrationService;
+    private final AuthenticationService authentificationService;
+    private final DormitoryFormHandlerFactory dormitoryFormHandlerFactory;
+    private final RoomFormHandlerFactory roomFormHandlerFactory;
+    private final StudentFormHandlerFactory studentFormHandlerFactory;
+    private final UniversityFormHandlerFactory universityFormHandlerFactory;
+    private final UserFormHandlerFactory userFormHandlerFactory;
     private final RoomService roomService;
-    private final DormitoryService dormitoryService;
     private final StudentService studentService;
-    private final UniversityService universityService;
     private final UserService userService;
-    private final RegistrationFormHandler registrationFormHandler;
-    private final AuthentificationFormHandler authentificationMenuService;
-    private final CreateRoomFormHandler createRoomFormHandler;
-    private final UpdateRoomFormHandler updateRoomFormHandler;
-    private final RoomInfoFormHandler getRoomInfoFormHandler;
-    private final DeleteRoomFormHandler deleteRoomFormHandler;
-    private final CreateDormitoryFormHandler createDormitoryFormHandler;
-    private final DeleteDormitoryFormHandler deleteDormitoryFormHandler;
-    private final UpdateDormitoryFormHandler updateDormitoryFormHandler;
-    private final SelectCurrentDormitoryFormHandler selectCurrentDormitoryFormHandler;
-    private final DormitoryInfoFormHandler dormitoryInfoFormHandler;
-    private final CreateUniversityFormHandler createUniversityFormHandler;
-    private final DeleteUniversityFormHandler deleteUniversityFormHandler;
-    private final UpdateUniversityFormHandler updateUniversityFormHandler;
-    private final SelectCurrentUniversityFormHandler selectCurrentUniversityFormHandler;
-    private final UniversityInfoFormHandler universityInfoFormHandler;
-    private final DeleteUserFormHandler deleteUserFormHandler;
-    private final UpdateUserFormHandler updateUserFormHandler;
-    private final GetUserInfoFormHandler getUserInfoFormHandler;
-    private final CreateStudentFormHandler createStudentFormHandler;
-    private final DeleteStudentFormHandler deleteStudentFormHandler;
-    private final UpdateStudentFormHandler updateStudentFormHandler;
-    private final StudentInfoFormHandler studentInfoFormHandler;
-    private final DistributeStudentToDormitoryFormHandler distributeStudentToDormitoryFormHandler;
-    private final DistributeStudentToRoomFormHandler distributeStudentToRoomFormHandler;
+    private final DormitoryService dormitoryService;
+    private final UniversityService universityService;
+    private final UniversityStatisticService universityStatisticService;
+    private final MenuItemService menuItemService;
 
-    public MenuFactory(InputService inputService, PrintService printService,
-                       AuthenticationService authentificationService, RegistrationService registrationService,
-                       RoomService roomService, DormitoryService dormitoryService, StudentService studentService, UserService userService,
-                       RegistrationFormHandler formHandler, AuthentificationFormHandler authentificationMenuService,
-                       CreateRoomFormHandler createRoomFormHandleService, UpdateRoomFormHandler updateRoomFormHandleService,
-                       RoomInfoFormHandler getRoomInfoFormHandleService, DeleteRoomFormHandler deleteRoomFormHandleService,
-                       CreateDormitoryFormHandler createDormitoryFormHandler, DeleteDormitoryFormHandler deleteDormitoryFormHandler,
-                       UpdateDormitoryFormHandler updateDormitoryFormHandler, SelectCurrentDormitoryFormHandler selectCurrentDormitoryFormHandler,
-                       DormitoryInfoFormHandler dormitoryInfoFormHandler, CreateUniversityFormHandler createUniversityFormHandler,
-                       DeleteUniversityFormHandler deleteUniversityFormHandler, UpdateUniversityFormHandler updateUniversityFormHandler,
-                       SelectCurrentUniversityFormHandler selectCurrentUniversityFormHandler, UniversityInfoFormHandler universityInfoFormHandler,
-                       UniversityService universityService, DeleteUserFormHandler deleteUserFormHandler, UpdateUserFormHandler updateUserFormHandler,
-                       GetUserInfoFormHandler getUserInfoFormHandler, CreateStudentFormHandler createStudentFormHandler,
-                       DeleteStudentFormHandler deleteStudentFormHandler, UpdateStudentFormHandler updateStudentFormHandler,
-                       StudentInfoFormHandler studentInfoFormHandler, DistributeStudentToDormitoryFormHandler distributeStudentToDormitoryFormHandler, DistributeStudentToRoomFormHandler distributeStudentToRoomFormHandler) {
+    public MenuFactory(InputService inputService, PrintService printService, RegistrationService registrationService,
+                       AuthenticationService authentificationService,
+                       DormitoryFormHandlerFactory dormitoryFormHandlerFactory,
+                       RoomFormHandlerFactory roomFormHandlerFactory, StudentFormHandlerFactory studentFormHandlerFactory,
+                       UniversityFormHandlerFactory universityFormHandlerFactory,
+                       UserFormHandlerFactory userFormHandlerFactory, RoomService roomService,
+                       StudentService studentService, UserService userService, DormitoryService dormitoryService,
+                       UniversityService universityService, UniversityStatisticService universityStatisticService,
+                       MenuItemService menuItemService) {
         this.inputService = inputService;
         this.printService = printService;
-        this.authentificationService = authentificationService;
         this.registrationService = registrationService;
+        this.authentificationService = authentificationService;
+        this.dormitoryFormHandlerFactory = dormitoryFormHandlerFactory;
+        this.roomFormHandlerFactory = roomFormHandlerFactory;
+        this.studentFormHandlerFactory = studentFormHandlerFactory;
+        this.universityFormHandlerFactory = universityFormHandlerFactory;
+        this.userFormHandlerFactory = userFormHandlerFactory;
         this.roomService = roomService;
-        this.dormitoryService = dormitoryService;
         this.studentService = studentService;
         this.userService = userService;
-        this.registrationFormHandler = formHandler;
-        this.authentificationMenuService = authentificationMenuService;
-        this.createRoomFormHandler = createRoomFormHandleService;
-        this.updateRoomFormHandler = updateRoomFormHandleService;
-        this.getRoomInfoFormHandler = getRoomInfoFormHandleService;
-        this.deleteRoomFormHandler = deleteRoomFormHandleService;
-        this.createDormitoryFormHandler = createDormitoryFormHandler;
-        this.deleteDormitoryFormHandler = deleteDormitoryFormHandler;
-        this.updateDormitoryFormHandler = updateDormitoryFormHandler;
-        this.selectCurrentDormitoryFormHandler = selectCurrentDormitoryFormHandler;
-        this.dormitoryInfoFormHandler = dormitoryInfoFormHandler;
-        this.createUniversityFormHandler = createUniversityFormHandler;
-        this.deleteUniversityFormHandler = deleteUniversityFormHandler;
-        this.updateUniversityFormHandler = updateUniversityFormHandler;
-        this.selectCurrentUniversityFormHandler = selectCurrentUniversityFormHandler;
-        this.universityInfoFormHandler = universityInfoFormHandler;
+        this.dormitoryService = dormitoryService;
         this.universityService = universityService;
-        this.deleteUserFormHandler = deleteUserFormHandler;
-        this.updateUserFormHandler = updateUserFormHandler;
-        this.getUserInfoFormHandler = getUserInfoFormHandler;
-        this.createStudentFormHandler = createStudentFormHandler;
-        this.deleteStudentFormHandler = deleteStudentFormHandler;
-        this.updateStudentFormHandler = updateStudentFormHandler;
-        this.studentInfoFormHandler = studentInfoFormHandler;
-        this.distributeStudentToDormitoryFormHandler = distributeStudentToDormitoryFormHandler;
-        this.distributeStudentToRoomFormHandler = distributeStudentToRoomFormHandler;
+        this.universityStatisticService = universityStatisticService;
+        this.menuItemService = menuItemService;
     }
 
-    public Menu createStartMenu() {
-        return new StartMenu(inputService, printService, this);
-    }
+    public Menu createMenu(Class<? extends Menu> menuClass) {
+        Menu menu;
+        if (menuClass == RegistrationMenu.class) {
+            menu = new RegistrationMenu(printService, this, userFormHandlerFactory, registrationService);
+        } else if (menuClass == AuthenticationMenu.class) {
+            menu = new AuthenticationMenu(printService, this, userFormHandlerFactory,
+                    authentificationService);
+        } else if (menuClass == RoomMenu.class) {
+            menu = new RoomMenu(inputService, printService, roomService, this, studentService,
+                    menuItemService, roomFormHandlerFactory);
+        } else if (menuClass == ExitMenu.class) {
+            menu = new ExitMenu(menuItemService);
+        } else if (menuClass == MainMenu.class) {
+            menu = new MainMenu(inputService, printService, this, userService, menuItemService,
+                    authentificationService);
+        } else if (menuClass == SelectSortRoomsOrderMenu.class) {
+            menu = new SelectSortRoomsOrderMenu(printService, inputService, this, roomService,
+                    menuItemService);
+        } else if (menuClass == DormitoryMenu.class) {
+            menu = new DormitoryMenu(printService, inputService, this, dormitoryService, menuItemService,
+                    dormitoryFormHandlerFactory);
+        } else if (menuClass == SelectSortDormitoriesOrderMenu.class) {
+            menu = new SelectSortDormitoriesOrderMenu(printService, inputService, this, dormitoryService,
+                    menuItemService);
+        } else if (menuClass == UniversityMenu.class) {
+            menu = new UniversityMenu(inputService, printService, universityService, dormitoryService, this,
+                    menuItemService, universityFormHandlerFactory, dormitoryFormHandlerFactory,
+                    universityStatisticService);
+        } else if (menuClass == SelectSortUniversitiesOrderMenu.class) {
+            menu = new SelectSortUniversitiesOrderMenu(printService, inputService, this, menuItemService,
+                    universityService);
+        } else if (menuClass == UserMenu.class) {
+            menu = new UserMenu(printService, inputService, this, userService, menuItemService,
+                    registrationService, userFormHandlerFactory);
+        } else if (menuClass == SelectSortUsersOrderMenu.class) {
+            menu = new SelectSortUsersOrderMenu(printService, inputService, this, userService,
+                    menuItemService);
+        } else if (menuClass == StudentMenu.class) {
+            menu = new StudentMenu(printService, inputService, this, menuItemService,
+                    studentFormHandlerFactory, studentService);
+        } else if (menuClass == SelectSortStudentsOrderMenu.class) {
+            menu = new SelectSortStudentsOrderMenu(printService, inputService, this, studentService,
+                    menuItemService);
+        } else {
+            menu = new StartMenu(inputService, printService, menuItemService, this);
+        }
 
-    public Menu createRegistrationMenu() {
-        return new RegistrationMenu(printService, this, registrationService, registrationFormHandler);
-    }
-
-    public Menu createAuthentificationMenu() {
-        return new AuthentificationMenu(printService, this, authentificationMenuService, authentificationService);
-    }
-
-    public Menu createRoomMenu() {
-        return new RoomMenu(inputService, printService, roomService, this, studentService, createRoomFormHandler,
-                updateRoomFormHandler, getRoomInfoFormHandler, deleteRoomFormHandler);
-    }
-
-    public Menu createExitMenu() {
-        return new ExitMenu();
-    }
-
-    public Menu createMainMenu() {
-        return new MainMenu(inputService, printService, this, userService, authentificationService);
-    }
-
-    public Menu createSelectSortRoomsOrderMenu() {
-        return new SelectSortRoomsOrderMenu(printService, inputService, this, roomService);
-    }
-
-    public Menu createDormitoryMenu() {
-        return new DormitoryMenu(printService, inputService, this, dormitoryService, selectCurrentDormitoryFormHandler,
-                createDormitoryFormHandler, deleteDormitoryFormHandler, updateDormitoryFormHandler, dormitoryInfoFormHandler);
-    }
-
-    public Menu createSelectSortDormitoriesOrderMenu() {
-        return new SelectSortDormitoriesOrderMenu(printService, inputService, this, dormitoryService);
-    }
-
-    public Menu createUniversityMenu() {
-        return new UniversityMenu(inputService, printService, universityService, dormitoryService, this,
-                selectCurrentUniversityFormHandler, selectCurrentDormitoryFormHandler, createUniversityFormHandler,
-                deleteUniversityFormHandler, updateUniversityFormHandler, universityInfoFormHandler);
-    }
-
-    public Menu createSelectSortUniversitiesOrderMenu() {
-        return new SelectSortUniversitiesOrderMenu(printService, inputService, this, universityService);
-    }
-
-    public Menu createUserMenu() {
-        return new UserMenu(printService, inputService, this, userService, registrationService,
-                registrationFormHandler, deleteUserFormHandler, updateUserFormHandler, getUserInfoFormHandler);
-    }
-
-    public Menu createSelectSortUsersOrderMenu() {
-        return new SelectSortUsersOrderMenu(printService, inputService, this, userService);
-    }
-
-    public Menu createStudentMenu() {
-        return new StudentMenu(printService, inputService, this, createStudentFormHandler, deleteStudentFormHandler,
-                updateStudentFormHandler, studentInfoFormHandler, distributeStudentToDormitoryFormHandler, distributeStudentToRoomFormHandler,
-                studentService);
-    }
-
-    public Menu createSelectSortStudentsOrderMenu() {
-        return new SelectSortStudentsOrderMenu(printService, inputService, this, studentService);
+        return menu;
     }
 }

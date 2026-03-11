@@ -7,7 +7,6 @@ import by.niruin.dormitorySystem.domain.service.RoomService;
 import by.niruin.dormitorySystem.domain.service.StudentService;
 import by.niruin.dormitorySystem.domain.service.validation.RoomInputValidationService;
 import by.niruin.dormitorySystem.domain.service.validation.StudentInputValidationService;
-import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.ui.formHandler.FormHandler;
 import by.niruin.dormitorySystem.util.ApplicationContextUtil;
@@ -15,7 +14,6 @@ import by.niruin.dormitorySystem.util.ApplicationContextUtil;
 import java.util.Comparator;
 import java.util.List;
 
-@Component
 public class DistributeStudentToRoomFormHandler {
     private final FormHandler formHandler;
     private final StudentInputValidationService studentInputValidationService;

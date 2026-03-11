@@ -2,13 +2,15 @@ package by.niruin.dormitorySystem.ui.menu;
 
 import by.niruin.dormitorySystem.domain.service.DormitoryService;
 import by.niruin.dormitorySystem.domain.service.UniversityService;
+import by.niruin.dormitorySystem.domain.service.statistic.UniversityStatisticService;
 import by.niruin.dormitorySystem.infrastructure.service.InputService;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.logger.Logger;
 import by.niruin.dormitorySystem.logger.LoggerFactory;
-import by.niruin.dormitorySystem.ui.formHandler.dormitory.SelectCurrentDormitoryFormHandler;
-import by.niruin.dormitorySystem.ui.formHandler.university.*;
-import by.niruin.dormitorySystem.util.MenuItemUtil;
+import by.niruin.dormitorySystem.ui.formHandler.factory.DormitoryFormHandlerFactory;
+import by.niruin.dormitorySystem.ui.formHandler.factory.UniversityFormHandlerFactory;
+import by.niruin.dormitorySystem.ui.menu.item.UniversityMenuItem;
+import by.niruin.dormitorySystem.ui.menu.service.MenuItemService;
 
 import static by.niruin.dormitorySystem.constant.LoggerMessage.*;
 
@@ -18,39 +20,39 @@ public class UniversityMenu implements Menu {
     private final UniversityService universityService;
     private final DormitoryService dormitoryService;
     private final MenuFactory menuFactory;
-    private final SelectCurrentUniversityFormHandler selectCurrentUniversityFormHandler;
-    private final SelectCurrentDormitoryFormHandler selectCurrentDormitoryFormHandler;
-    private final CreateUniversityFormHandler createUniversityFormHandler;
-    private final DeleteUniversityFormHandler deleteUniversityFormHandler;
-    private final UpdateUniversityFormHandler updateUniversityFormHandler;
-    private final UniversityInfoFormHandler universityInfoFormHandler;
-    private final Logger logger = LoggerFactory.getLogger(UniversityMenu.class);
+    private final MenuItemService menuItemService;
+    private final UniversityFormHandlerFactory universityFormHandlerFactory;
+    private final DormitoryFormHandlerFactory dormitoryFormHandlerFactory;
+    private final UniversityStatisticService universityStatisticService;
+    private static final Logger logger = LoggerFactory.getLogger(UniversityMenu.class);
 
-    public UniversityMenu(InputService inputService, PrintService printService, UniversityService universityService, DormitoryService dormitoryService, MenuFactory menuFactory, SelectCurrentUniversityFormHandler selectCurrentUniversityFormHandler, SelectCurrentDormitoryFormHandler selectCurrentDormitoryFormHandler, CreateUniversityFormHandler createUniversityFormHandler, DeleteUniversityFormHandler deleteUniversityFormHandler, UpdateUniversityFormHandler updateUniversityFormHandler, UniversityInfoFormHandler universityInfoFormHandler) {
+    public UniversityMenu(InputService inputService, PrintService printService, UniversityService universityService,
+                          DormitoryService dormitoryService, MenuFactory menuFactory, MenuItemService menuItemService,
+                          UniversityFormHandlerFactory universityFormHandlerFactory,
+                          DormitoryFormHandlerFactory dormitoryFormHandlerFactory,
+                          UniversityStatisticService universityStatisticService) {
         this.inputService = inputService;
         this.printService = printService;
         this.universityService = universityService;
         this.dormitoryService = dormitoryService;
         this.menuFactory = menuFactory;
-        this.selectCurrentUniversityFormHandler = selectCurrentUniversityFormHandler;
-        this.selectCurrentDormitoryFormHandler = selectCurrentDormitoryFormHandler;
-        this.createUniversityFormHandler = createUniversityFormHandler;
-        this.deleteUniversityFormHandler = deleteUniversityFormHandler;
-        this.updateUniversityFormHandler = updateUniversityFormHandler;
-        this.universityInfoFormHandler = universityInfoFormHandler;
+        this.menuItemService = menuItemService;
+        this.universityFormHandlerFactory = universityFormHandlerFactory;
+        this.dormitoryFormHandlerFactory = dormitoryFormHandlerFactory;
+        this.universityStatisticService = universityStatisticService;
     }
 
     @Override
     public void display() {
         printService.printSelectActionMessage();
-        printService.printMenu(MenuItemUtil.buildMenu(UniversityMenuItem.class));
+        printService.printMenu(menuItemService.buildMenu(UniversityMenuItem.class));
     }
 
     @Override
     public Menu handleInput() {
         String userInput = inputService.inputLine();
         try {
-            var item = MenuItemUtil.getItem(UniversityMenuItem.class, Integer.parseInt(userInput));
+            var item = menuItemService.getItem(UniversityMenuItem.class, Integer.parseInt(userInput));
             logger.info(SELECTED_ITEM_LOG.formatted(item.name()));
             return executeMenuItem(item);
         } catch (Exception e) {
@@ -67,16 +69,18 @@ public class UniversityMenu implements Menu {
             case CREATE_UNIVERSITY -> createUniversity();
             case DELETE_UNIVERSITY -> deleteUniversity();
             case UPDATE_UNIVERSITY -> updateUniversity();
-            case GET_SORTED_UNIVERSITIES -> nextMenu = menuFactory.createSelectSortUniversitiesOrderMenu();
+            case GET_SORTED_UNIVERSITIES -> nextMenu = menuFactory.createMenu(SelectSortUniversitiesOrderMenu.class);
             case GET_UNIVERSITY_INFO -> getUniversityInfo();
             case GET_UNIVERSITY_STATISTICS -> getUniversityStatistic();
-            case GO_BACK -> nextMenu = menuFactory.createMainMenu();
+            case GO_BACK -> nextMenu = menuFactory.createMenu(MainMenu.class);
         }
         return nextMenu;
     }
 
     private void selectCurrentUniversity() {
-        var dto = selectCurrentUniversityFormHandler.handleUniversityName().createDto();
+        var dto = universityFormHandlerFactory.getSelectCurrentUniversityFormHandler()
+                .handleUniversityName()
+                .createDto();
 
         try {
             universityService.updateCurrentUniversity(dto);
@@ -96,7 +100,9 @@ public class UniversityMenu implements Menu {
             if (!universityService.isCurrentUniversityHasDormitories()) {
                 setNullableDormitory();
             } else {
-                var dto = selectCurrentDormitoryFormHandler.handleDormitoryNumber().createDto();
+                var dto = dormitoryFormHandlerFactory.getSelectCurrentDormitoryFormHandler()
+                        .handleDormitoryNumber()
+                        .createDto();
 
                 dormitoryService.updateCurrentDormitory(dto);
                 printService.printCurrentDormitorySelectedMessage();
@@ -118,7 +124,7 @@ public class UniversityMenu implements Menu {
     }
 
     private void createUniversity() {
-        var dto = createUniversityFormHandler
+        var dto = universityFormHandlerFactory.getCreateUniversityFormHandler()
                 .handleUniversityName()
                 .handleStudyDuration()
                 .createDto();
@@ -134,7 +140,7 @@ public class UniversityMenu implements Menu {
     }
 
     private void deleteUniversity() {
-        var dto = deleteUniversityFormHandler
+        var dto = universityFormHandlerFactory.getDeleteUniversityFormHandler()
                 .handleUniversityNumber()
                 .createDto();
 
@@ -150,7 +156,7 @@ public class UniversityMenu implements Menu {
     }
 
     private void updateUniversity() {
-        var dto = updateUniversityFormHandler
+        var dto = universityFormHandlerFactory.getUpdateUniversityFormHandler()
                 .handleNumber()
                 .handleAvailable()
                 .createDto();
@@ -167,7 +173,7 @@ public class UniversityMenu implements Menu {
     }
 
     private void getUniversityInfo() {
-        var dto = universityInfoFormHandler
+        var dto = universityFormHandlerFactory.getUniversityInfoFormHandler()
                 .handleUniversityNumber()
                 .createDto();
 
@@ -184,7 +190,7 @@ public class UniversityMenu implements Menu {
 
     private void getUniversityStatistic() {
         try {
-            String statistics = universityService.getCurrentUniversityStatistics();
+            String statistics = universityStatisticService.getCurrentUniversityStatistics();
             printService.printStatistics(statistics);
             logger.info(UNIVERSITY_STATISTICS_RECEIVED_SUCCESS_LOG);
         } catch (Exception e) {

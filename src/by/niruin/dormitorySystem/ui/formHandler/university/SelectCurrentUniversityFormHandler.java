@@ -10,21 +10,23 @@ public class SelectCurrentUniversityFormHandler {
     private final FormHandler formHandler;
     private final PrintService printService;
     private final UniversityService universityService;
-    private final UniversityInputValidationService dormitoryInputValidationService;
+    private final UniversityInputValidationService universityInputValidationService;
     private int universityNumber;
 
-    public SelectCurrentUniversityFormHandler(FormHandler formHandler, PrintService printService, UniversityService universityService, UniversityInputValidationService dormitoryInputValidationService) {
+    public SelectCurrentUniversityFormHandler(FormHandler formHandler, PrintService printService,
+                                              UniversityService universityService,
+                                              UniversityInputValidationService universityInputValidationService) {
         this.formHandler = formHandler;
         this.printService = printService;
         this.universityService = universityService;
-        this.dormitoryInputValidationService = dormitoryInputValidationService;
+        this.universityInputValidationService = universityInputValidationService;
     }
 
     public SelectCurrentUniversityFormHandler handleUniversityName() {
         universityNumber = formHandler.handleInputString(
                 () -> printService.printUniversityNumbers(universityService.getUniversitiesNames()),
                 Integer::parseInt,
-                dormitoryInputValidationService::validateNumber);
+                universityInputValidationService::validateNumber);
         return this;
     }
 

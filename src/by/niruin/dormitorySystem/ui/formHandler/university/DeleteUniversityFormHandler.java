@@ -14,7 +14,8 @@ public class DeleteUniversityFormHandler {
     private int universityNumber;
 
     public DeleteUniversityFormHandler(PrintService printService, UniversityService universityService,
-                                       FormHandler formHandler, UniversityInputValidationService universityInputValidationService) {
+                                       FormHandler formHandler,
+                                       UniversityInputValidationService universityInputValidationService) {
         this.printService = printService;
         this.universityService = universityService;
         this.formHandler = formHandler;

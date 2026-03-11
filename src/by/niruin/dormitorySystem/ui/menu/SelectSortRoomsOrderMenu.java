@@ -6,7 +6,8 @@ import by.niruin.dormitorySystem.infrastructure.service.InputService;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.logger.Logger;
 import by.niruin.dormitorySystem.logger.LoggerFactory;
-import by.niruin.dormitorySystem.util.MenuItemUtil;
+import by.niruin.dormitorySystem.ui.menu.item.SelectSortRoomsOrderMenuItem;
+import by.niruin.dormitorySystem.ui.menu.service.MenuItemService;
 
 import java.util.Comparator;
 
@@ -18,30 +19,33 @@ public class SelectSortRoomsOrderMenu implements Menu {
     private final InputService inputService;
     private final MenuFactory menuFactory;
     private final RoomService roomService;
-    private final Logger logger = LoggerFactory.getLogger(SelectSortRoomsOrderMenu.class);
+    private final MenuItemService menuItemService;
+    private static final Logger logger = LoggerFactory.getLogger(SelectSortRoomsOrderMenu.class);
 
-    public SelectSortRoomsOrderMenu(PrintService printService, InputService inputService, MenuFactory menuFactory, RoomService roomService) {
+    public SelectSortRoomsOrderMenu(PrintService printService, InputService inputService, MenuFactory menuFactory,
+                                    RoomService roomService, MenuItemService menuItemService) {
         this.printService = printService;
         this.inputService = inputService;
         this.menuFactory = menuFactory;
         this.roomService = roomService;
+        this.menuItemService = menuItemService;
     }
 
     @Override
     public void display() {
         printService.printSelectSortingOrder();
-        printService.printMenu(MenuItemUtil.buildMenu(SelectSortRoomsOrderMenuItem.class));
+        printService.printMenu(menuItemService.buildMenu(SelectSortRoomsOrderMenuItem.class));
     }
 
     @Override
     public Menu handleInput() {
         String userInput = inputService.inputLine();
         try {
-            var item = MenuItemUtil.getItem(SelectSortRoomsOrderMenuItem.class, Integer.parseInt(userInput));
+            var item = menuItemService.getItem(SelectSortRoomsOrderMenuItem.class, Integer.parseInt(userInput));
             String sortedRoomsInfo = roomService.getSortedRoomsInfo(getRoomComparator(item));
             printService.printSortedDormitoriesInfo(sortedRoomsInfo);
             logger.info(SELECTED_ITEM_LOG.formatted(item.name()));
-            return menuFactory.createRoomMenu();
+            return menuFactory.createMenu(RoomMenu.class);
         } catch (Exception e) {
             printService.printInvalidInputMessage();
             logger.info(ENTERED_INVALID_VALUE_LOG.formatted(userInput));

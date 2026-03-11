@@ -5,8 +5,9 @@ import by.niruin.dormitorySystem.infrastructure.service.InputService;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.logger.Logger;
 import by.niruin.dormitorySystem.logger.LoggerFactory;
-import by.niruin.dormitorySystem.ui.formHandler.student.*;
-import by.niruin.dormitorySystem.util.MenuItemUtil;
+import by.niruin.dormitorySystem.ui.formHandler.factory.StudentFormHandlerFactory;
+import by.niruin.dormitorySystem.ui.menu.item.StudentMenuItem;
+import by.niruin.dormitorySystem.ui.menu.service.MenuItemService;
 
 import static by.niruin.dormitorySystem.constant.LoggerMessage.*;
 
@@ -14,41 +15,32 @@ public class StudentMenu implements Menu {
     private final PrintService printService;
     private final InputService inputService;
     private final MenuFactory menuFactory;
-    private final CreateStudentFormHandler createStudentFormHandler;
-    private final DeleteStudentFormHandler deleteStudentFormHandler;
-    private final UpdateStudentFormHandler updateStudentFormHandler;
-    private final StudentInfoFormHandler studentInfoFormHandler;
-    private final DistributeStudentToDormitoryFormHandler distributeStudentToDormitoryFormHandler;
-    private final DistributeStudentToRoomFormHandler distributeStudentToRoomFormHandler;
+    private final MenuItemService menuItemService;
+    private final StudentFormHandlerFactory studentFormHandlerFactory;
     private final StudentService studentService;
     private final Logger logger = LoggerFactory.getLogger(StudentMenu.class);
 
-    public StudentMenu(PrintService printService, InputService inputService, MenuFactory menuFactory, CreateStudentFormHandler createStudentFormHandler,
-                       DeleteStudentFormHandler deleteStudentFormHandler, UpdateStudentFormHandler updateStudentFormHandler,
-                       StudentInfoFormHandler studentInfoFormHandler, DistributeStudentToDormitoryFormHandler distributeStudentToDormitoryFormHandler,
-                       DistributeStudentToRoomFormHandler distributeStudentToRoomFormHandler, StudentService studentService) {
+    public StudentMenu(PrintService printService, InputService inputService, MenuFactory menuFactory,
+                       MenuItemService menuItemService, StudentFormHandlerFactory studentFormHandlerFactory,
+                       StudentService studentService) {
         this.printService = printService;
         this.inputService = inputService;
         this.menuFactory = menuFactory;
-        this.createStudentFormHandler = createStudentFormHandler;
-        this.deleteStudentFormHandler = deleteStudentFormHandler;
-        this.updateStudentFormHandler = updateStudentFormHandler;
-        this.studentInfoFormHandler = studentInfoFormHandler;
-        this.distributeStudentToDormitoryFormHandler = distributeStudentToDormitoryFormHandler;
-        this.distributeStudentToRoomFormHandler = distributeStudentToRoomFormHandler;
+        this.menuItemService = menuItemService;
+        this.studentFormHandlerFactory = studentFormHandlerFactory;
         this.studentService = studentService;
     }
 
     @Override
     public void display() {
-        printService.printMenu(MenuItemUtil.buildMenu(StudentMenuItem.class));
+        printService.printMenu(menuItemService.buildMenu(StudentMenuItem.class));
     }
 
     @Override
     public Menu handleInput() {
         String userInput = inputService.inputLine();
         try {
-            var item = MenuItemUtil.getItem(StudentMenuItem.class, Integer.parseInt(userInput));
+            var item = menuItemService.getItem(StudentMenuItem.class, Integer.parseInt(userInput));
             logger.info(SELECTED_ITEM_LOG.formatted(item.name()));
             return executeMenuItem(item);
         } catch (Exception e) {
@@ -64,23 +56,23 @@ public class StudentMenu implements Menu {
             case CREATE_STUDENT -> createStudent();
             case DELETE_STUDENT -> deleteStudent();
             case UPDATE_STUDENT -> updateStudent();
-            case GET_SORTED_STUDENTS -> nextMenu = menuFactory.createSelectSortStudentsOrderMenu();
+            case GET_SORTED_STUDENTS -> nextMenu = menuFactory.createMenu(SelectSortStudentsOrderMenu.class);
             case GET_STUDENT_INFO -> getStudentInfo();
             case GET_STUDENTS_WITHOUT_DORMITORY -> getStudentsWithoutDormitory();
             case DISTRIBUTE_STUDENTS_TO_DORMITORIES -> distributeStudentsToDormitories();
             case DISTRIBUTE_STUDENTS_TO_ROOMS -> distributeStudentsToRooms();
-            case GO_BACK -> nextMenu = menuFactory.createMainMenu();
+            case GO_BACK -> nextMenu = menuFactory.createMenu(MainMenu.class);
         }
         return nextMenu;
     }
 
     private void createStudent() {
-        var dto = createStudentFormHandler
+        var dto = studentFormHandlerFactory.getCreateStudentFormHandler()
                 .handleFirstName()
                 .handleLastName()
                 .handleFatherName()
                 .handleGender()
-                .handleDateOfEntering()
+                .handleEnteringDate()
                 .createDto();
         try {
             studentService.createStudent(dto);
@@ -94,7 +86,7 @@ public class StudentMenu implements Menu {
     }
 
     private void deleteStudent() {
-        var dto = deleteStudentFormHandler
+        var dto = studentFormHandlerFactory.getDeleteStudentFormHandler()
                 .handleNumber()
                 .createDto();
 
@@ -110,7 +102,7 @@ public class StudentMenu implements Menu {
     }
 
     private void updateStudent() {
-        var dto = updateStudentFormHandler
+        var dto = studentFormHandlerFactory.getUpdateStudentFormHandler()
                 .handleNumber()
                 .handleLastName()
                 .handleDormitory()
@@ -128,7 +120,7 @@ public class StudentMenu implements Menu {
     }
 
     private void getStudentInfo() {
-        var dto = studentInfoFormHandler
+        var dto = studentFormHandlerFactory.getStudentInfoFormHandler()
                 .handleStudentNumber()
                 .createDto();
 
@@ -156,7 +148,7 @@ public class StudentMenu implements Menu {
     }
 
     private void distributeStudentsToDormitories() {
-        var distributeStudentToDormitoryDto = distributeStudentToDormitoryFormHandler
+        var distributeStudentToDormitoryDto = studentFormHandlerFactory.getDistributeStudentToDormitoryFormHandler()
                 .handleStudentNumber()
                 .handleDormitoryNumber()
                 .createDto();
@@ -174,7 +166,7 @@ public class StudentMenu implements Menu {
     }
 
     private void distributeStudentsToRooms() {
-        var distributeStudentToRoomDto = distributeStudentToRoomFormHandler
+        var distributeStudentToRoomDto = studentFormHandlerFactory.getDistributeStudentToRoomFormHandler()
                 .handleStudentNumber()
                 .handleRoomNumber()
                 .createDto();

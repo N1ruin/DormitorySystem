@@ -6,7 +6,8 @@ import by.niruin.dormitorySystem.infrastructure.service.InputService;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.logger.Logger;
 import by.niruin.dormitorySystem.logger.LoggerFactory;
-import by.niruin.dormitorySystem.util.MenuItemUtil;
+import by.niruin.dormitorySystem.ui.menu.item.SelectSortStudentsOrderMenuItem;
+import by.niruin.dormitorySystem.ui.menu.service.MenuItemService;
 
 import java.util.Comparator;
 
@@ -18,34 +19,37 @@ public class SelectSortStudentsOrderMenu implements Menu {
     private final InputService inputService;
     private final MenuFactory menuFactory;
     private final StudentService studentService;
-    private final Logger logger = LoggerFactory.getLogger(SelectSortStudentsOrderMenu.class);
+    private final MenuItemService menuItemService;
+    private static final Logger logger = LoggerFactory.getLogger(SelectSortStudentsOrderMenu.class);
 
-    public SelectSortStudentsOrderMenu(PrintService printService, InputService inputService, MenuFactory menuFactory, StudentService studentService) {
+    public SelectSortStudentsOrderMenu(PrintService printService, InputService inputService, MenuFactory menuFactory,
+                                       StudentService studentService, MenuItemService menuItemService) {
         this.printService = printService;
         this.inputService = inputService;
         this.menuFactory = menuFactory;
         this.studentService = studentService;
+        this.menuItemService = menuItemService;
     }
 
 
     @Override
     public void display() {
-        printService.printMenu(MenuItemUtil.buildMenu(SelectSortStudentsOrderMenuItem.class));
+        printService.printMenu(menuItemService.buildMenu(SelectSortStudentsOrderMenuItem.class));
     }
 
     @Override
     public Menu handleInput() {
         String userInput = inputService.inputLine();
         try {
-            var item = MenuItemUtil.getItem(SelectSortStudentsOrderMenuItem.class, Integer.parseInt(userInput));
+            var item = menuItemService.getItem(SelectSortStudentsOrderMenuItem.class, Integer.parseInt(userInput));
             String sortedStudentsInfo = studentService.getStudentsSortedInfo(getStudentComparator(item));
             printService.printSortedStudentsInfo(sortedStudentsInfo);
             logger.info(SELECTED_ITEM_LOG.formatted(item.name()));
-            return menuFactory.createStudentMenu();
+            return menuFactory.createMenu(StudentMenu.class);
         } catch (Exception e) {
             printService.printInvalidInputMessage();
             logger.info(ENTERED_INVALID_VALUE_LOG.formatted(userInput));
-            return menuFactory.createStudentMenu();
+            return menuFactory.createMenu(StudentMenu.class);
         }
     }
 
@@ -56,10 +60,10 @@ public class SelectSortStudentsOrderMenu implements Menu {
                     Comparator.comparing((Student student) -> student.getFullName().getFullNameString()).reversed();
             case SORT_BY_GENDER_MALE_FIRST -> Comparator.comparing(Student::getGender);
             case SORT_BY_GENDER_FEMALE_FIRST -> Comparator.comparing(Student::getGender).reversed();
-            case SORT_BY_START_EDUCATION_DATE -> Comparator.comparing(Student::getDateOfStartEducation);
-            case SORT_BY_START_EDUCATION_DATE_DESC -> Comparator.comparing(Student::getDateOfStartEducation).reversed();
-            case SORT_BY_END_EDUCATION_DATE -> Comparator.comparing(Student::getDateOfEndingEducation);
-            case SORT_BY_END_EDUCATION_DATE_DESC -> Comparator.comparing(Student::getDateOfEndingEducation).reversed();
+            case SORT_BY_START_EDUCATION_DATE -> Comparator.comparing(Student::getStartEducationDate);
+            case SORT_BY_START_EDUCATION_DATE_DESC -> Comparator.comparing(Student::getStartEducationDate).reversed();
+            case SORT_BY_END_EDUCATION_DATE -> Comparator.comparing(Student::getEndingEducationDate);
+            case SORT_BY_END_EDUCATION_DATE_DESC -> Comparator.comparing(Student::getEndingEducationDate).reversed();
         };
     }
 }

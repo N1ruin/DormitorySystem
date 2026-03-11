@@ -6,11 +6,9 @@ import by.niruin.dormitorySystem.infrastructure.service.InputService;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.logger.Logger;
 import by.niruin.dormitorySystem.logger.LoggerFactory;
-import by.niruin.dormitorySystem.ui.formHandler.user.DeleteUserFormHandler;
-import by.niruin.dormitorySystem.ui.formHandler.user.GetUserInfoFormHandler;
-import by.niruin.dormitorySystem.ui.formHandler.user.RegistrationFormHandler;
-import by.niruin.dormitorySystem.ui.formHandler.user.UpdateUserFormHandler;
-import by.niruin.dormitorySystem.util.MenuItemUtil;
+import by.niruin.dormitorySystem.ui.formHandler.factory.UserFormHandlerFactory;
+import by.niruin.dormitorySystem.ui.menu.item.UserMenuItem;
+import by.niruin.dormitorySystem.ui.menu.service.MenuItemService;
 
 import static by.niruin.dormitorySystem.constant.LoggerMessage.*;
 
@@ -19,39 +17,34 @@ public class UserMenu implements Menu {
     private final InputService inputService;
     private final MenuFactory menuFactory;
     private final UserService userService;
+    private final MenuItemService menuItemService;
     private final RegistrationService registrationService;
-    private final RegistrationFormHandler registrationFormHandler;
-    private final DeleteUserFormHandler deleteUserFormHandler;
-    private final UpdateUserFormHandler updateUserFormHandler;
-    private final GetUserInfoFormHandler getUserInfoFormHandler;
-    private final Logger logger = LoggerFactory.getLogger(UserMenu.class);
+    private final UserFormHandlerFactory userFormHandlerFactory;
+    private static final Logger logger = LoggerFactory.getLogger(UserMenu.class);
 
     public UserMenu(PrintService printService, InputService inputService, MenuFactory menuFactory, UserService userService,
-                    RegistrationService registrationService, RegistrationFormHandler registrationFormHandler,
-                    DeleteUserFormHandler deleteUserFormHandler, UpdateUserFormHandler updateUserFormHandler,
-                    GetUserInfoFormHandler getUserInfoFormHandler) {
+                    MenuItemService menuItemService, RegistrationService registrationService,
+                    UserFormHandlerFactory userFormHandlerFactory) {
         this.printService = printService;
         this.inputService = inputService;
         this.menuFactory = menuFactory;
         this.userService = userService;
+        this.menuItemService = menuItemService;
         this.registrationService = registrationService;
-        this.registrationFormHandler = registrationFormHandler;
-        this.deleteUserFormHandler = deleteUserFormHandler;
-        this.updateUserFormHandler = updateUserFormHandler;
-        this.getUserInfoFormHandler = getUserInfoFormHandler;
+        this.userFormHandlerFactory = userFormHandlerFactory;
     }
 
     @Override
     public void display() {
         printService.printSelectActionMessage();
-        printService.printMenu(MenuItemUtil.buildMenu(UserMenuItem.class));
+        printService.printMenu(menuItemService.buildMenu(UserMenuItem.class));
     }
 
     @Override
     public Menu handleInput() {
         String userInput = inputService.inputLine();
         try {
-            var item = MenuItemUtil.getItem(UserMenuItem.class, Integer.parseInt(userInput));
+            var item = menuItemService.getItem(UserMenuItem.class, Integer.parseInt(userInput));
             logger.info(SELECTED_ITEM_LOG.formatted(item.name()));
             return executeMenuItem(item);
         } catch (Exception e) {
@@ -67,15 +60,16 @@ public class UserMenu implements Menu {
             case CREATE_USER -> createUser();
             case DELETE_USER -> deleteUser();
             case UPDATE_USER -> updateUser();
-            case GET_SORTED_USERS -> nextMenu = menuFactory.createSelectSortUsersOrderMenu();
+            case GET_SORTED_USERS -> nextMenu = menuFactory.createMenu(SelectSortUsersOrderMenu.class);
             case GET_USER_INFO -> getUserInfo();
-            case GO_BACK -> nextMenu = menuFactory.createMainMenu();
+            case GO_BACK -> nextMenu = menuFactory.createMenu(MainMenu.class);
         }
+
         return nextMenu;
     }
 
     private void createUser() {
-        var dto = registrationFormHandler
+        var dto = userFormHandlerFactory.getRegistrationFormHandler()
                 .handleLogin()
                 .handlePassword()
                 .handleFirstName()
@@ -97,7 +91,7 @@ public class UserMenu implements Menu {
     }
 
     private void deleteUser() {
-        var dto = deleteUserFormHandler
+        var dto = userFormHandlerFactory.getDeleteUserFormHandler()
                 .handleLogin()
                 .createDto();
 
@@ -113,7 +107,7 @@ public class UserMenu implements Menu {
     }
 
     private void updateUser() {
-        var dto = updateUserFormHandler
+        var dto = userFormHandlerFactory.getUpdateUserFormHandler()
                 .handleLogin()
                 .handlePassword()
                 .handleLastName()
@@ -131,7 +125,7 @@ public class UserMenu implements Menu {
     }
 
     private void getUserInfo() {
-        var dto = getUserInfoFormHandler
+        var dto = userFormHandlerFactory.getUserInfoFormHandler()
                 .handleLogin()
                 .createDto();
 
@@ -145,5 +139,4 @@ public class UserMenu implements Menu {
             logger.info(e.getMessage());
         }
     }
-
 }

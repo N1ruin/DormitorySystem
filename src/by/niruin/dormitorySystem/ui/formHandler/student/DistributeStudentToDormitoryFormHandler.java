@@ -5,11 +5,9 @@ import by.niruin.dormitorySystem.domain.service.DormitoryService;
 import by.niruin.dormitorySystem.domain.service.StudentService;
 import by.niruin.dormitorySystem.domain.service.validation.DormitoryInputValidationService;
 import by.niruin.dormitorySystem.domain.service.validation.StudentInputValidationService;
-import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.ui.formHandler.FormHandler;
 
-@Component
 public class DistributeStudentToDormitoryFormHandler {
     private final FormHandler formHandler;
     private final StudentInputValidationService studentInputValidationService;
@@ -21,7 +19,11 @@ public class DistributeStudentToDormitoryFormHandler {
     private int studentNumberFromList;
     private int dormitoryNumber;
 
-    public DistributeStudentToDormitoryFormHandler(FormHandler formHandler, StudentInputValidationService studentInputValidationService, DormitoryInputValidationService dormitoryInputValidationService, PrintService printService, StudentService studentService, DormitoryService dormitoryService) {
+    public DistributeStudentToDormitoryFormHandler(FormHandler formHandler,
+                                                   StudentInputValidationService studentInputValidationService,
+                                                   DormitoryInputValidationService dormitoryInputValidationService,
+                                                   PrintService printService, StudentService studentService,
+                                                   DormitoryService dormitoryService) {
         this.formHandler = formHandler;
         this.studentInputValidationService = studentInputValidationService;
         this.dormitoryInputValidationService = dormitoryInputValidationService;
@@ -35,7 +37,8 @@ public class DistributeStudentToDormitoryFormHandler {
         studentNumberFromList = formHandler.handleInputString(
                 () -> printService.printStudentNames(studentsNamesWithoutDormitory),
                 Integer::parseInt,
-                input -> studentInputValidationService.validateNumberInList(input, studentService.getStudentsWithoutDormitory()));
+                input -> studentInputValidationService
+                        .validateNumberInList(input, studentService.getStudentsWithoutDormitory()));
         return this;
     }
 
