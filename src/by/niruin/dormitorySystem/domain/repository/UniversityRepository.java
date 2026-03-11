@@ -2,9 +2,20 @@ package by.niruin.dormitorySystem.domain.repository;
 
 import by.niruin.dormitorySystem.domain.model.University;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-public interface UniversityRepository extends Repository<University> {
+public interface UniversityRepository {
+    void persistUniversities();
 
-    Optional<University> findByName(String name);
+    void fetchUniversities();
+
+    void save(University university);
+
+    List<University> findAll();
+
+    void update(University university);
+
+    void delete(UUID uuid);
 }

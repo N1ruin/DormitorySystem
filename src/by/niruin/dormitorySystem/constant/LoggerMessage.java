@@ -5,7 +5,11 @@ public class LoggerMessage {
 
     public static final String FIND_COMPONENT_CLASS_FILE_LOG = "Find component class %s";
 
-    public static final String COMPONENT_ADDED_TO_LOADING_ORDER_LOG = "Component %s added to loading order";
+    public static final String CREATING_OBJECTS_STARTING_LOG = "Start creating objects";
+
+    public static final String CREATING_OBJECTS_ENDED_LOG = "Creating objects ended";
+
+    public static final String CREATING_OBJECT_LOG = "Creating object '%s'";
 
     public static final String SELECTED_ITEM_LOG = "User selected %s item";
 
@@ -56,4 +60,6 @@ public class LoggerMessage {
     public static final String USER_AUTHENTIFICATION_SUCCESS_LOG = "User %s logged in";
 
     public static final String USER_AUTHENTIFICATION_FAIL_LOG = "Authentification attempt failed";
+
+    public static final String CLASS_LOADING_ERROR_LOG = "Class '%s' loading error.";
 }

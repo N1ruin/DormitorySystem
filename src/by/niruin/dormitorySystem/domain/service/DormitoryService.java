@@ -3,8 +3,6 @@ package by.niruin.dormitorySystem.domain.service;
 import by.niruin.dormitorySystem.domain.model.dto.DormitoryNumbersDto;
 import by.niruin.dormitorySystem.domain.repository.DormitoryRepository;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
-import by.niruin.dormitorySystem.infrastructure.annotation.Qualifier;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryDormitoryRepository;
 
 import java.util.UUID;
 
@@ -12,7 +10,7 @@ import java.util.UUID;
 public class DormitoryService {
     private final DormitoryRepository dormitoryRepository;
 
-    public DormitoryService(@Qualifier(InMemoryDormitoryRepository.class) DormitoryRepository dormitoryRepository) {
+    public DormitoryService(DormitoryRepository dormitoryRepository) {
         this.dormitoryRepository = dormitoryRepository;
     }
 

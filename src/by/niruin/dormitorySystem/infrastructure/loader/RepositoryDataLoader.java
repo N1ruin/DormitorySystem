@@ -1,40 +1,39 @@
 package by.niruin.dormitorySystem.infrastructure.loader;
 
+import by.niruin.dormitorySystem.domain.repository.*;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
-import by.niruin.dormitorySystem.infrastructure.repository.*;
 
 @Component
 public class RepositoryDataLoader {
-    private final InMemoryUserRepository userRepository;
-    private final InMemoryUniversityRepository universityRepository;
-    private final InMemoryStudentRepository studentRepository;
-    private final InMemoryRoomRepository roomRepository;
-    private final InMemoryDormitoryRepository dormitoryRepository;
+    private final UserRepository userRepository;
+    private final UniversityRepository universityRepository;
+    private final StudentRepository studentRepository;
+    private final RoomRepository roomRepository;
+    private final DormitoryRepository dormitoryRepository;
 
-    public RepositoryDataLoader(InMemoryDormitoryRepository dormitoryRepository,
-                                InMemoryUserRepository userRepository,
-                                InMemoryUniversityRepository universityRepository,
-                                InMemoryStudentRepository studentRepository, InMemoryRoomRepository roomRepository) {
-        this.dormitoryRepository = dormitoryRepository;
+    public RepositoryDataLoader(UserRepository userRepository, UniversityRepository universityRepository,
+                                StudentRepository studentRepository, RoomRepository roomRepository,
+                                DormitoryRepository dormitoryRepository) {
         this.userRepository = userRepository;
         this.universityRepository = universityRepository;
         this.studentRepository = studentRepository;
         this.roomRepository = roomRepository;
+        this.dormitoryRepository = dormitoryRepository;
     }
 
     public void loadData() {
-        userRepository.fetchEntities();
-        universityRepository.fetchEntities();
-        studentRepository.fetchEntities();
-        roomRepository.fetchEntities();
-        dormitoryRepository.fetchEntities();
+        userRepository.fetchUsers();
+        universityRepository.fetchUniversities();
+        studentRepository.fetchStudents();
+        roomRepository.fetchRooms();
+        dormitoryRepository.fetchDormitories();
     }
 
     public void persistData() {
-        userRepository.persistEntities();
-        universityRepository.persistEntities();
-        studentRepository.persistEntities();
-        roomRepository.persistEntities();
-        dormitoryRepository.persistEntities();
+        userRepository.persistUsers();
+        universityRepository.persistUniversities();
+        studentRepository.persistStudents();
+        roomRepository.persistRooms();
+        dormitoryRepository.persistDormitories();
     }
 }

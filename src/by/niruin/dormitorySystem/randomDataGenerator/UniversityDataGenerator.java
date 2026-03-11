@@ -2,22 +2,18 @@ package by.niruin.dormitorySystem.randomDataGenerator;
 
 import by.niruin.dormitorySystem.domain.model.University;
 import by.niruin.dormitorySystem.domain.repository.UniversityRepository;
-import by.niruin.dormitorySystem.infrastructure.annotation.Component;
-import by.niruin.dormitorySystem.infrastructure.annotation.Qualifier;
 import by.niruin.dormitorySystem.infrastructure.loader.UniversityNamesLoader;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryUniversityRepository;
 
 import java.util.Random;
 import java.util.UUID;
 
-@Component
 public class UniversityDataGenerator implements EntityDataGenerator {
     private final UniversityRepository universityRepository;
     private final UniversityNamesLoader universityNamesLoader;
     private final Random random = new Random();
 
-    public UniversityDataGenerator(@Qualifier(InMemoryUniversityRepository.class)
-                                   UniversityRepository universityRepository, UniversityNamesLoader loader) {
+    public UniversityDataGenerator(
+            UniversityRepository universityRepository, UniversityNamesLoader loader) {
         this.universityRepository = universityRepository;
         this.universityNamesLoader = loader;
     }

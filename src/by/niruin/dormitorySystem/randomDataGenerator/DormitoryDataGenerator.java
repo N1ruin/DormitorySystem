@@ -4,16 +4,11 @@ import by.niruin.dormitorySystem.domain.model.Dormitory;
 import by.niruin.dormitorySystem.domain.model.University;
 import by.niruin.dormitorySystem.domain.repository.DormitoryRepository;
 import by.niruin.dormitorySystem.domain.repository.UniversityRepository;
-import by.niruin.dormitorySystem.infrastructure.annotation.Component;
-import by.niruin.dormitorySystem.infrastructure.annotation.Qualifier;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryDormitoryRepository;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryUniversityRepository;
 
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-@Component
 public class DormitoryDataGenerator implements EntityDataGenerator {
     public static final int MAX_DORMITORY_IN_UNIVERSITY = 10;
     public static final int MIN_DORMITORY_IN_UNIVERSITY = 4;
@@ -23,8 +18,8 @@ public class DormitoryDataGenerator implements EntityDataGenerator {
     private final DormitoryRepository dormitoryRepository;
     private final Random random = new Random();
 
-    public DormitoryDataGenerator(@Qualifier(InMemoryUniversityRepository.class) UniversityRepository universityRepository,
-                                  @Qualifier(InMemoryDormitoryRepository.class) DormitoryRepository dormitoryRepository) {
+    public DormitoryDataGenerator(UniversityRepository universityRepository,
+                                  DormitoryRepository dormitoryRepository) {
         this.universityRepository = universityRepository;
         this.dormitoryRepository = dormitoryRepository;
     }

@@ -4,18 +4,12 @@ import by.niruin.dormitorySystem.domain.model.*;
 import by.niruin.dormitorySystem.domain.repository.DormitoryRepository;
 import by.niruin.dormitorySystem.domain.repository.UniversityRepository;
 import by.niruin.dormitorySystem.domain.repository.UserRepository;
-import by.niruin.dormitorySystem.infrastructure.annotation.Component;
-import by.niruin.dormitorySystem.infrastructure.annotation.Qualifier;
 import by.niruin.dormitorySystem.infrastructure.loader.RandomFullNameLoader;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryDormitoryRepository;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryUniversityRepository;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryUserRepository;
 
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-@Component
 public class UserDataGenerator implements EntityDataGenerator {
     private final UserRepository userRepository;
     private final UniversityRepository universityRepository;
@@ -24,9 +18,9 @@ public class UserDataGenerator implements EntityDataGenerator {
     private final RandomFullNameLoader loader;
 
     public UserDataGenerator(RandomFullNameLoader loader,
-                             @Qualifier(InMemoryUserRepository.class) UserRepository userRepository,
-                             @Qualifier(InMemoryUniversityRepository.class) UniversityRepository universityRepository,
-                             @Qualifier(InMemoryDormitoryRepository.class) DormitoryRepository dormitoryRepository) {
+                             UserRepository userRepository,
+                             UniversityRepository universityRepository,
+                             DormitoryRepository dormitoryRepository) {
         this.loader = loader;
         this.userRepository = userRepository;
         this.universityRepository = universityRepository;

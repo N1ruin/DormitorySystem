@@ -7,9 +7,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface RoomRepository extends Repository<Room> {
+public interface RoomRepository {
+    void persistRooms();
 
-    List<Room> findByDormitoryId(UUID dormitoryId);
+    void fetchRooms();
+
+    void save(Room entity);
+
+    List<Room> findAll();
+
+    void update(Room entity);
+
+    void delete(UUID uuid);
 
     List<Room> findAllOrderBy(Comparator<Room> comparator);
 

@@ -12,9 +12,6 @@ import by.niruin.dormitorySystem.domain.service.validation.UniversityInputValida
 import by.niruin.dormitorySystem.domain.service.validation.UserInputValidationService;
 import by.niruin.dormitorySystem.exception.EntityNotFoundException;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
-import by.niruin.dormitorySystem.infrastructure.annotation.Qualifier;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryDormitoryRepository;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryUniversityRepository;
 import by.niruin.dormitorySystem.infrastructure.service.PrintService;
 import by.niruin.dormitorySystem.ui.formHandler.FormHandler;
 
@@ -44,8 +41,8 @@ public class RegistrationFormHandler {
 
     public RegistrationFormHandler(FormHandler formHandler, UserInputValidationService userDataValidationService,
                                    PrintService printService, UniversityService universityService,
-                                   @Qualifier(InMemoryUniversityRepository.class) UniversityRepository universityRepository,
-                                   @Qualifier(InMemoryDormitoryRepository.class) DormitoryRepository dormitoryRepository, UniversityInputValidationService universityValidationService, DormitoryInputValidationService dormitoryValidationService, DormitoryService dormitoryService) {
+                                   UniversityRepository universityRepository,
+                                   DormitoryRepository dormitoryRepository, UniversityInputValidationService universityValidationService, DormitoryInputValidationService dormitoryValidationService, DormitoryService dormitoryService) {
         this.formHandler = formHandler;
         this.userInputValidationService = userDataValidationService;
         this.printService = printService;

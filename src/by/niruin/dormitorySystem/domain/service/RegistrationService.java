@@ -6,8 +6,6 @@ import by.niruin.dormitorySystem.domain.model.User;
 import by.niruin.dormitorySystem.domain.repository.UserRepository;
 import by.niruin.dormitorySystem.domain.service.validation.UserValidationService;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
-import by.niruin.dormitorySystem.infrastructure.annotation.Qualifier;
-import by.niruin.dormitorySystem.infrastructure.repository.InMemoryUserRepository;
 
 import java.util.UUID;
 
@@ -16,7 +14,7 @@ public class RegistrationService {
     private final UserRepository userRepository;
     private final UserValidationService validationService;
 
-    public RegistrationService(@Qualifier(InMemoryUserRepository.class) UserRepository userRepository, UserValidationService validationService) {
+    public RegistrationService(UserRepository userRepository, UserValidationService validationService) {
         this.userRepository = userRepository;
         this.validationService = validationService;
     }
