@@ -3,6 +3,8 @@ package by.niruin.dormitorySystem.domain.service.validation;
 import by.niruin.dormitorySystem.exception.InputValidationException;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 
+import java.util.List;
+
 import static by.niruin.dormitorySystem.constant.ConsoleMessage.INVALID_INPUT_MESSAGE;
 
 @Component
@@ -25,6 +27,16 @@ public class RoomInputValidationService {
 
     public void validateGender(String input) {
         if (!input.matches(GENDER_PATTERN)) {
+            throw new InputValidationException(INVALID_INPUT_MESSAGE);
+        }
+    }
+
+    public void validateNumberInList(String input, List<Integer> validNumbers) {
+        validateNumber(input);
+
+        int intInput = Integer.parseInt(input);
+
+        if (!validNumbers.contains(intInput)) {
             throw new InputValidationException(INVALID_INPUT_MESSAGE);
         }
     }

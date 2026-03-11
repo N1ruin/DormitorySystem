@@ -12,8 +12,8 @@ public class User implements Identity {
     private Role role;
     private final FullName fullName;
     private final Gender gender;
-    private final UUID universityId;
-    private final UUID dormitoryId;
+    private UUID universityId;
+    private UUID dormitoryId;
 
     public User(UUID id, String login, String password, Role role, String firstName,
                 String lastName, String fatherName, Gender gender, UUID universityID, UUID dormitoryId) {
@@ -21,7 +21,7 @@ public class User implements Identity {
         this.login = login;
         this.passwordHash = password.hashCode();
         this.role = role;
-        this.fullName = new FullName(firstName, lastName, fatherName);
+        this.fullName = new FullName(firstName, fatherName, lastName);
         this.gender = gender;
         this.universityId = universityID;
         this.dormitoryId = dormitoryId;
@@ -32,7 +32,7 @@ public class User implements Identity {
         this.id = id;
         this.login = login;
         this.role = role;
-        this.fullName = new FullName(firstName, lastName, fatherName);
+        this.fullName = new FullName(firstName, fatherName, lastName);
         this.gender = gender;
         this.universityId = universityID;
         this.dormitoryId = dormitoryId;
@@ -77,6 +77,14 @@ public class User implements Identity {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public void setUniversityId(UUID universityId) {
+        this.universityId = universityId;
+    }
+
+    public void setDormitoryId(UUID dormitoryId) {
+        this.dormitoryId = dormitoryId;
     }
 
     public UUID getUniversityId() {

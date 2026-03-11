@@ -6,7 +6,6 @@ import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import by.niruin.dormitorySystem.infrastructure.mapper.UserMapper;
 import by.niruin.dormitorySystem.util.FileUtil;
 
-import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -22,23 +21,21 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(UUID id) {
-        return users.values().stream().filter(user -> user.getId().equals(id)).findFirst();
+    public Optional<User> findById(UUID userId) {
+        return users.values().stream()
+                .filter(user -> user.getId().equals(userId)).findFirst();
     }
 
+    @Override
     public void persistUsers() {
         String usersData = mapper.mapUsersToString(users.values());
         FileUtil.writeString(USERS_FILE_PATH, usersData);
     }
 
+    @Override
     public void fetchUsers() {
-        try {
-            String usersData = FileUtil.readString(USERS_FILE_PATH);
-            mapper.mapStringToUsers(usersData)
-                    .forEach(user -> users.put(user.getId(), user));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException();
-        }
+        String usersData = FileUtil.readString(USERS_FILE_PATH);
+        mapper.mapStringToUsers(usersData).forEach(user -> users.put(user.getId(), user));
     }
 
     @Override
@@ -66,5 +63,12 @@ public class InMemoryUserRepository implements UserRepository {
         return users.values().stream()
                 .filter(user -> user.getLogin().equalsIgnoreCase(login))
                 .findFirst();
+    }
+
+    @Override
+    public List<User> findAllOrderBy(Comparator<User> comparator) {
+        return users.values().stream()
+                .sorted(comparator)
+                .toList();
     }
 }

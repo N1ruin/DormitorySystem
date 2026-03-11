@@ -1,13 +1,11 @@
 package by.niruin.dormitorySystem.infrastructure.repository;
 
-import by.niruin.dormitorySystem.domain.context.ApplicationContextHolder;
 import by.niruin.dormitorySystem.domain.model.Student;
 import by.niruin.dormitorySystem.domain.repository.StudentRepository;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 import by.niruin.dormitorySystem.infrastructure.mapper.StudentMapper;
 import by.niruin.dormitorySystem.util.FileUtil;
 
-import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -23,19 +21,18 @@ public class InMemoryStudentRepository implements StudentRepository {
         this.mapper = mapper;
     }
 
+    @Override
     public void persistStudents() {
         String studentsData = mapper.mapStudentsToString(students.values());
         FileUtil.writeString(STUDENTS_FILE_PATH, studentsData);
     }
 
+    @Override
     public void fetchStudents() {
-        try {
-            String studentsData = FileUtil.readString(STUDENTS_FILE_PATH);
-            mapper.mapStringToStudents(studentsData)
-                    .forEach(student -> students.put(student.getId(), student));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException();
-        }
+        String studentsData = FileUtil.readString(STUDENTS_FILE_PATH);
+        mapper.mapStringToStudents(studentsData)
+                .forEach(student -> students.put(student.getId(), student));
+
     }
 
     @Override
@@ -59,26 +56,50 @@ public class InMemoryStudentRepository implements StudentRepository {
     }
 
     @Override
-    public Map<UUID, List<Student>> getStudentsInRooms() {
-        UUID currentDormitoryId = ApplicationContextHolder.getContext().getActiveUser().getDormitoryId();
+    public List<Student> findByUniversityId(UUID universityId) {
         return students.values().stream()
-                .filter(student -> student.getDormitoryId().equals(currentDormitoryId))
-                .filter(student -> student.getDormitoryId() != null &&
-                                   student.getDormitoryId().equals(currentDormitoryId))
+                .filter(student -> student.getUniversityId().equals(universityId))
+                .toList();
+    }
+
+    @Override
+    public List<Student> findAllByUniversityIdOrderBy(UUID universityId, Comparator<Student> comparator) {
+        return students.values().stream()
+                .filter(student -> student.getUniversityId().equals(universityId))
+                .sorted(comparator)
+                .toList();
+    }
+
+    @Override
+    public Map<UUID, List<Student>> findByDormitoryIdGroupingByRoomId(UUID dormitoryId, UUID roomId) {
+        return students.values().stream()
+                .filter(student -> student.getDormitoryId().equals(dormitoryId))
                 .filter(student -> student.getRoomId() != null)
                 .collect(Collectors.groupingBy(Student::getRoomId));
     }
 
     @Override
-    public List<String> getStudentNamesWithoutRoom(UUID dormitoryId) {
+    public List<Student> findByDormitoryId(UUID dormitoryId) {
         return students.values().stream()
-                .filter(student -> student.getDormitoryId().equals(dormitoryId))
-                .filter(student -> student.getRoomId() == null)
-                .map(student -> String.join(
-                        " ",
-                        student.getFullName().getLastName(),
-                        student.getFullName().getFirstName(),
-                        student.getFullName().getFatherName()))
+                .filter(student -> {
+                    var studentDormitoryId = student.getDormitoryId();
+                    return studentDormitoryId != null && studentDormitoryId.equals(dormitoryId);
+                })
+                .toList();
+    }
+
+    @Override
+    public Optional<Student> findByUniversityIdAndFullName(UUID universityId, String fullName) {
+        return students.values().stream()
+                .filter(student -> student.getUniversityId().equals(universityId))
+                .filter(student -> student.getFullName().getFullNameString().equals(fullName))
+                .findFirst();
+    }
+
+    @Override
+    public List<Student> findByRoomId(UUID roomId) {
+        return students.values().stream()
+                .filter(student -> student.getRoomId().equals(roomId))
                 .toList();
     }
 }

@@ -25,6 +25,7 @@ public class Main {
             logger.info(SAVING_DATA_LOG);
             RepositoryDataLoader repositoryDataLoader = dc.getObject(RepositoryDataLoader.class);
             repositoryDataLoader.persistData();
+            logger.info(APP_DATA_SAVED_LOG);
             throw new RuntimeException(e);
         } finally {
             logger.info(APP_EXIT_LOG);

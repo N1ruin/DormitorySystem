@@ -1,6 +1,6 @@
 package by.niruin.dormitorySystem.domain.service.validation;
 
-import by.niruin.dormitorySystem.domain.model.dto.CreateRoomDto;
+import by.niruin.dormitorySystem.domain.model.dto.room.CreateRoomDto;
 import by.niruin.dormitorySystem.domain.model.Room;
 import by.niruin.dormitorySystem.domain.repository.RoomRepository;
 import by.niruin.dormitorySystem.exception.EntityValidationException;
@@ -51,7 +51,7 @@ public class RoomValidationService {
     }
 
     private boolean isNumberFree(int number) {
-        return roomRepository.findByCurrentDormitoryId()
+        return roomRepository.findAll()
                 .stream()
                 .map(Room::getNumber)
                 .noneMatch(roomNumber -> roomNumber == number);

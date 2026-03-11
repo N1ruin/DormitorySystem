@@ -2,6 +2,7 @@ package by.niruin.dormitorySystem.domain.repository;
 
 import by.niruin.dormitorySystem.domain.model.User;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,4 +23,6 @@ public interface UserRepository {
     void delete(UUID uuid);
 
     Optional<User> findByLogin(String login);
+
+    List<User> findAllOrderBy(Comparator<User> comparator);
 }

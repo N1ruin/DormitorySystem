@@ -2,9 +2,7 @@ package by.niruin.dormitorySystem.domain.repository;
 
 import by.niruin.dormitorySystem.domain.model.Student;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public interface StudentRepository {
     void persistStudents();
@@ -19,7 +17,15 @@ public interface StudentRepository {
 
     void delete(UUID uuid);
 
-    Map<UUID, List<Student>> getStudentsInRooms();
+    List<Student> findByUniversityId(UUID universityId);
 
-    List<String> getStudentNamesWithoutRoom(UUID dormitoryId);
+    List<Student> findAllByUniversityIdOrderBy(UUID universityId, Comparator<Student> comparator);
+
+    Map<UUID, List<Student>> findByDormitoryIdGroupingByRoomId(UUID dormitoryId, UUID roomId);
+
+    List<Student> findByDormitoryId(UUID dormitoryId);
+
+    Optional<Student> findByUniversityIdAndFullName(UUID universityId, String fullName);
+
+    List<Student> findByRoomId(UUID roomId);
 }

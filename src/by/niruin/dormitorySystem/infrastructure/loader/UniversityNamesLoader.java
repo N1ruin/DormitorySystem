@@ -12,7 +12,6 @@ import java.util.Arrays;
 @Component
 public class UniversityNamesLoader {
     public static final String FIRST_NAME_FILE_PATH = "./resources/dataGenerator/universityNameSet.txt";
-    private final Logger logger = LoggerFactory.getLogger(UniversityNamesLoader.class);
     private String[] universityNames;
 
     public UniversityNamesLoader() {
@@ -20,13 +19,7 @@ public class UniversityNamesLoader {
     }
 
     public void loadNames() {
-        try {
-            universityNames = FileUtil.readString(Path.of(FIRST_NAME_FILE_PATH)).split("\n");
-        } catch (FileNotFoundException e) {
-            logger.error(e.getMessage());
-            logger.error(Arrays.toString(e.getStackTrace()));
-            throw new RuntimeException(e);
-        }
+        universityNames = FileUtil.readString(Path.of(FIRST_NAME_FILE_PATH)).split("\n");
     }
 
     public String[] getUniversityNames() {

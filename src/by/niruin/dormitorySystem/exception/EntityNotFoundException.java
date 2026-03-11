@@ -11,4 +11,11 @@ public class EntityNotFoundException extends RuntimeException {
     public EntityNotFoundException(int number, Class<?> clazz) {
         super("Entity %s with number %d not exist!".formatted(clazz.getSimpleName(), number));
     }
+
+    public EntityNotFoundException(String name, Class<?> clazz) {
+        super("%s with name %s not exist!".formatted(clazz.getSimpleName(), name));
+    }
+    public EntityNotFoundException(String message) {
+        super(message);
+    }
 }

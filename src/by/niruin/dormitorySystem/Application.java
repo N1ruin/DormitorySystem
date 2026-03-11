@@ -14,7 +14,7 @@ import static by.niruin.dormitorySystem.constant.LoggerMessage.*;
 
 @Component
 public class Application {
-    private final Logger logger = LoggerFactory.getLogger(Application.class);
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
     private final RepositoryDataLoader repositoryDataLoader;
     private final MenuDispatcher menuDispatcher;
     private final RandomDataGeneratorFacade dataGeneratorFacade;
@@ -39,6 +39,6 @@ public class Application {
         repositoryDataLoader.loadData();
         menuDispatcher.dispatch();
         repositoryDataLoader.persistData();
-        logger.info(APP_DATA_LOADED_LOG);
+        logger.info(APP_DATA_SAVED_LOG);
     }
 }

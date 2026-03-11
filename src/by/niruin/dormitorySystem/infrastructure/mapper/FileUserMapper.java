@@ -44,8 +44,8 @@ public class FileUserMapper implements UserMapper {
                 user.getLogin(),
                 user.getRole().toString(),
                 user.getFullName().getFirstName(),
-                user.getFullName().getLastName(),
                 user.getFullName().getFatherName(),
+                user.getFullName().getLastName(),
                 user.getGender().toString(),
                 String.valueOf(user.getPasswordHash()),
                 user.getUniversityId().toString(),
@@ -62,8 +62,8 @@ public class FileUserMapper implements UserMapper {
         String login = parts[1];
         Role role = Role.valueOf(parts[2].toUpperCase());
         String firstName = parts[3];
-        String lastName = parts[4];
-        String fatherName = parts[5];
+        String fatherName = parts[4];
+        String lastName = parts[5];
         Gender gender = Gender.valueOf(parts[6].toUpperCase());
         int passwordHash = Integer.parseInt(parts[7]);
         UUID universityId = UUID.fromString(parts[8]);

@@ -21,7 +21,7 @@ public class FileUtil {
         }
     }
 
-    public static String readString(Path path) throws FileNotFoundException {
+    public static String readString(Path path) {
         String data;
         try {
             data = Files.readString(path, StandardCharsets.UTF_8);

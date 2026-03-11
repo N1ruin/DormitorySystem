@@ -1,5 +1,7 @@
 package by.niruin.dormitorySystem.domain.model;
 
+import java.util.Objects;
+
 public class FullName {
     private final String firstName;
     private String lastName;
@@ -23,7 +25,35 @@ public class FullName {
         return fatherName;
     }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public String getShortName() {
-        return "%s. %s. %s".formatted(firstName, lastName.charAt(0), fatherName.charAt(0));
+        return "%s %s. %s.".formatted(lastName, firstName.charAt(0), fatherName.charAt(0));
+    }
+
+    public String getFullNameString() {
+        return "%s %s %s".formatted(lastName, firstName, fatherName);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        if (o != this) {
+            return false;
+        }
+        FullName fullName = (FullName) o;
+        return Objects.equals(firstName, fullName.firstName)
+               && Objects.equals(lastName, fullName.lastName)
+               && Objects.equals(fatherName, fullName.fatherName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, fatherName);
     }
 }
