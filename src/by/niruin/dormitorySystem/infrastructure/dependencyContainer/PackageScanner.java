@@ -21,7 +21,8 @@ public class PackageScanner {
     private final Logger logger = LoggerFactory.getLogger(PackageScanner.class);
 
     public Set<Class<?>> scanPackage(String packageName) {
-        Set<Class<?>> findedClasses = new HashSet<>();
+        Set<Class<?>> foundClasses
+                = new HashSet<>();
         ClassLoader classLoader = this.getClass().getClassLoader();
 
         String packagePath = DOT_SYMBOL + SLASH_SYMBOL + packageName.replace(DOT_SYMBOL, SLASH_SYMBOL);
@@ -30,14 +31,17 @@ public class PackageScanner {
         if (url != null) {
             File directory = new File(URLDecoder.decode(url.getFile(), StandardCharsets.UTF_8));
             if (directory.exists()) {
-                scanDirectory(directory, packageName, findedClasses, classLoader);
+                scanDirectory(directory, packageName, foundClasses
+                        , classLoader);
             }
         }
 
-        return findedClasses;
+        return foundClasses
+                ;
     }
 
-    private void scanDirectory(File directory, String packageName, Set<Class<?>> findedClasses, ClassLoader classLoader) {
+    private void scanDirectory(File directory, String packageName, Set<Class<?>> foundClasses
+            , ClassLoader classLoader) {
         logger.info(START_SCANNING_DIRECTORY_LOG.formatted(directory.getPath()));
         File[] files = directory.listFiles();
         if (files == null) {
@@ -46,28 +50,33 @@ public class PackageScanner {
 
         for (File file : files) {
             if (file.isDirectory()) {
-                scanSubdirectory(file, packageName, findedClasses, classLoader);
+                scanSubdirectory(file, packageName, foundClasses
+                        , classLoader);
             } else if (isClassFile(file)) {
-                processClassFile(file, packageName, findedClasses, classLoader);
+                processClassFile(file, packageName, foundClasses
+                        , classLoader);
             }
         }
     }
 
-    private void scanSubdirectory(File directory, String packageName, Set<Class<?>> findedClasses, ClassLoader classLoader) {
+    private void scanSubdirectory(File directory, String packageName, Set<Class<?>> foundClasses
+            , ClassLoader classLoader) {
         String subPackageName = packageName + DOT_SYMBOL + directory.getName();
-        scanDirectory(directory, subPackageName, findedClasses, classLoader);
+        scanDirectory(directory, subPackageName, foundClasses
+                , classLoader);
     }
 
     private boolean isClassFile(File file) {
         return file.getName().endsWith(CLASS_FILE_NAME_POSTFIX);
     }
 
-    private void processClassFile(File classFile, String packageName, Set<Class<?>> findedClasses, ClassLoader classLoader) {
+    private void processClassFile(File classFile, String packageName, Set<Class<?>> foundClasses
+            , ClassLoader classLoader) {
         String className = packageName + DOT_SYMBOL + classFile.getName().replace(CLASS_FILE_NAME_POSTFIX, EMPTY_STRING);
         try {
             Class<?> clazz = classLoader.loadClass(className);
             if (clazz.isAnnotationPresent(Component.class)) {
-                findedClasses.add(clazz);
+                foundClasses.add(clazz);
                 logger.info(FIND_COMPONENT_CLASS_FILE_LOG.formatted(className));
             }
         } catch (ClassNotFoundException e) {

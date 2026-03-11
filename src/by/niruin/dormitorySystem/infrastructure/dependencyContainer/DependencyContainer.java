@@ -6,8 +6,8 @@ public class DependencyContainer {
     private final Map<Class<?>, Object> container;
 
     public DependencyContainer(String packageName) {
-        PackageScanner packageScanner1 = new PackageScanner();
-        Set<Class<?>> classes = packageScanner1.scanPackage(packageName);
+        PackageScanner packageScanner = new PackageScanner();
+        Set<Class<?>> classes = packageScanner.scanPackage(packageName);
         ComponentInitializer componentInitializer = new ComponentInitializer(new ImplementationFinder(classes));
         container = componentInitializer.createObjects(classes);
     }

@@ -23,7 +23,7 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(UUID id) {
-        return users.values().stream().filter(user -> user.getId().equals(id)).findFirst();
+        return Optional.ofNullable(users.get(id));
     }
 
     public void persistUsers() {

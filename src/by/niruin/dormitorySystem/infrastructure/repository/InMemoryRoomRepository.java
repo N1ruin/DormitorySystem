@@ -3,6 +3,7 @@ package by.niruin.dormitorySystem.infrastructure.repository;
 import by.niruin.dormitorySystem.domain.context.ApplicationContextHolder;
 import by.niruin.dormitorySystem.domain.model.Room;
 import by.niruin.dormitorySystem.domain.repository.RoomRepository;
+import by.niruin.dormitorySystem.exception.EntityNotFoundException;
 import by.niruin.dormitorySystem.infrastructure.annotation.Component;
 
 import by.niruin.dormitorySystem.infrastructure.mapper.RoomMapper;
@@ -58,6 +59,10 @@ public class InMemoryRoomRepository implements RoomRepository {
 
     @Override
     public void delete(UUID id) {
+        if (id == null || rooms.remove(id) == null) {
+            throw new EntityNotFoundException(id, Room.class);
+        }
+
         rooms.remove(id);
     }
 

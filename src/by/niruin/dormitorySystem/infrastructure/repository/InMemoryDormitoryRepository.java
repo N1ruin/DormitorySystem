@@ -8,8 +8,6 @@ import by.niruin.dormitorySystem.infrastructure.mapper.DormitoryMapper;
 import by.niruin.dormitorySystem.util.FileUtil;
 
 import java.io.FileNotFoundException;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -58,12 +56,10 @@ public class InMemoryDormitoryRepository implements DormitoryRepository {
 
     @Override
     public void delete(UUID id) {
-        if (id == null || !dormitories.containsKey(id)) {
-            Type entityType = this.getClass().getGenericSuperclass();
-            ParameterizedType parameterizedType = (ParameterizedType) entityType;
-            Class<?> genericClass = (Class<?>) parameterizedType.getActualTypeArguments()[0];
-            throw new EntityNotFoundException(id, genericClass);
+        if (id == null || dormitories.remove(id) == null) {
+            throw new EntityNotFoundException(id, Dormitory.class);
         }
+
         dormitories.remove(id);
     }
 
@@ -75,9 +71,9 @@ public class InMemoryDormitoryRepository implements DormitoryRepository {
     }
 
     @Override
-    public Optional<Dormitory> findByDormitoryNumberOrUniversityId(UUID universiryId, int dormitoryNumber) {
+    public Optional<Dormitory> findByDormitoryNumberOrUniversityId(UUID universityId, int dormitoryNumber) {
         return dormitories.values().stream()
-                .filter(dormitory -> dormitory.getUniversityId().equals(universiryId))
+                .filter(dormitory -> dormitory.getUniversityId().equals(universityId))
                 .filter(dormitory -> dormitory.getNumber() == dormitoryNumber)
                 .findFirst();
     }

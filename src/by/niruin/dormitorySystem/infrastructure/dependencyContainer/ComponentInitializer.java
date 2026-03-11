@@ -5,6 +5,7 @@ import by.niruin.dormitorySystem.logger.Logger;
 import by.niruin.dormitorySystem.logger.LoggerFactory;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.util.*;
 
@@ -25,13 +26,13 @@ public class ComponentInitializer {
         var objects = new HashMap<Class<?>, Object>();
 
         for (var clazz : classes) {
-            if (clazz.isInterface()) {
-                var implClass = implementationFinder.findImplementationClass(clazz);
-                getInstance(implClass, objects, new HashSet<>());
-            } else {
-                getInstance(clazz, objects, new HashSet<>());
-            }
+            var targetClazz = (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers()))
+                    ? implementationFinder.findImplementationClass(clazz)
+                    : clazz;
+
+            getInstance(targetClazz, objects, new HashSet<>());
         }
+
         logger.info(CREATING_OBJECTS_ENDED_LOG);
         return objects;
     }
@@ -81,9 +82,9 @@ public class ComponentInitializer {
         if (parameterType.isInterface()) {
             var interfaceImpl = implementationFinder.findImplementationClass(parameterType);
             return getInstance(interfaceImpl, objects, triggeredBy);
-        } else {
-            return getInstance(parameterType, objects, triggeredBy);
         }
+
+        return getInstance(parameterType, objects, triggeredBy);
     }
 
     private Object getClassInstanceNoEx(Constructor<?> constructor, List<?> params) {
