@@ -18,7 +18,8 @@ public class RoomFormHandlerFactoryImpl implements RoomFormHandlerFactory {
     private final RoomInputValidationService roomInputValidationService;
     private final RoomService roomService;
 
-    public RoomFormHandlerFactoryImpl(FormHandler formHandler, PrintService printService, RoomInputValidationService roomInputValidationService, RoomService roomService) {
+    public RoomFormHandlerFactoryImpl(FormHandler formHandler, PrintService printService,
+                                      RoomInputValidationService roomInputValidationService, RoomService roomService) {
         this.formHandler = formHandler;
         this.printService = printService;
         this.roomInputValidationService = roomInputValidationService;
