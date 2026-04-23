@@ -32,7 +32,7 @@ public class DistributeStudentToDormitoryFormHandler {
         this.dormitoryService = dormitoryService;
     }
 
-    public DistributeStudentToDormitoryFormHandler handleStudentNumber() {
+    public DistributeStudentToDormitoryFormHandler inputStudentNumber() {
         var studentsNamesWithoutDormitory = studentService.getStudentsNamesWithoutDormitory();
         studentNumberFromList = formHandler.handleInputString(
                 () -> printService.printStudentNames(studentsNamesWithoutDormitory),
@@ -42,7 +42,7 @@ public class DistributeStudentToDormitoryFormHandler {
         return this;
     }
 
-    public DistributeStudentToDormitoryFormHandler handleDormitoryNumber() {
+    public DistributeStudentToDormitoryFormHandler inputDormitoryNumber() {
         var dormitoriesNumbers = dormitoryService.getCurrentUniversityDormitoryNumbers();
         dormitoryNumber = formHandler.handleInputString(
                 () -> printService.printDormitoryNumbers(dormitoriesNumbers),

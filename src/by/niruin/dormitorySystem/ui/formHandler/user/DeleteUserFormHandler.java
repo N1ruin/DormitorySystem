@@ -19,7 +19,7 @@ public class DeleteUserFormHandler {
         this.userInputValidationService = userInputValidationService;
     }
 
-    public DeleteUserFormHandler handleLogin() {
+    public DeleteUserFormHandler inputLogin() {
         login = formHandler.handleInputString(
                 printService::printInputLoginRegistrationRequestMessage,
                 Function.identity(),

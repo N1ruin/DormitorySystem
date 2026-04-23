@@ -62,7 +62,8 @@ public class DormitoryValidationService {
     }
 
     private boolean isNumberFree(int number) {
-        return dormitoryRepository.findAll().stream()
+        return dormitoryRepository.findAll()
+                .stream()
                 .noneMatch(dormitory -> dormitory.getNumber() == number);
     }
 

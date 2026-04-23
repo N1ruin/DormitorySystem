@@ -21,7 +21,7 @@ public class DeleteRoomFormHandler {
         this.roomInputValidationService = roomInputValidationService;
     }
 
-    public DeleteRoomFormHandler handleRoomNumber() {
+    public DeleteRoomFormHandler inputRoomNumber() {
         roomNumber = formHandler.handleInputString(
                 () -> printService.printRoomNumbers(roomService.getRoomNumbers()),
                 Integer::parseInt,

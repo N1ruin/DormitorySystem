@@ -12,13 +12,13 @@ import by.niruin.dormitorySystem.ui.menu.service.MenuItemService;
 import static by.niruin.dormitorySystem.constant.LoggerMessage.*;
 
 public class StudentMenu implements Menu {
+    private static final Logger logger = LoggerFactory.getLogger(StudentMenu.class);
     private final PrintService printService;
     private final InputService inputService;
     private final MenuFactory menuFactory;
     private final MenuItemService menuItemService;
     private final StudentFormHandlerFactory studentFormHandlerFactory;
     private final StudentService studentService;
-    private final Logger logger = LoggerFactory.getLogger(StudentMenu.class);
 
     public StudentMenu(PrintService printService, InputService inputService, MenuFactory menuFactory,
                        MenuItemService menuItemService, StudentFormHandlerFactory studentFormHandlerFactory,
@@ -56,23 +56,23 @@ public class StudentMenu implements Menu {
             case CREATE_STUDENT -> createStudent();
             case DELETE_STUDENT -> deleteStudent();
             case UPDATE_STUDENT -> updateStudent();
-            case GET_SORTED_STUDENTS -> nextMenu = menuFactory.createMenu(SelectSortStudentsOrderMenu.class);
+            case GET_SORTED_STUDENTS -> nextMenu = menuFactory.getMenu(SelectSortStudentsOrderMenu.class);
             case GET_STUDENT_INFO -> getStudentInfo();
             case GET_STUDENTS_WITHOUT_DORMITORY -> getStudentsWithoutDormitory();
             case DISTRIBUTE_STUDENTS_TO_DORMITORIES -> distributeStudentsToDormitories();
             case DISTRIBUTE_STUDENTS_TO_ROOMS -> distributeStudentsToRooms();
-            case GO_BACK -> nextMenu = menuFactory.createMenu(MainMenu.class);
+            case GO_BACK -> nextMenu = menuFactory.getMenu(MainMenu.class);
         }
         return nextMenu;
     }
 
     private void createStudent() {
         var dto = studentFormHandlerFactory.getCreateStudentFormHandler()
-                .handleFirstName()
-                .handleLastName()
-                .handleFatherName()
-                .handleGender()
-                .handleEnteringDate()
+                .inputFirstName()
+                .inputLastName()
+                .inputFatherName()
+                .inputGender()
+                .inputEnteringDate()
                 .createDto();
         try {
             studentService.createStudent(dto);
@@ -87,7 +87,7 @@ public class StudentMenu implements Menu {
 
     private void deleteStudent() {
         var dto = studentFormHandlerFactory.getDeleteStudentFormHandler()
-                .handleNumber()
+                .inputNumber()
                 .createDto();
 
         try {
@@ -103,9 +103,9 @@ public class StudentMenu implements Menu {
 
     private void updateStudent() {
         var dto = studentFormHandlerFactory.getUpdateStudentFormHandler()
-                .handleNumber()
-                .handleLastName()
-                .handleDormitory()
+                .inputNumber()
+                .inputLastName()
+                .inputDormitory()
                 .createDto();
 
         try {
@@ -121,7 +121,7 @@ public class StudentMenu implements Menu {
 
     private void getStudentInfo() {
         var dto = studentFormHandlerFactory.getStudentInfoFormHandler()
-                .handleStudentNumber()
+                .inputStudentNumber()
                 .createDto();
 
         try {
@@ -149,8 +149,8 @@ public class StudentMenu implements Menu {
 
     private void distributeStudentsToDormitories() {
         var distributeStudentToDormitoryDto = studentFormHandlerFactory.getDistributeStudentToDormitoryFormHandler()
-                .handleStudentNumber()
-                .handleDormitoryNumber()
+                .inputStudentNumber()
+                .inputDormitoryNumber()
                 .createDto();
 
         try {
@@ -167,8 +167,8 @@ public class StudentMenu implements Menu {
 
     private void distributeStudentsToRooms() {
         var distributeStudentToRoomDto = studentFormHandlerFactory.getDistributeStudentToRoomFormHandler()
-                .handleStudentNumber()
-                .handleRoomNumber()
+                .inputStudentNumber()
+                .inputRoomNumber()
                 .createDto();
 
         try {

@@ -24,8 +24,10 @@ public class MenuDispatcher {
     }
 
     public void dispatch() {
+        menuFactory.registerMenus();
+
         printService.printWelcomeApplicationMessage();
-        Menu currentMenu = menuFactory.createMenu(StartMenu.class);
+        Menu currentMenu = menuFactory.getMenu(StartMenu.class);
         logger.info(STARTED_MENU_CREATED_LOG);
         while (!(currentMenu instanceof ExitMenu)) {
             currentMenu.display();

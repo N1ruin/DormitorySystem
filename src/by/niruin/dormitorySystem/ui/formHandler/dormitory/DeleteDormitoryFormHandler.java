@@ -22,7 +22,7 @@ public class DeleteDormitoryFormHandler {
         this.dormitoryInputValidationService = dormitoryInputValidationService;
     }
 
-    public DeleteDormitoryFormHandler handleDormitoryNumber() {
+    public DeleteDormitoryFormHandler inputDormitoryNumber() {
         dormitoryNumber = formHandler.handleInputString(
                 () -> printService.printDormitoryNumbers(dormitoryService.getCurrentUniversityDormitoryNumbers()),
                 Integer::parseInt,

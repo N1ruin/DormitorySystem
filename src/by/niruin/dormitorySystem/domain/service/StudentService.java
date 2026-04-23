@@ -17,6 +17,7 @@ import by.niruin.dormitorySystem.util.ApplicationContextUtil;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 
@@ -200,7 +201,8 @@ public class StudentService {
     }
 
     private List<String> getFilteredStudentNames(Predicate<Student> filter) {
-        return studentRepository.findByUniversityId(ApplicationContextUtil.getCurrentUniversityId()).stream()
+        return studentRepository.findByUniversityId(ApplicationContextUtil.getCurrentUniversityId())
+                .stream()
                 .filter(filter)
                 .map(this::mapStudentToNames)
                 .sorted()
@@ -208,7 +210,8 @@ public class StudentService {
     }
 
     private String getFilteredStudentNames(Predicate<Student> filter, String title) {
-        var students = studentRepository.findByUniversityId(ApplicationContextUtil.getCurrentUniversityId()).stream()
+        var students = studentRepository.findByUniversityId(ApplicationContextUtil.getCurrentUniversityId())
+                .stream()
                 .filter(filter)
                 .toList();
 
@@ -237,16 +240,20 @@ public class StudentService {
         LocalDate roomCheckInDate = student.getRoomCheckInDate();
         LocalDate roomCheckOutDate = student.getRoomCheckOutDate();
 
-        return new StudentInfoDto(fullName, gender, dormitoryNumber, roomCheckInDate, roomCheckOutDate, roomNumber,
-                startEducationDate, endingEducationDate, universityName);
+        return new StudentInfoDto(fullName,
+                gender,
+                dormitoryNumber,
+                roomCheckInDate,
+                roomCheckOutDate,
+                roomNumber,
+                startEducationDate,
+                endingEducationDate,
+                universityName);
     }
 
     private Integer getDormitoryNumber(Student student) {
-        if (student.getDormitoryId() == null) {
-            return null;
-        }
-
-        return dormitoryRepository.findById(student.getDormitoryId())
+        return Optional.ofNullable(student.getDormitoryId())
+                .flatMap(dormitoryRepository::findById)
                 .map(Dormitory::getNumber)
                 .orElse(null);
 

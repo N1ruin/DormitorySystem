@@ -23,7 +23,7 @@ public class UpdateUniversityFormHandler {
         this.universityInputValidationService = universityInputValidationService;
     }
 
-    public UpdateUniversityFormHandler handleNumber() {
+    public UpdateUniversityFormHandler inputUniversityNumber() {
         universityNumber = formHandler.handleInputString(
                 () -> printService.printSelectUniversityRequestMessage(universityService.getUniversitiesNames()),
                 Integer::parseInt,
@@ -31,7 +31,7 @@ public class UpdateUniversityFormHandler {
         return this;
     }
 
-    public UpdateUniversityFormHandler handleAvailable() {
+    public UpdateUniversityFormHandler inputAvailable() {
         studyDuration = formHandler.handleInputString(
                 printService::printInputStudyDurationRequestMessage,
                 Byte::parseByte,

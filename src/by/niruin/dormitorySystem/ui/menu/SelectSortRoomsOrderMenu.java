@@ -15,12 +15,12 @@ import static by.niruin.dormitorySystem.constant.LoggerMessage.ENTERED_INVALID_V
 import static by.niruin.dormitorySystem.constant.LoggerMessage.SELECTED_ITEM_LOG;
 
 public class SelectSortRoomsOrderMenu implements Menu {
+    private static final Logger logger = LoggerFactory.getLogger(SelectSortRoomsOrderMenu.class);
     private final PrintService printService;
     private final InputService inputService;
     private final MenuFactory menuFactory;
     private final RoomService roomService;
     private final MenuItemService menuItemService;
-    private static final Logger logger = LoggerFactory.getLogger(SelectSortRoomsOrderMenu.class);
 
     public SelectSortRoomsOrderMenu(PrintService printService, InputService inputService, MenuFactory menuFactory,
                                     RoomService roomService, MenuItemService menuItemService) {
@@ -45,7 +45,7 @@ public class SelectSortRoomsOrderMenu implements Menu {
             String sortedRoomsInfo = roomService.getSortedRoomsInfo(getRoomComparator(item));
             printService.printSortedDormitoriesInfo(sortedRoomsInfo);
             logger.info(SELECTED_ITEM_LOG.formatted(item.name()));
-            return menuFactory.createMenu(RoomMenu.class);
+            return menuFactory.getMenu(RoomMenu.class);
         } catch (Exception e) {
             printService.printInvalidInputMessage();
             logger.info(ENTERED_INVALID_VALUE_LOG.formatted(userInput));

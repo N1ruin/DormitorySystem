@@ -25,7 +25,7 @@ public class UpdateDormitoryFormHandler {
         this.dormitoryService = dormitoryService;
     }
 
-    public UpdateDormitoryFormHandler handleNumber() {
+    public UpdateDormitoryFormHandler inputNumber() {
         dormitoryNumber = formHandler.handleInputString(
                 () -> printService.printDormitoryNumbers(dormitoryService.getCurrentUniversityDormitoryNumbers()),
                 Integer::parseInt,
@@ -33,7 +33,7 @@ public class UpdateDormitoryFormHandler {
         return this;
     }
 
-    public UpdateDormitoryFormHandler handleAvailable() {
+    public UpdateDormitoryFormHandler inputAvailable() {
         String availableForLivingInput = formHandler.handleInputString(
                 printService::printInputAvailableForLivingRequestMessage,
                 Function.identity(),

@@ -22,7 +22,7 @@ public class DeleteUniversityFormHandler {
         this.universityInputValidationService = universityInputValidationService;
     }
 
-    public DeleteUniversityFormHandler handleUniversityNumber() {
+    public DeleteUniversityFormHandler inputUniversityNumber() {
         universityNumber = formHandler.handleInputString(
                 () -> printService.printSelectUniversityRequestMessage(universityService.getUniversitiesNames()),
                 Integer::parseInt,

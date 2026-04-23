@@ -22,7 +22,7 @@ public class CreateUniversityFormHandler {
         this.printService = printService;
     }
 
-    public CreateUniversityFormHandler handleUniversityName() {
+    public CreateUniversityFormHandler inputUniversityName() {
         universityName = formHandler.handleInputString(
                 printService::printInputUniversityNumberRequestMessage,
                 Function.identity(),
@@ -30,7 +30,7 @@ public class CreateUniversityFormHandler {
         return this;
     }
 
-    public CreateUniversityFormHandler handleStudyDuration() {
+    public CreateUniversityFormHandler inputStudyDuration() {
         studyDuration = formHandler.handleInputString(
                 printService::printInputStudyDurationRequestMessage,
                 Byte::parseByte,

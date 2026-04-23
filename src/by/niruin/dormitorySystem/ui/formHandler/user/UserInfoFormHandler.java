@@ -19,7 +19,7 @@ public class UserInfoFormHandler {
         this.userInputValidationService = userInputValidationService;
     }
 
-    public UserInfoFormHandler handleLogin() {
+    public UserInfoFormHandler inputLogin() {
         login = formHandler.handleInputString(
                 printService::printInputLoginRegistrationRequestMessage,
                 Function.identity(),

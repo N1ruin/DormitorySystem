@@ -13,6 +13,7 @@ import by.niruin.dormitorySystem.ui.menu.service.MenuItemService;
 import static by.niruin.dormitorySystem.constant.LoggerMessage.*;
 
 public class UserMenu implements Menu {
+    private static final Logger logger = LoggerFactory.getLogger(UserMenu.class);
     private final PrintService printService;
     private final InputService inputService;
     private final MenuFactory menuFactory;
@@ -20,7 +21,6 @@ public class UserMenu implements Menu {
     private final MenuItemService menuItemService;
     private final RegistrationService registrationService;
     private final UserFormHandlerFactory userFormHandlerFactory;
-    private static final Logger logger = LoggerFactory.getLogger(UserMenu.class);
 
     public UserMenu(PrintService printService, InputService inputService, MenuFactory menuFactory, UserService userService,
                     MenuItemService menuItemService, RegistrationService registrationService,
@@ -60,9 +60,9 @@ public class UserMenu implements Menu {
             case CREATE_USER -> createUser();
             case DELETE_USER -> deleteUser();
             case UPDATE_USER -> updateUser();
-            case GET_SORTED_USERS -> nextMenu = menuFactory.createMenu(SelectSortUsersOrderMenu.class);
+            case GET_SORTED_USERS -> nextMenu = menuFactory.getMenu(SelectSortUsersOrderMenu.class);
             case GET_USER_INFO -> getUserInfo();
-            case GO_BACK -> nextMenu = menuFactory.createMenu(MainMenu.class);
+            case GO_BACK -> nextMenu = menuFactory.getMenu(MainMenu.class);
         }
 
         return nextMenu;
@@ -70,14 +70,14 @@ public class UserMenu implements Menu {
 
     private void createUser() {
         var dto = userFormHandlerFactory.getRegistrationFormHandler()
-                .handleLogin()
-                .handlePassword()
-                .handleFirstName()
-                .handleLastName()
-                .handleFatherName()
-                .handleGender()
-                .handleUniversityNumber()
-                .handleDormitoryNumber()
+                .inputLogin()
+                .inputPassword()
+                .inputFirstName()
+                .inputLastName()
+                .inputFatherName()
+                .inputGender()
+                .inputUniversityNumber()
+                .inputDormitoryNumber()
                 .createDto();
         try {
             registrationService.signUp(dto);
@@ -92,7 +92,7 @@ public class UserMenu implements Menu {
 
     private void deleteUser() {
         var dto = userFormHandlerFactory.getDeleteUserFormHandler()
-                .handleLogin()
+                .inputLogin()
                 .createDto();
 
         try {
@@ -108,10 +108,10 @@ public class UserMenu implements Menu {
 
     private void updateUser() {
         var dto = userFormHandlerFactory.getUpdateUserFormHandler()
-                .handleLogin()
-                .handlePassword()
-                .handleLastName()
-                .handleRole()
+                .inputLogin()
+                .inputPassword()
+                .inputLastName()
+                .inputRole()
                 .createDto();
         try {
             userService.updateUser(dto);
@@ -126,7 +126,7 @@ public class UserMenu implements Menu {
 
     private void getUserInfo() {
         var dto = userFormHandlerFactory.getUserInfoFormHandler()
-                .handleLogin()
+                .inputLogin()
                 .createDto();
 
         try {

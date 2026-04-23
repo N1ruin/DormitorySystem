@@ -74,8 +74,7 @@ public class RoomService {
     public String getSortedRoomsInfo(Comparator<Room> comparator) {
         var roomList = roomRepository.findAllByDormitoryIdOrderBy(ApplicationContextUtil.getCurrentDormitoryId(), comparator);
 
-        var roomInfoDtos = roomList
-                .stream()
+        var roomInfoDtos = roomList.stream()
                 .map(this::buildRoomInfoDto)
                 .toList();
 

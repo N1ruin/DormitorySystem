@@ -10,11 +10,11 @@ import static by.niruin.dormitorySystem.constant.LoggerMessage.USER_REGISTRATION
 import static by.niruin.dormitorySystem.constant.LoggerMessage.USER_REGISTRATION_SUCCESS_LOG;
 
 public class RegistrationMenu implements Menu {
+    private static final Logger logger = LoggerFactory.getLogger(RegistrationMenu.class);
     private final PrintService printService;
     private final MenuFactory menuFactory;
     private final UserFormHandlerFactory userFormHandlerFactory;
     private final RegistrationService registrationService;
-    private final Logger logger = LoggerFactory.getLogger(RegistrationMenu.class);
 
     public RegistrationMenu(PrintService printService, MenuFactory menuFactory,
                             UserFormHandlerFactory userFormHandlerFactory, RegistrationService registrationService) {
@@ -32,19 +32,19 @@ public class RegistrationMenu implements Menu {
     @Override
     public Menu handleInput() {
         signUp();
-        return menuFactory.createMenu(StartMenu.class);
+        return menuFactory.getMenu(StartMenu.class);
     }
 
     private void signUp() {
         var dto = userFormHandlerFactory.getRegistrationFormHandler()
-                .handleLogin()
-                .handlePassword()
-                .handleFirstName()
-                .handleLastName()
-                .handleFatherName()
-                .handleGender()
-                .handleUniversityNumber()
-                .handleDormitoryNumber()
+                .inputLogin()
+                .inputPassword()
+                .inputFirstName()
+                .inputLastName()
+                .inputFatherName()
+                .inputGender()
+                .inputUniversityNumber()
+                .inputDormitoryNumber()
                 .createDto();
         try {
             registrationService.signUp(dto);

@@ -53,7 +53,7 @@ public class RegistrationFormHandler {
         this.dormitoryService = dormitoryService;
     }
 
-    public RegistrationFormHandler handleLogin() {
+    public RegistrationFormHandler inputLogin() {
         login = formHandler.handleInputString(
                 printService::printInputLoginRegistrationRequestMessage,
                 Function.identity(),
@@ -61,7 +61,7 @@ public class RegistrationFormHandler {
         return this;
     }
 
-    public RegistrationFormHandler handlePassword() {
+    public RegistrationFormHandler inputPassword() {
         password = formHandler.handleInputString(
                 printService::printInputPasswordRequestMessage,
                 Function.identity(),
@@ -69,7 +69,7 @@ public class RegistrationFormHandler {
         return this;
     }
 
-    public RegistrationFormHandler handleFirstName() {
+    public RegistrationFormHandler inputFirstName() {
         firstName = formHandler.handleInputString(
                 printService::printInputFirstNameRequestMessage,
                 Function.identity(),
@@ -77,7 +77,7 @@ public class RegistrationFormHandler {
         return this;
     }
 
-    public RegistrationFormHandler handleLastName() {
+    public RegistrationFormHandler inputLastName() {
         lastName = formHandler.handleInputString(
                 printService::printInputLastNameRequestMessage,
                 Function.identity(),
@@ -85,7 +85,7 @@ public class RegistrationFormHandler {
         return this;
     }
 
-    public RegistrationFormHandler handleFatherName() {
+    public RegistrationFormHandler inputFatherName() {
         fatherName = formHandler.handleInputString(
                 printService::printInputFatherNameRequestMessage,
                 Function.identity(),
@@ -93,7 +93,7 @@ public class RegistrationFormHandler {
         return this;
     }
 
-    public RegistrationFormHandler handleGender() {
+    public RegistrationFormHandler inputGender() {
         String genderInput = formHandler.handleInputString(
                 printService::printInputGenderRequestMessage,
                 Function.identity(),
@@ -104,7 +104,7 @@ public class RegistrationFormHandler {
         return this;
     }
 
-    public RegistrationFormHandler handleUniversityNumber() {
+    public RegistrationFormHandler inputUniversityNumber() {
         int universityNumber = formHandler.handleInputString(
                 () -> printService.printSelectUniversityRequestMessage(universityService.getUniversitiesNames()),
                 Integer::parseInt,
@@ -116,7 +116,7 @@ public class RegistrationFormHandler {
         return this;
     }
 
-    public RegistrationFormHandler handleDormitoryNumber() {
+    public RegistrationFormHandler inputDormitoryNumber() {
         int dormitoryNumber = formHandler.handleInputString(
                 () -> printService.printDormitoriesNumbersRequestMessage(dormitoryService.getDormitoryNumbers(universityId)),
                 Integer::parseInt,
@@ -130,6 +130,13 @@ public class RegistrationFormHandler {
     }
 
     public UserRegistrationDto createDto() {
-        return new UserRegistrationDto(login, password, firstName, lastName, fatherName, gender, universityId, dormitoryId);
+        return new UserRegistrationDto(login,
+                password,
+                firstName,
+                lastName,
+                fatherName,
+                gender,
+                universityId,
+                dormitoryId);
     }
 }

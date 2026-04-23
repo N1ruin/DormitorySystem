@@ -12,13 +12,13 @@ import by.niruin.dormitorySystem.ui.menu.service.MenuItemService;
 import static by.niruin.dormitorySystem.constant.LoggerMessage.*;
 
 public class DormitoryMenu implements Menu {
+    private static final Logger logger = LoggerFactory.getLogger(DormitoryMenu.class);
     private final PrintService printService;
     private final InputService inputService;
     private final MenuFactory menuFactory;
     private final DormitoryService dormitoryService;
     private final MenuItemService menuItemService;
     private final DormitoryFormHandlerFactory dormitoryFormHandlerFactory;
-    private static final Logger logger = LoggerFactory.getLogger(DormitoryMenu.class);
 
     public DormitoryMenu(PrintService printService, InputService inputService, MenuFactory menuFactory,
                          DormitoryService dormitoryService, MenuItemService menuItemService,
@@ -58,16 +58,16 @@ public class DormitoryMenu implements Menu {
             case CREATE_DORMITORY -> createDormitory();
             case DELETE_DORMITORY -> deleteDormitory();
             case UPDATE_DORMITORY -> updateDormitory();
-            case GET_SORTED_DORMITORIES -> nextMenu = menuFactory.createMenu(SelectSortDormitoriesOrderMenu.class);
+            case GET_SORTED_DORMITORIES -> nextMenu = menuFactory.getMenu(SelectSortDormitoriesOrderMenu.class);
             case GET_DORMITORY_INFO -> getDormitoryInfo();
-            case GO_BACK -> nextMenu = menuFactory.createMenu(MainMenu.class);
+            case GO_BACK -> nextMenu = menuFactory.getMenu(MainMenu.class);
         }
         return nextMenu;
     }
 
     private void selectCurrentDormitory() {
         var dto = dormitoryFormHandlerFactory.getSelectCurrentDormitoryFormHandler()
-                .handleDormitoryNumber()
+                .inputDormitoryNumber()
                 .createDto();
 
         try {
@@ -83,9 +83,9 @@ public class DormitoryMenu implements Menu {
 
     private void createDormitory() {
         var dto = dormitoryFormHandlerFactory.getCreateDormitoryFormHandler()
-                .handleDormitoryNumber()
-                .handleDormitoryCapacity()
-                .handleAvailable()
+                .inputDormitoryNumber()
+                .inputDormitoryCapacity()
+                .inputAvailable()
                 .createDormitoryDto();
 
         try {
@@ -101,7 +101,7 @@ public class DormitoryMenu implements Menu {
 
     private void deleteDormitory() {
         var dto = dormitoryFormHandlerFactory.getDeleteDormitoryFormHandler()
-                .handleDormitoryNumber()
+                .inputDormitoryNumber()
                 .createDto();
 
         try {
@@ -117,8 +117,8 @@ public class DormitoryMenu implements Menu {
 
     private void updateDormitory() {
         var dto = dormitoryFormHandlerFactory.getUpdateDormitoryFormHandler()
-                .handleNumber()
-                .handleAvailable()
+                .inputNumber()
+                .inputAvailable()
                 .createDto();
         try {
             dormitoryService.updateDormitory(dto);
@@ -133,7 +133,7 @@ public class DormitoryMenu implements Menu {
 
     private void getDormitoryInfo() {
         var dto = dormitoryFormHandlerFactory.getDormitoryInfoFormHandler()
-                .handleDormitoryNumber()
+                .inputDormitoryNumber()
                 .createDto();
 
         try {

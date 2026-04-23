@@ -77,9 +77,16 @@ public class UniversityStatisticService {
         int studentsInDormitories = studentsByDormitoryStatus.getOrDefault(true, List.of()).size();
         int studentsWithoutDormitory = studentsByDormitoryStatus.getOrDefault(false, List.of()).size();
 
-        var dto = new UniversityStatisticsDto(universityName, dormitoriesCount, availableDormitoriesCount,
-                notAvailableDormitoriesCount, roomsCountFromAllDormitories, availableMaleRoomsCount,
-                availableFemaleRoomsCount, studentsCount, maleStudents, femaleStudents, studentsInDormitories,
+        var dto = new UniversityStatisticsDto(universityName,
+                dormitoriesCount,
+                availableDormitoriesCount,
+                notAvailableDormitoriesCount,
+                roomsCountFromAllDormitories, availableMaleRoomsCount,
+                availableFemaleRoomsCount,
+                studentsCount,
+                maleStudents,
+                femaleStudents,
+                studentsInDormitories,
                 studentsWithoutDormitory);
 
         return universityFormatter.formatStatistics(dto);

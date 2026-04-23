@@ -23,7 +23,7 @@ public class SelectCurrentDormitoryFormHandler {
         this.dormitoryInputValidationService = dormitoryInputValidationService;
     }
 
-    public SelectCurrentDormitoryFormHandler handleDormitoryNumber() {
+    public SelectCurrentDormitoryFormHandler inputDormitoryNumber() {
         dormitoryNumber = formHandler.handleInputString(
                 () -> printService.printDormitoryNumbers(dormitoryService.getCurrentUniversityDormitoryNumbers()),
                 Integer::parseInt,

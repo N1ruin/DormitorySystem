@@ -1,15 +1,13 @@
 package by.niruin.dormitorySystem.domain.model.dto.university;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public record UniversityInfoDto(String universityName,
                                 Byte studyDuration,
-                                List<Integer> dormitoriesNumbersFromUniversity) {
+                                List<Integer> universityDormitoriesNumbers) {
 
     public UniversityInfoDto {
-        if (dormitoriesNumbersFromUniversity == null) {
-            dormitoriesNumbersFromUniversity = new ArrayList<>();
-        }
+        Objects.requireNonNull(universityDormitoriesNumbers);
     }
 }

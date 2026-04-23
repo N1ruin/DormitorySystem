@@ -13,6 +13,7 @@ import by.niruin.dormitorySystem.ui.menu.service.MenuItemService;
 import static by.niruin.dormitorySystem.constant.LoggerMessage.*;
 
 public class RoomMenu implements Menu {
+    private static final Logger logger = LoggerFactory.getLogger(RoomMenu.class);
     private final InputService inputService;
     private final PrintService printService;
     private final RoomService roomService;
@@ -20,7 +21,6 @@ public class RoomMenu implements Menu {
     private final MenuFactory menuFactory;
     private final MenuItemService menuItemService;
     private final RoomFormHandlerFactory roomFormHandlerFactory;
-    private static final Logger logger = LoggerFactory.getLogger(RoomMenu.class);
 
     public RoomMenu(InputService inputService, PrintService printService, RoomService roomService,
                     MenuFactory menuFactory, StudentService studentService, MenuItemService menuItemService,
@@ -60,20 +60,20 @@ public class RoomMenu implements Menu {
             case CREATE_ROOM -> createRoom();
             case DELETE_ROOM -> deleteRoom();
             case UPDATE_ROOM -> updateRoom();
-            case GET_SORTED_ROOMS -> nextMenu = menuFactory.createMenu(SelectSortRoomsOrderMenu.class);
+            case GET_SORTED_ROOMS -> nextMenu = menuFactory.getMenu(SelectSortRoomsOrderMenu.class);
             case GET_ROOM_INFO -> getRoomInfo();
             case GET_INHABILITIES_STUDENTS -> getInhabitedStudents();
-            case GO_BACK -> nextMenu = menuFactory.createMenu(MainMenu.class);
+            case GO_BACK -> nextMenu = menuFactory.getMenu(MainMenu.class);
         }
         return nextMenu;
     }
 
     private void createRoom() {
         var dto = roomFormHandlerFactory.getCreateRoomFormHandler()
-                .handleRoomNumber()
-                .handleRoomCapacity()
-                .handleAvailable()
-                .handleGender()
+                .inputRoomNumber()
+                .inputRoomCapacity()
+                .inputAvailable()
+                .inputGender()
                 .createRoomDto();
 
         try {
@@ -89,7 +89,7 @@ public class RoomMenu implements Menu {
 
     private void deleteRoom() {
         var dto = roomFormHandlerFactory.getDeleteRoomFormHandler()
-                .handleRoomNumber()
+                .inputRoomNumber()
                 .createDto();
         try {
             roomService.deleteRoom(dto);
@@ -104,10 +104,10 @@ public class RoomMenu implements Menu {
 
     private void updateRoom() {
         var dto = roomFormHandlerFactory.getUpdateRoomFormHandler()
-                .handleNumber()
-                .handleCapacity()
-                .handleAvailable()
-                .handleGender()
+                .inputNumber()
+                .inputCapacity()
+                .inputAvailable()
+                .inputGender()
                 .createDto();
         try {
             roomService.updateRoom(dto);
@@ -122,7 +122,7 @@ public class RoomMenu implements Menu {
 
     private void getRoomInfo() {
         var dto = roomFormHandlerFactory.getRoomInfoFormHandler()
-                .handleRoomNumber()
+                .inputRoomNumber()
                 .createDto();
         try {
             String roomInfo = roomService.getRoomInfo(dto);

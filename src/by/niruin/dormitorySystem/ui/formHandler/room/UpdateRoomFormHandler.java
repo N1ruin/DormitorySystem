@@ -26,7 +26,7 @@ public class UpdateRoomFormHandler {
         this.roomService = roomService;
     }
 
-    public UpdateRoomFormHandler handleNumber() {
+    public UpdateRoomFormHandler inputNumber() {
         roomNumber = formHandler.handleInputString(
                 () -> printService.printRoomNumbers(roomService.getRoomNumbers()),
                 Integer::parseInt,
@@ -34,7 +34,7 @@ public class UpdateRoomFormHandler {
         return this;
     }
 
-    public UpdateRoomFormHandler handleCapacity() {
+    public UpdateRoomFormHandler inputCapacity() {
         roomCapacity = formHandler.handleInputString(
                 printService::printInputDormitoryCapacityRequestMessage,
                 Byte::parseByte,
@@ -42,7 +42,7 @@ public class UpdateRoomFormHandler {
         return this;
     }
 
-    public UpdateRoomFormHandler handleAvailable() {
+    public UpdateRoomFormHandler inputAvailable() {
         String availableForLivingInput = formHandler.handleInputString(
                 printService::printInputAvailableForLivingRequestMessage,
                 Function.identity(),
@@ -51,7 +51,7 @@ public class UpdateRoomFormHandler {
         return this;
     }
 
-    public UpdateRoomFormHandler handleGender() {
+    public UpdateRoomFormHandler inputGender() {
         String genderInput = formHandler.handleInputString(
                 printService::printInputGenderRoomRequestMessage,
                 Function.identity(),

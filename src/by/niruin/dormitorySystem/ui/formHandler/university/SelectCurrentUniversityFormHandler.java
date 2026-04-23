@@ -22,7 +22,7 @@ public class SelectCurrentUniversityFormHandler {
         this.universityInputValidationService = universityInputValidationService;
     }
 
-    public SelectCurrentUniversityFormHandler handleUniversityName() {
+    public SelectCurrentUniversityFormHandler inputUniversityName() {
         universityNumber = formHandler.handleInputString(
                 () -> printService.printUniversityNumbers(universityService.getUniversitiesNames()),
                 Integer::parseInt,

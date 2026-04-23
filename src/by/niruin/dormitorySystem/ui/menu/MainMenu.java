@@ -14,13 +14,13 @@ import by.niruin.dormitorySystem.ui.menu.service.MenuItemService;
 import static by.niruin.dormitorySystem.constant.LoggerMessage.SELECTED_ITEM_LOG;
 
 public class MainMenu implements Menu {
+    private static final Logger logger = LoggerFactory.getLogger(MainMenu.class);
     private final InputService inputService;
     private final PrintService printService;
     private final MenuFactory menuFactory;
     private final UserService userService;
     private final MenuItemService menuItemService;
     private final AuthenticationService authentificationService;
-    private static final Logger logger = LoggerFactory.getLogger(MainMenu.class);
 
     public MainMenu(InputService inputService, PrintService printService, MenuFactory menuFactory,
                     UserService userService, MenuItemService menuItemService,
@@ -58,12 +58,13 @@ public class MainMenu implements Menu {
 
     private Menu executeMenuItem(MainMenuItem item) {
         return switch (item) {
-            case ROOMS -> menuFactory.createMenu(RoomMenu.class);
-            case DORMITORIES -> menuFactory.createMenu(DormitoryMenu.class);
-            case STUDENTS, LOG_OUT -> menuFactory.createMenu(StartMenu.class);
-            case UNIVERSITIES -> menuFactory.createMenu(UniversityMenu.class);
-            case USERS -> menuFactory.createMenu(UserMenu.class);
+            case ROOMS -> menuFactory.getMenu(RoomMenu.class);
+            case DORMITORIES -> menuFactory.getMenu(DormitoryMenu.class);
+            case STUDENTS -> menuFactory.getMenu(StudentMenu.class);
+            case UNIVERSITIES -> menuFactory.getMenu(UniversityMenu.class);
+            case USERS -> menuFactory.getMenu(UserMenu.class);
             case SHOW_ACCOUNT_INFO -> showAccountInfo();
+            case LOG_OUT -> menuFactory.getMenu(StartMenu.class);
         };
     }
 

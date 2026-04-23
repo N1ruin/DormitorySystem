@@ -28,7 +28,7 @@ public class CreateStudentFormHandler {
         this.printService = printService;
     }
 
-    public CreateStudentFormHandler handleFirstName() {
+    public CreateStudentFormHandler inputFirstName() {
         firstName = formHandler.handleInputString(
                 printService::printInputFirstNameRequestMessage,
                 Function.identity(),
@@ -36,7 +36,7 @@ public class CreateStudentFormHandler {
         return this;
     }
 
-    public CreateStudentFormHandler handleLastName() {
+    public CreateStudentFormHandler inputLastName() {
         lastName = formHandler.handleInputString(
                 printService::printInputLastNameRequestMessage,
                 Function.identity(),
@@ -44,7 +44,7 @@ public class CreateStudentFormHandler {
         return this;
     }
 
-    public CreateStudentFormHandler handleFatherName() {
+    public CreateStudentFormHandler inputFatherName() {
         fatherName = formHandler.handleInputString(
                 printService::printInputFatherNameRequestMessage,
                 Function.identity(),
@@ -52,7 +52,7 @@ public class CreateStudentFormHandler {
         return this;
     }
 
-    public CreateStudentFormHandler handleGender() {
+    public CreateStudentFormHandler inputGender() {
         String genderInput = formHandler.handleInputString(
                 printService::printInputGenderRequestMessage,
                 Function.identity(),
@@ -62,7 +62,7 @@ public class CreateStudentFormHandler {
         return this;
     }
 
-    public CreateStudentFormHandler handleEnteringDate() {
+    public CreateStudentFormHandler inputEnteringDate() {
         String date = formHandler.handleInputString(
                 printService::printEnteringDateInputMessage,
                 Function.identity(),

@@ -23,7 +23,7 @@ public class CreateDormitoryFormHandler {
         this.printService = printService;
     }
 
-    public CreateDormitoryFormHandler handleDormitoryNumber() {
+    public CreateDormitoryFormHandler inputDormitoryNumber() {
         dormitoryNumber = formHandler.handleInputString(
                 printService::printInputDormitoryNumberRequestMessage,
                 Integer::parseInt,
@@ -31,7 +31,7 @@ public class CreateDormitoryFormHandler {
         return this;
     }
 
-    public CreateDormitoryFormHandler handleDormitoryCapacity() {
+    public CreateDormitoryFormHandler inputDormitoryCapacity() {
         dormitoryCapacity = formHandler.handleInputString(
                 printService::printInputDormitoryCapacityRequestMessage,
                 Byte::parseByte,
@@ -39,7 +39,7 @@ public class CreateDormitoryFormHandler {
         return this;
     }
 
-    public CreateDormitoryFormHandler handleAvailable() {
+    public CreateDormitoryFormHandler inputAvailable() {
         String availableForLivingInput = formHandler.handleInputString(
                 printService::printInputAvailableForLivingRequestMessage,
                 Function.identity(),

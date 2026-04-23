@@ -11,11 +11,11 @@ import static by.niruin.dormitorySystem.constant.LoggerMessage.USER_AUTHENTIFICA
 import static by.niruin.dormitorySystem.constant.LoggerMessage.USER_AUTHENTIFICATION_SUCCESS_LOG;
 
 public class AuthenticationMenu implements Menu {
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationMenu.class);
     private final PrintService printService;
     private final MenuFactory menuFactory;
     private final UserFormHandlerFactory userFormHandlerFactory;
     private final AuthenticationService authentificationService;
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationMenu.class);
 
     public AuthenticationMenu(PrintService printService, MenuFactory menuFactory,
                               UserFormHandlerFactory userFormHandlerFactory,
@@ -42,19 +42,19 @@ public class AuthenticationMenu implements Menu {
             authentificationService.signIn(dto);
             printService.printWelcomeUserMessage(dto.login());
             logger.info(USER_AUTHENTIFICATION_SUCCESS_LOG.formatted(dto.login()));
-            return menuFactory.createMenu(MainMenu.class);
+            return menuFactory.getMenu(MainMenu.class);
         } catch (Exception e) {
             printService.printExceptionMessage(e);
             logger.info(USER_AUTHENTIFICATION_FAIL_LOG);
             logger.info(e.getMessage());
-            return menuFactory.createMenu(StartMenu.class);
+            return menuFactory.getMenu(StartMenu.class);
         }
     }
 
     private AuthentificationUserDto handleAuthorizationForm() {
         return userFormHandlerFactory.getAuthenticationFormHandler()
-                .handleLogin()
-                .handlePassword()
+                .inputLogin()
+                .inputPassword()
                 .createDto();
     }
 }

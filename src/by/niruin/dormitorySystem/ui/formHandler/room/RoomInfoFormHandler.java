@@ -22,7 +22,7 @@ public class RoomInfoFormHandler {
         this.validationService = roomInputValidationService;
     }
 
-    public RoomInfoFormHandler handleRoomNumber() {
+    public RoomInfoFormHandler inputRoomNumber() {
         roomNumber = formHandler.handleInputString(
                 () -> printService.printRoomNumbers(roomService.getRoomNumbers()),
                 Integer::parseInt,

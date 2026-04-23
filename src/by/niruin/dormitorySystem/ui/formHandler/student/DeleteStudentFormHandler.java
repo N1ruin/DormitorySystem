@@ -21,7 +21,7 @@ public class DeleteStudentFormHandler {
         this.studentService = studentService;
     }
 
-    public DeleteStudentFormHandler handleNumber() {
+    public DeleteStudentFormHandler inputNumber() {
         var studentNamesDto = studentService.getCurrentUniversityStudentNames();
         numberFromList = formHandler.handleInputString(
                 () -> printService.printStudentNames(studentNamesDto),

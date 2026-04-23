@@ -21,7 +21,7 @@ public class AuthenticationFormHandler {
         this.userInputValidationService = userInputValidationService;
     }
 
-    public AuthenticationFormHandler handleLogin() {
+    public AuthenticationFormHandler inputLogin() {
         login = formHandler.handleInputString(
                 printService::printInputLoginRegistrationRequestMessage,
                 Function.identity(),
@@ -29,7 +29,7 @@ public class AuthenticationFormHandler {
         return this;
     }
 
-    public AuthenticationFormHandler handlePassword() {
+    public AuthenticationFormHandler inputPassword() {
         password = formHandler.handleInputString(
                 printService::printInputPasswordRequestMessage,
                 Function.identity(),

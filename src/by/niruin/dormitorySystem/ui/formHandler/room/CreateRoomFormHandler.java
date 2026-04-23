@@ -24,7 +24,7 @@ public class CreateRoomFormHandler {
         this.printService = printService;
     }
 
-    public CreateRoomFormHandler handleRoomNumber() {
+    public CreateRoomFormHandler inputRoomNumber() {
         roomNumber = formHandler.handleInputString(
                 printService::printInputRoomNumberRequestMessage,
                 Integer::parseInt,
@@ -32,7 +32,7 @@ public class CreateRoomFormHandler {
         return this;
     }
 
-    public CreateRoomFormHandler handleRoomCapacity() {
+    public CreateRoomFormHandler inputRoomCapacity() {
         roomCapacity = formHandler.handleInputString(
                 printService::printInputDormitoryCapacityRequestMessage,
                 Byte::parseByte,
@@ -40,7 +40,7 @@ public class CreateRoomFormHandler {
         return this;
     }
 
-    public CreateRoomFormHandler handleAvailable() {
+    public CreateRoomFormHandler inputAvailable() {
         String availableForLivingInput = formHandler.handleInputString(
                 printService::printInputAvailableForLivingRequestMessage,
                 Function.identity(),
@@ -50,7 +50,7 @@ public class CreateRoomFormHandler {
         return this;
     }
 
-    public CreateRoomFormHandler handleGender() {
+    public CreateRoomFormHandler inputGender() {
         String maleOnlyInput = formHandler.handleInputString(
                 printService::printInputGenderRoomRequestMessage,
                 Function.identity(),

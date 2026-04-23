@@ -22,7 +22,7 @@ public class UniversityInfoFormHandler {
         this.universityInputValidationService = universityInputValidationService;
     }
 
-    public UniversityInfoFormHandler handleUniversityNumber() {
+    public UniversityInfoFormHandler inputUniversityNumber() {
         universityNumber = formHandleService.handleInputString(
                 () -> printService.printUniversityNumbers(universityService.getUniversitiesNames()),
                 Integer::parseInt,

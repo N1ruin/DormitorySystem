@@ -21,7 +21,7 @@ public class StudentInfoFormHandler {
         this.studentInputValidationService = studentInputValidationService;
     }
 
-    public StudentInfoFormHandler handleStudentNumber() {
+    public StudentInfoFormHandler inputStudentNumber() {
         var studentNamesDto = studentService.getCurrentUniversityStudentNames();
         studentNumberFromList = formHandler.handleInputString(
                 () -> printService.printStudentNames(studentNamesDto),

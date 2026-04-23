@@ -28,7 +28,7 @@ public class UpdateStudentFormHandler {
         this.studentService = studentService;
     }
 
-    public UpdateStudentFormHandler handleNumber() {
+    public UpdateStudentFormHandler inputNumber() {
        var studentNamesDto = studentService.getCurrentUniversityStudentNames();
         studentNameNumberFromList = formHandler.handleInputString(
                 () -> printService.printStudentNames(studentNamesDto),
@@ -37,7 +37,7 @@ public class UpdateStudentFormHandler {
         return this;
     }
 
-    public UpdateStudentFormHandler handleLastName() {
+    public UpdateStudentFormHandler inputLastName() {
         lastName = formHandler.handleInputString(
                 printService::printInputLastNameRequestMessage,
                 Function.identity(),
@@ -45,7 +45,7 @@ public class UpdateStudentFormHandler {
         return this;
     }
 
-    public UpdateStudentFormHandler handleDormitory() {
+    public UpdateStudentFormHandler inputDormitory() {
         var currentDormitoryNumbersDto = dormitoryService.getCurrentUniversityDormitoryNumbers();
         dormitoryNumberFromList = formHandler.handleInputString(
                 () -> printService.printDormitoryNumbers(currentDormitoryNumbersDto),

@@ -24,7 +24,7 @@ public class UpdateUserFormHandler {
         this.userInputValidationService = userInputValidationService;
     }
 
-    public UpdateUserFormHandler handleLogin() {
+    public UpdateUserFormHandler inputLogin() {
         login = formHandler.handleInputString(
                 printService::printInputLoginRegistrationRequestMessage,
                 Function.identity(),
@@ -32,7 +32,7 @@ public class UpdateUserFormHandler {
         return this;
     }
 
-    public UpdateUserFormHandler handlePassword() {
+    public UpdateUserFormHandler inputPassword() {
         password = formHandler.handleInputString(
                 printService::printInputPasswordRequestMessage,
                 Function.identity(),
@@ -40,7 +40,7 @@ public class UpdateUserFormHandler {
         return this;
     }
 
-    public UpdateUserFormHandler handleLastName() {
+    public UpdateUserFormHandler inputLastName() {
         lastName = formHandler.handleInputString(
                 printService::printInputLastNameRequestMessage,
                 Function.identity(),
@@ -48,7 +48,7 @@ public class UpdateUserFormHandler {
         return this;
     }
 
-    public UpdateUserFormHandler handleRole() {
+    public UpdateUserFormHandler inputRole() {
         int roleInput = formHandler.handleInputString(
                 printService::printInputRoleRequestMessage,
                 Integer::parseInt,

@@ -36,7 +36,7 @@ public class DistributeStudentToRoomFormHandler {
         this.roomService = roomService;
     }
 
-    public DistributeStudentToRoomFormHandler handleStudentNumber() {
+    public DistributeStudentToRoomFormHandler inputStudentNumber() {
         var studentsNamesWithoutRoom = studentService.getStudentNamesWithoutRoom();
         List<Student> studentsWithoutRoom = studentService.getStudentsWithoutRoom();
 
@@ -48,7 +48,7 @@ public class DistributeStudentToRoomFormHandler {
         return this;
     }
 
-    public DistributeStudentToRoomFormHandler handleRoomNumber() {
+    public DistributeStudentToRoomFormHandler inputRoomNumber() {
         var studentName = getStudentNameWithoutRoomByListNumber(studentNumberFromList);
         var student = studentService.getStudentByName(studentName);
 

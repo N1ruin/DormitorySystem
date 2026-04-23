@@ -7,6 +7,10 @@ import by.niruin.dormitorySystem.infrastructure.service.*;
 import by.niruin.dormitorySystem.ui.formHandler.factory.*;
 import by.niruin.dormitorySystem.ui.menu.service.MenuItemService;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
 @Component
 public class MenuFactory {
     private final InputService inputService;
@@ -25,6 +29,7 @@ public class MenuFactory {
     private final UniversityService universityService;
     private final UniversityStatisticService universityStatisticService;
     private final MenuItemService menuItemService;
+    private final Map<Class<? extends Menu>, Supplier<Menu>> menuRegistry = new HashMap<>();
 
     public MenuFactory(InputService inputService, PrintService printService, RegistrationService registrationService,
                        AuthenticationService authentificationService,
@@ -53,53 +58,39 @@ public class MenuFactory {
         this.menuItemService = menuItemService;
     }
 
-    public Menu createMenu(Class<? extends Menu> menuClass) {
-        Menu menu;
-        if (menuClass == RegistrationMenu.class) {
-            menu = new RegistrationMenu(printService, this, userFormHandlerFactory, registrationService);
-        } else if (menuClass == AuthenticationMenu.class) {
-            menu = new AuthenticationMenu(printService, this, userFormHandlerFactory,
-                    authentificationService);
-        } else if (menuClass == RoomMenu.class) {
-            menu = new RoomMenu(inputService, printService, roomService, this, studentService,
-                    menuItemService, roomFormHandlerFactory);
-        } else if (menuClass == ExitMenu.class) {
-            menu = new ExitMenu(menuItemService);
-        } else if (menuClass == MainMenu.class) {
-            menu = new MainMenu(inputService, printService, this, userService, menuItemService,
-                    authentificationService);
-        } else if (menuClass == SelectSortRoomsOrderMenu.class) {
-            menu = new SelectSortRoomsOrderMenu(printService, inputService, this, roomService,
-                    menuItemService);
-        } else if (menuClass == DormitoryMenu.class) {
-            menu = new DormitoryMenu(printService, inputService, this, dormitoryService, menuItemService,
-                    dormitoryFormHandlerFactory);
-        } else if (menuClass == SelectSortDormitoriesOrderMenu.class) {
-            menu = new SelectSortDormitoriesOrderMenu(printService, inputService, this, dormitoryService,
-                    menuItemService);
-        } else if (menuClass == UniversityMenu.class) {
-            menu = new UniversityMenu(inputService, printService, universityService, dormitoryService, this,
-                    menuItemService, universityFormHandlerFactory, dormitoryFormHandlerFactory,
-                    universityStatisticService);
-        } else if (menuClass == SelectSortUniversitiesOrderMenu.class) {
-            menu = new SelectSortUniversitiesOrderMenu(printService, inputService, this, menuItemService,
-                    universityService);
-        } else if (menuClass == UserMenu.class) {
-            menu = new UserMenu(printService, inputService, this, userService, menuItemService,
-                    registrationService, userFormHandlerFactory);
-        } else if (menuClass == SelectSortUsersOrderMenu.class) {
-            menu = new SelectSortUsersOrderMenu(printService, inputService, this, userService,
-                    menuItemService);
-        } else if (menuClass == StudentMenu.class) {
-            menu = new StudentMenu(printService, inputService, this, menuItemService,
-                    studentFormHandlerFactory, studentService);
-        } else if (menuClass == SelectSortStudentsOrderMenu.class) {
-            menu = new SelectSortStudentsOrderMenu(printService, inputService, this, studentService,
-                    menuItemService);
-        } else {
-            menu = new StartMenu(inputService, printService, menuItemService, this);
-        }
+    public void registerMenus() {
+        menuRegistry.put(RegistrationMenu.class, () -> new RegistrationMenu(printService, this,
+                userFormHandlerFactory, registrationService));
+        menuRegistry.put(AuthenticationMenu.class, () -> new AuthenticationMenu(printService, this,
+                userFormHandlerFactory, authentificationService));
+        menuRegistry.put(RoomMenu.class, () -> new RoomMenu(inputService, printService, roomService, this,
+                studentService, menuItemService, roomFormHandlerFactory));
+        menuRegistry.put(ExitMenu.class, () -> new ExitMenu(menuItemService));
+        menuRegistry.put(MainMenu.class, () -> new MainMenu(inputService, printService, this, userService,
+                menuItemService, authentificationService));
+        menuRegistry.put(SelectSortRoomsOrderMenu.class, () -> new SelectSortRoomsOrderMenu(printService, inputService,
+                this, roomService, menuItemService));
+        menuRegistry.put(DormitoryMenu.class, () -> new DormitoryMenu(printService, inputService, this,
+                dormitoryService, menuItemService, dormitoryFormHandlerFactory));
+        menuRegistry.put(SelectSortDormitoriesOrderMenu.class, () -> new SelectSortDormitoriesOrderMenu(printService,
+                inputService, this, dormitoryService, menuItemService));
+        menuRegistry.put(UniversityMenu.class, () -> new UniversityMenu(inputService, printService, universityService,
+                dormitoryService, this, menuItemService, universityFormHandlerFactory,
+                dormitoryFormHandlerFactory, universityStatisticService));
+        menuRegistry.put(SelectSortUniversitiesOrderMenu.class, () -> new SelectSortUniversitiesOrderMenu(printService,
+                inputService, this, menuItemService, universityService));
+        menuRegistry.put(UserMenu.class, () -> new UserMenu(printService, inputService, this, userService,
+                menuItemService, registrationService, userFormHandlerFactory));
+        menuRegistry.put(SelectSortUsersOrderMenu.class, () -> new SelectSortUsersOrderMenu(printService, inputService,
+                this, userService, menuItemService));
+        menuRegistry.put(StudentMenu.class, () -> new StudentMenu(printService, inputService, this,
+                menuItemService, studentFormHandlerFactory, studentService));
+        menuRegistry.put(SelectSortStudentsOrderMenu.class, () -> new SelectSortStudentsOrderMenu(printService,
+                inputService, this, studentService, menuItemService));
+    }
 
-        return menu;
+    public Menu getMenu(Class<? extends Menu> menuClass) {
+        return menuRegistry.getOrDefault(menuClass,
+                () -> new StartMenu(inputService, printService, menuItemService, this)).get();
     }
 }

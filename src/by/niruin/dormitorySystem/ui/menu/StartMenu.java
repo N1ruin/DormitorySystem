@@ -46,9 +46,9 @@ public class StartMenu implements Menu {
 
     private Menu redirectNextMenu(StartMenuItem item) {
         return switch (item) {
-            case AUTH_MENU -> menuFactory.createMenu(AuthenticationMenu.class);
-            case REGISTRATION_MENU -> menuFactory.createMenu(RegistrationMenu.class);
-            case EXIT -> menuFactory.createMenu(ExitMenu.class);
+            case AUTH_MENU -> menuFactory.getMenu(AuthenticationMenu.class);
+            case REGISTRATION_MENU -> menuFactory.getMenu(RegistrationMenu.class);
+            case EXIT -> menuFactory.getMenu(ExitMenu.class);
         };
     }
 }

@@ -70,7 +70,7 @@ public class UniversityFormatterImpl implements UniversityFormatter {
         sb.append(UNIVERSITY_INFORMATION_INFO.formatted(dto.universityName()));
         sb.append(UNIVERSITY_STUDY_DURATION_INFO.formatted(dto.studyDuration()));
         sb.append(UNIVERSITY_DORMITORIES_INFO);
-        sb.append(formatDormitoriesList(dto.dormitoriesNumbersFromUniversity()));
+        sb.append(formatDormitoriesList(dto.universityDormitoriesNumbers()));
 
         return sb.toString();
     }
