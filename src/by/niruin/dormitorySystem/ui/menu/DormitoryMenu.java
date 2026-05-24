@@ -15,17 +15,17 @@ public class DormitoryMenu implements Menu {
     private static final Logger logger = LoggerFactory.getLogger(DormitoryMenu.class);
     private final PrintService printService;
     private final InputService inputService;
-    private final MenuFactory menuFactory;
+    private final MenuLocator menuLocator;
     private final DormitoryService dormitoryService;
     private final MenuItemService menuItemService;
     private final DormitoryFormHandlerFactory dormitoryFormHandlerFactory;
 
-    public DormitoryMenu(PrintService printService, InputService inputService, MenuFactory menuFactory,
+    public DormitoryMenu(PrintService printService, InputService inputService, MenuLocator menuLocator,
                          DormitoryService dormitoryService, MenuItemService menuItemService,
                          DormitoryFormHandlerFactory dormitoryFormHandlerFactory) {
         this.printService = printService;
         this.inputService = inputService;
-        this.menuFactory = menuFactory;
+        this.menuLocator = menuLocator;
         this.dormitoryService = dormitoryService;
         this.menuItemService = menuItemService;
         this.dormitoryFormHandlerFactory = dormitoryFormHandlerFactory;
@@ -58,9 +58,9 @@ public class DormitoryMenu implements Menu {
             case CREATE_DORMITORY -> createDormitory();
             case DELETE_DORMITORY -> deleteDormitory();
             case UPDATE_DORMITORY -> updateDormitory();
-            case GET_SORTED_DORMITORIES -> nextMenu = menuFactory.getMenu(SelectSortDormitoriesOrderMenu.class);
+            case GET_SORTED_DORMITORIES -> nextMenu = menuLocator.getMenu(SelectSortDormitoriesOrderMenu.class);
             case GET_DORMITORY_INFO -> getDormitoryInfo();
-            case GO_BACK -> nextMenu = menuFactory.getMenu(MainMenu.class);
+            case GO_BACK -> nextMenu = menuLocator.getMenu(MainMenu.class);
         }
         return nextMenu;
     }
@@ -89,7 +89,7 @@ public class DormitoryMenu implements Menu {
                 .createDormitoryDto();
 
         try {
-            dormitoryService.createDormitory(dto);
+            dormitoryService.create(dto);
             printService.printDormitoryCreatedSuccessfulMessage();
             logger.info(DORMITORY_CREATED_SUCCESSFUL_LOG.formatted(dto.number()));
         } catch (Exception e) {
@@ -105,7 +105,7 @@ public class DormitoryMenu implements Menu {
                 .createDto();
 
         try {
-            dormitoryService.deleteDormitory(dto);
+            dormitoryService.delete(dto);
             printService.printDormitoryDeletedSuccessfulMessage();
             logger.info(DORMITORY_DELETED_SUCCESSFUL_LOG.formatted(dto.number()));
         } catch (Exception e) {
@@ -121,7 +121,7 @@ public class DormitoryMenu implements Menu {
                 .inputAvailable()
                 .createDto();
         try {
-            dormitoryService.updateDormitory(dto);
+            dormitoryService.update(dto);
             printService.printDormitoryUpdatedSuccessfulMessage();
             logger.info(DORMITORY_UPDATED_SUCCESSFUL_LOG.formatted(dto.number()));
         } catch (Exception e) {

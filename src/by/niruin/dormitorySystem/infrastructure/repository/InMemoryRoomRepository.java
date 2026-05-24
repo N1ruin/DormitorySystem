@@ -57,21 +57,24 @@ public class InMemoryRoomRepository implements RoomRepository {
 
     @Override
     public List<Room> findByDormitoryId(UUID dormitoryId) {
-        return rooms.values().stream()
+        return rooms.values()
+                .stream()
                 .filter(room -> room.getDormitoryId().equals(dormitoryId))
                 .toList();
     }
 
     @Override
     public Optional<Room> findById(UUID id) {
-        return rooms.values().stream()
+        return rooms.values()
+                .stream()
                 .filter(room -> room.getId().equals(id))
                 .findFirst();
     }
 
     @Override
     public List<Room> findAllByDormitoryIdOrderBy(UUID dormitoryId, Comparator<Room> comparator) {
-        return rooms.values().stream()
+        return rooms.values()
+                .stream()
                 .filter(room -> room.getDormitoryId().equals(dormitoryId))
                 .sorted(comparator)
                 .toList();
@@ -79,7 +82,8 @@ public class InMemoryRoomRepository implements RoomRepository {
 
     @Override
     public Optional<Room> findByNumber(UUID dormitoryId, int number) {
-        return rooms.values().stream()
+        return rooms.values()
+                .stream()
                 .filter(room -> room.getDormitoryId().equals(dormitoryId))
                 .filter(room -> room.getNumber() == number)
                 .findFirst();

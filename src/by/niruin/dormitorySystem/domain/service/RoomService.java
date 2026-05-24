@@ -34,7 +34,7 @@ public class RoomService {
         this.roomFormatter = roomFormatter;
     }
 
-    public void createRoom(CreateRoomDto dto) {
+    public void create(CreateRoomDto dto) {
         roomValidationService.validateCreateData(dto);
 
         UUID currentDormitoryId = ApplicationContextUtil.getCurrentDormitoryId();
@@ -44,13 +44,13 @@ public class RoomService {
         roomRepository.save(room);
     }
 
-    public void deleteRoom(DeleteRoomDto dto) {
+    public void delete(DeleteRoomDto dto) {
         var roomId = getRoomIdFromCurrentUniversityByListNumber(dto.numberFromList());
 
         roomRepository.delete(roomId);
     }
 
-    public void updateRoom(UpdateRoomDto dto) {
+    public void update(UpdateRoomDto dto) {
         roomValidationService.validateRoomNumber(dto.number());
 
         var room = roomRepository.findByNumber(ApplicationContextUtil.getCurrentDormitoryId(), dto.number())
@@ -122,7 +122,8 @@ public class RoomService {
                         Collectors.counting()
                 ));
 
-        return roomRepository.findByDormitoryId(dormitoryId).stream()
+        return roomRepository.findByDormitoryId(dormitoryId)
+                .stream()
                 .filter(room -> (gender == Gender.MALE) == room.isMaleOnly())
                 .filter(Room::isAvailableForLiving)
                 .filter(room -> {

@@ -55,21 +55,24 @@ public class InMemoryUniversityRepository implements UniversityRepository {
 
     @Override
     public Optional<University> findByName(String name) {
-        return universities.values().stream()
+        return universities.values()
+                .stream()
                 .filter(university -> university.getName().equals(name))
                 .findFirst();
     }
 
     @Override
     public List<University> findAllOrderBy(Comparator<University> comparator) {
-        return universities.values().stream()
+        return universities.values()
+                .stream()
                 .sorted(comparator)
                 .toList();
     }
 
     @Override
     public Optional<University> findById(UUID universityId) {
-        return universities.values().stream()
+        return universities.values()
+                .stream()
                 .filter(university -> university.getId().equals(universityId))
                 .findFirst();
     }

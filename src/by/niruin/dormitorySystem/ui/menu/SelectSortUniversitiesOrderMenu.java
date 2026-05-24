@@ -18,15 +18,15 @@ public class SelectSortUniversitiesOrderMenu implements Menu {
     private static final Logger logger = LoggerFactory.getLogger(SelectSortUniversitiesOrderMenu.class);
     private final PrintService printService;
     private final InputService inputService;
-    private final MenuFactory menuFactory;
+    private final MenuLocator menuLocator;
     private final MenuItemService menuItemService;
     private final UniversityService universityService;
 
     public SelectSortUniversitiesOrderMenu(PrintService printService, InputService inputService,
-                                           MenuFactory menuFactory, MenuItemService menuItemService, UniversityService universityService) {
+                                           MenuLocator menuLocator, MenuItemService menuItemService, UniversityService universityService) {
         this.printService = printService;
         this.inputService = inputService;
-        this.menuFactory = menuFactory;
+        this.menuLocator = menuLocator;
         this.menuItemService = menuItemService;
         this.universityService = universityService;
     }
@@ -44,7 +44,7 @@ public class SelectSortUniversitiesOrderMenu implements Menu {
             String sortedUniversitiesInfo = universityService.getSortedUniversitiesInfo(getUniversityComparator(item));
             printService.printSortedUniversitiesInfo(sortedUniversitiesInfo);
             logger.info(SELECTED_ITEM_LOG.formatted(item.name()));
-            return menuFactory.getMenu(UniversityMenu.class);
+            return menuLocator.getMenu(UniversityMenu.class);
         } catch (Exception e) {
             printService.printInvalidInputMessage();
             logger.info(ENTERED_INVALID_VALUE_LOG.formatted(userInput));

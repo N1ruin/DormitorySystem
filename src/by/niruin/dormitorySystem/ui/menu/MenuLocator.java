@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 @Component
-public class MenuFactory {
+public class MenuLocator {
     private final InputService inputService;
     private final PrintService printService;
     private final RegistrationService registrationService;
@@ -31,7 +31,7 @@ public class MenuFactory {
     private final MenuItemService menuItemService;
     private final Map<Class<? extends Menu>, Supplier<Menu>> menuRegistry = new HashMap<>();
 
-    public MenuFactory(InputService inputService, PrintService printService, RegistrationService registrationService,
+    public MenuLocator(InputService inputService, PrintService printService, RegistrationService registrationService,
                        AuthenticationService authentificationService,
                        DormitoryFormHandlerFactory dormitoryFormHandlerFactory,
                        RoomFormHandlerFactory roomFormHandlerFactory, StudentFormHandlerFactory studentFormHandlerFactory,

@@ -43,17 +43,17 @@ public class DormitoryService {
         return getDormitoryNumbers(ApplicationContextUtil.getCurrentUniversityId());
     }
 
-    public void createDormitory(CreateDormitoryDto dto) {
+    public void create(CreateDormitoryDto dto) {
         dormitoryValidationService.validateCreateData(dto);
 
-        UUID dormitoryId = UUID.randomUUID();
+        UUID id = UUID.randomUUID();
         UUID currentUniversityId = ApplicationContextUtil.getCurrentUniversityId();
-        Dormitory dormitory = new Dormitory(dormitoryId, dto.number(), dto.roomsCount(), currentUniversityId, dto.availableForLiving());
+        Dormitory dormitory = new Dormitory(id, dto.number(), dto.roomsCount(), currentUniversityId, dto.availableForLiving());
 
         dormitoryRepository.save(dormitory);
     }
 
-    public void deleteDormitory(DeleteDormitoryDto dto) {
+    public void delete(DeleteDormitoryDto dto) {
         dormitoryValidationService.validateDormitoryNumber(dto.number());
 
         var dormitory = dormitoryRepository.findByUniversityIdAndNumber(ApplicationContextUtil.getCurrentUniversityId(), dto.number())
@@ -62,7 +62,7 @@ public class DormitoryService {
         dormitoryRepository.delete(dormitory.getId());
     }
 
-    public void updateDormitory(UpdateDormitoryDto dto) {
+    public void update(UpdateDormitoryDto dto) {
         dormitoryValidationService.validateDormitoryNumber(dto.number());
 
         var dormitory = dormitoryRepository.findByUniversityIdAndNumber(ApplicationContextUtil.getCurrentUniversityId(), dto.number())
@@ -107,14 +107,15 @@ public class DormitoryService {
     }
 
     public UUID getDormitoryIdFromCurrentUniversityByListNumber(int numberFromList) {
-        return dormitoryRepository.findAllByUniversityId(ApplicationContextUtil.getCurrentUniversityId()).stream()
+        return dormitoryRepository.findAllByUniversityId(ApplicationContextUtil.getCurrentUniversityId())
+                .stream()
                 .sorted(Comparator.comparingInt(Dormitory::getNumber))
                 .toList()
                 .get(numberFromList - 1)
                 .getId();
     }
 
-    public List<Dormitory> getDormitoriesFromCurrentUniversity() {
+    public List<Dormitory> getAllFromCurrentUniversity() {
         return dormitoryRepository.findAllByUniversityId(ApplicationContextUtil.getCurrentUniversityId());
     }
 

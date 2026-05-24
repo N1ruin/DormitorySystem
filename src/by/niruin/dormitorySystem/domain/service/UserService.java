@@ -28,13 +28,13 @@ public class UserService {
         this.userFormatter = userFormatter;
     }
 
-    public void deleteUser(DeleteUserDto dto) {
+    public void delete(DeleteUserDto dto) {
         var user = userRepository.findByLogin(dto.login())
                 .orElseThrow(() -> new EntityNotFoundException(dto.login(), User.class));
         userRepository.delete(user.getId());
     }
 
-    public void updateUser(UpdateUserDto dto) {
+    public void update(UpdateUserDto dto) {
         var user = userRepository.findByLogin(dto.login())
                 .orElseThrow(() -> new EntityNotFoundException(dto.login(), User.class));
 

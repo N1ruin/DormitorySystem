@@ -17,17 +17,17 @@ public class MainMenu implements Menu {
     private static final Logger logger = LoggerFactory.getLogger(MainMenu.class);
     private final InputService inputService;
     private final PrintService printService;
-    private final MenuFactory menuFactory;
+    private final MenuLocator menuLocator;
     private final UserService userService;
     private final MenuItemService menuItemService;
     private final AuthenticationService authentificationService;
 
-    public MainMenu(InputService inputService, PrintService printService, MenuFactory menuFactory,
+    public MainMenu(InputService inputService, PrintService printService, MenuLocator menuLocator,
                     UserService userService, MenuItemService menuItemService,
                     AuthenticationService authentificationService) {
         this.inputService = inputService;
         this.printService = printService;
-        this.menuFactory = menuFactory;
+        this.menuLocator = menuLocator;
         this.userService = userService;
         this.menuItemService = menuItemService;
         this.authentificationService = authentificationService;
@@ -58,13 +58,13 @@ public class MainMenu implements Menu {
 
     private Menu executeMenuItem(MainMenuItem item) {
         return switch (item) {
-            case ROOMS -> menuFactory.getMenu(RoomMenu.class);
-            case DORMITORIES -> menuFactory.getMenu(DormitoryMenu.class);
-            case STUDENTS -> menuFactory.getMenu(StudentMenu.class);
-            case UNIVERSITIES -> menuFactory.getMenu(UniversityMenu.class);
-            case USERS -> menuFactory.getMenu(UserMenu.class);
+            case ROOMS -> menuLocator.getMenu(RoomMenu.class);
+            case DORMITORIES -> menuLocator.getMenu(DormitoryMenu.class);
+            case STUDENTS -> menuLocator.getMenu(StudentMenu.class);
+            case UNIVERSITIES -> menuLocator.getMenu(UniversityMenu.class);
+            case USERS -> menuLocator.getMenu(UserMenu.class);
             case SHOW_ACCOUNT_INFO -> showAccountInfo();
-            case LOG_OUT -> menuFactory.getMenu(StartMenu.class);
+            case LOG_OUT -> menuLocator.getMenu(StartMenu.class);
         };
     }
 

@@ -33,7 +33,7 @@ public class DormitoryInputValidationService {
         validateNumber(input);
 
         int intInput = Integer.parseInt(input);
-        var dormitoriesFromCurrentUniversity = dormitoryService.getDormitoriesFromCurrentUniversity();
+        var dormitoriesFromCurrentUniversity = dormitoryService.getAllFromCurrentUniversity();
 
         if (intInput <= 0 || intInput > dormitoriesFromCurrentUniversity.size()) {
             throw new InputValidationException(INVALID_INPUT_MESSAGE);

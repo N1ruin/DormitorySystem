@@ -32,7 +32,8 @@ public class UserDataGenerator implements EntityDataGenerator {
         List<University> universities = universityRepository.findAll();
         for (int i = 0; i < universities.size(); i++) {
             UUID universityId = universities.get(i).getId();
-            List<Dormitory> dormitoriesInUniversity = dormitoryRepository.findAll().stream()
+            List<Dormitory> dormitoriesInUniversity = dormitoryRepository.findAll()
+                    .stream()
                     .filter(dormitory -> dormitory.getUniversityId().equals(universityId)).toList();
             if (dormitoriesInUniversity.isEmpty()) {
                 continue;

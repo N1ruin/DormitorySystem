@@ -30,7 +30,8 @@ public class UniversityService {
     }
 
     public UniversityNamesDto getUniversitiesNames() {
-        var universityNames = universityRepository.findAll().stream()
+        var universityNames = universityRepository.findAll()
+                .stream()
                 .map(University::getName)
                 .sorted()
                 .toList();
@@ -40,7 +41,7 @@ public class UniversityService {
         return new UniversityNamesDto(universityNumberedNamesList);
     }
 
-    public void createUniversity(CreateUniversityDto dto) {
+    public void create(CreateUniversityDto dto) {
         validationService.validateCreateData(dto);
 
         UUID universityId = UUID.randomUUID();
@@ -49,14 +50,14 @@ public class UniversityService {
         universityRepository.save(university);
     }
 
-    public void deleteUniversity(DeleteUniversityDto dto) {
+    public void delete(DeleteUniversityDto dto) {
         var universityName = getUniversityNameByListNumber(dto.selectedUniversityNumber());
         var university = universityRepository.findByName(universityName)
                 .orElseThrow(() -> new EntityNotFoundException(universityName, University.class));
         universityRepository.delete(university.getId());
     }
 
-    public void updateUniversity(UpdateUniversityDto dto) {
+    public void update(UpdateUniversityDto dto) {
         var universityName = getUniversityNameByListNumber(dto.numberFromList());
         var university = universityRepository.findByName(universityName)
                 .orElseThrow(() -> new EntityNotFoundException(universityName, University.class));
@@ -100,7 +101,8 @@ public class UniversityService {
     private UniversityInfoDto buildInfoDto(University university) {
         var universityName = university.getName();
         var studyDuration = university.getStudyDuration();
-        var dormitoriesFromUniversity = dormitoryRepository.findByUniversityId(university.getId()).stream()
+        var dormitoriesFromUniversity = dormitoryRepository.findByUniversityId(university.getId())
+                .stream()
                 .map(Dormitory::getNumber)
                 .sorted()
                 .toList();
@@ -109,7 +111,8 @@ public class UniversityService {
     }
 
     private String getUniversityNameByListNumber(int inputNumberInList) {
-        var universityNames = universityRepository.findAll().stream()
+        var universityNames = universityRepository.findAll()
+                .stream()
                 .map(University::getName)
                 .sorted()
                 .toList();

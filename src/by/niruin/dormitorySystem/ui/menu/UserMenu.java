@@ -16,18 +16,18 @@ public class UserMenu implements Menu {
     private static final Logger logger = LoggerFactory.getLogger(UserMenu.class);
     private final PrintService printService;
     private final InputService inputService;
-    private final MenuFactory menuFactory;
+    private final MenuLocator menuLocator;
     private final UserService userService;
     private final MenuItemService menuItemService;
     private final RegistrationService registrationService;
     private final UserFormHandlerFactory userFormHandlerFactory;
 
-    public UserMenu(PrintService printService, InputService inputService, MenuFactory menuFactory, UserService userService,
+    public UserMenu(PrintService printService, InputService inputService, MenuLocator menuLocator, UserService userService,
                     MenuItemService menuItemService, RegistrationService registrationService,
                     UserFormHandlerFactory userFormHandlerFactory) {
         this.printService = printService;
         this.inputService = inputService;
-        this.menuFactory = menuFactory;
+        this.menuLocator = menuLocator;
         this.userService = userService;
         this.menuItemService = menuItemService;
         this.registrationService = registrationService;
@@ -60,9 +60,9 @@ public class UserMenu implements Menu {
             case CREATE_USER -> createUser();
             case DELETE_USER -> deleteUser();
             case UPDATE_USER -> updateUser();
-            case GET_SORTED_USERS -> nextMenu = menuFactory.getMenu(SelectSortUsersOrderMenu.class);
+            case GET_SORTED_USERS -> nextMenu = menuLocator.getMenu(SelectSortUsersOrderMenu.class);
             case GET_USER_INFO -> getUserInfo();
-            case GO_BACK -> nextMenu = menuFactory.getMenu(MainMenu.class);
+            case GO_BACK -> nextMenu = menuLocator.getMenu(MainMenu.class);
         }
 
         return nextMenu;
@@ -96,7 +96,7 @@ public class UserMenu implements Menu {
                 .createDto();
 
         try {
-            userService.deleteUser(dto);
+            userService.delete(dto);
             printService.printUserDeletedSuccessfulMessage();
             logger.info(USER_DELETED_SUCCESSFUL_LOG);
         } catch (Exception e) {
@@ -114,7 +114,7 @@ public class UserMenu implements Menu {
                 .inputRole()
                 .createDto();
         try {
-            userService.updateUser(dto);
+            userService.update(dto);
             printService.printUniversityUpdatedSuccessfulMessage();
             logger.info(USER_UPDATED_SUCCESSFUL_LOG);
         } catch (Exception e) {

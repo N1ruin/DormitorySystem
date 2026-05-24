@@ -52,7 +52,8 @@ public class StudentDataGenerator implements EntityDataGenerator {
                 roomId = null;
             } else {
                 dormitoryId = dormitoryList.get(random.nextInt(0, dormitoryList.size())).getId();
-                List<Room> roomList = roomRepository.findAll().stream()
+                List<Room> roomList = roomRepository.findAll()
+                        .stream()
                         .filter(room -> room.getDormitoryId().equals(dormitoryId))
                         .toList();
                 roomId = roomList.get(random.nextInt(roomList.size())).getId();

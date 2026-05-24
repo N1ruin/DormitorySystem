@@ -44,8 +44,8 @@ public class StudentFormatterImpl implements StudentFormatter {
 
         if (dto.universityName() != null) {
             stringBuilder.append(UNIVERSITY_NAME_INFO.formatted(dto.universityName()))
-                    .append(DATE_OF_START_EDUCATION_INFO.formatted(dto.dateOfStartEducation()))
-                    .append(DATE_OF_END_EDUCATION_INFO.formatted(dto.dateOfEndingEducation()));
+                    .append(DATE_OF_START_EDUCATION_INFO.formatted(dto.startEducationDate()))
+                    .append(DATE_OF_END_EDUCATION_INFO.formatted(dto.endEducationDate()));
         }
 
         if (dto.dormitoryNumber() != null) {
@@ -54,10 +54,10 @@ public class StudentFormatterImpl implements StudentFormatter {
 
         if (dto.roomNumber() != null) {
             stringBuilder.append(ROOM_NUMBER_INFO.formatted(dto.roomNumber()))
-                    .append(DATE_OF_ROOM_CHECK_IN_INFO.formatted(dto.dateOfRoomCheckIn()))
-                    .append(dto.dateOfRoomCheckOut() == null
+                    .append(DATE_OF_ROOM_CHECK_IN_INFO.formatted(dto.roomCheckInDate()))
+                    .append(dto.roomCheckOutDate() == null
                             ? UNKNOWN_DATE_OF_ROOM_CHECK_OUT_INFO
-                            : DATE_OF_ROOM_CHECK_OUT_INFO.formatted(dto.dateOfRoomCheckOut()));
+                            : DATE_OF_ROOM_CHECK_OUT_INFO.formatted(dto.roomCheckOutDate()));
         }
 
         return stringBuilder.toString();

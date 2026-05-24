@@ -12,14 +12,14 @@ import static by.niruin.dormitorySystem.constant.LoggerMessage.USER_REGISTRATION
 public class RegistrationMenu implements Menu {
     private static final Logger logger = LoggerFactory.getLogger(RegistrationMenu.class);
     private final PrintService printService;
-    private final MenuFactory menuFactory;
+    private final MenuLocator menuLocator;
     private final UserFormHandlerFactory userFormHandlerFactory;
     private final RegistrationService registrationService;
 
-    public RegistrationMenu(PrintService printService, MenuFactory menuFactory,
+    public RegistrationMenu(PrintService printService, MenuLocator menuLocator,
                             UserFormHandlerFactory userFormHandlerFactory, RegistrationService registrationService) {
         this.printService = printService;
-        this.menuFactory = menuFactory;
+        this.menuLocator = menuLocator;
         this.userFormHandlerFactory = userFormHandlerFactory;
         this.registrationService = registrationService;
     }
@@ -32,7 +32,7 @@ public class RegistrationMenu implements Menu {
     @Override
     public Menu handleInput() {
         signUp();
-        return menuFactory.getMenu(StartMenu.class);
+        return menuLocator.getMenu(StartMenu.class);
     }
 
     private void signUp() {

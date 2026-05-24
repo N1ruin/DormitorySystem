@@ -15,14 +15,14 @@ public class StartMenu implements Menu {
     private final InputService inputService;
     private final PrintService printService;
     private final MenuItemService menuItemService;
-    private final MenuFactory menuFactory;
+    private final MenuLocator menuLocator;
 
     public StartMenu(InputService inputService, PrintService printService, MenuItemService menuItemService,
-                     MenuFactory menuFactory) {
+                     MenuLocator menuLocator) {
         this.inputService = inputService;
         this.printService = printService;
         this.menuItemService = menuItemService;
-        this.menuFactory = menuFactory;
+        this.menuLocator = menuLocator;
     }
 
     @Override
@@ -46,9 +46,9 @@ public class StartMenu implements Menu {
 
     private Menu redirectNextMenu(StartMenuItem item) {
         return switch (item) {
-            case AUTH_MENU -> menuFactory.getMenu(AuthenticationMenu.class);
-            case REGISTRATION_MENU -> menuFactory.getMenu(RegistrationMenu.class);
-            case EXIT -> menuFactory.getMenu(ExitMenu.class);
+            case AUTH_MENU -> menuLocator.getMenu(AuthenticationMenu.class);
+            case REGISTRATION_MENU -> menuLocator.getMenu(RegistrationMenu.class);
+            case EXIT -> menuLocator.getMenu(ExitMenu.class);
         };
     }
 }

@@ -51,7 +51,7 @@ public class StudentService {
         this.roomService = roomService;
     }
 
-    public void createStudent(CreateStudentDto dto) {
+    public void create(CreateStudentDto dto) {
         var fullName = new FullName(dto.firstName(), dto.fatherName(), dto.lastName());
         studentValidationService.validateStudentExist(fullName, dto.enteringDate());
 
@@ -67,15 +67,15 @@ public class StudentService {
         studentRepository.save(student);
     }
 
-    public void deleteStudent(DeleteStudentDto dto) {
+    public void delete(DeleteStudentDto dto) {
         var studentName = getStudentNameByListNumber(dto.numberFromList());
-        var student = getStudentByName(studentName);
+        var student = getByName(studentName);
         studentRepository.delete(student.getId());
     }
 
-    public void updateStudent(UpdateStudentDto dto) {
+    public void update(UpdateStudentDto dto) {
         var studentName = getStudentNameByListNumber(dto.numberFromList());
-        var student = getStudentByName(studentName);
+        var student = getByName(studentName);
 
         var dormitoryId = dormitoryService.getDormitoryIdFromCurrentUniversityByListNumber(dto.dormitoryNumberFromList());
 
@@ -89,7 +89,7 @@ public class StudentService {
 
     public String getStudentInfo(StudentNumberFromListDto dto) {
         var studentName = getStudentNameByListNumber(dto.numberFromList());
-        var student = getStudentByName(studentName);
+        var student = getByName(studentName);
 
         var infoDto = buildInfoDto(student);
 
@@ -122,7 +122,8 @@ public class StudentService {
     }
 
     public String getStudentNamesWithoutRoom() {
-        var students = studentRepository.findByDormitoryId(ApplicationContextUtil.getCurrentDormitoryId()).stream()
+        var students = studentRepository.findByDormitoryId(ApplicationContextUtil.getCurrentDormitoryId())
+                .stream()
                 .filter(student -> student.getRoomId() == null)
                 .toList();
 
@@ -139,7 +140,7 @@ public class StudentService {
     public void distributeStudentToDormitory(DistributeStudentToDormitoryDto dto) {
         var studentName = getWithoutDormitoryStudentNameByListNumber(dto.studentNumberFromList());
 
-        var student = getStudentByName(studentName);
+        var student = getByName(studentName);
 
         var dormitory = dormitoryRepository.findByDormitoryNumberOrUniversityId(ApplicationContextUtil.getCurrentUniversityId(),
                 dto.dormitoryNumber()).orElseThrow(() -> new EntityNotFoundException(dto.dormitoryNumber(), Dormitory.class));
@@ -151,14 +152,15 @@ public class StudentService {
     }
 
     public List<Student> getStudentsWithoutDormitory() {
-        return studentRepository.findByUniversityId(ApplicationContextUtil.getCurrentUniversityId()).stream()
+        return studentRepository.findByUniversityId(ApplicationContextUtil.getCurrentUniversityId())
+                .stream()
                 .filter(student -> student.getDormitoryId() == null)
                 .toList();
     }
 
     public void distributeStudentToRoom(DistributeStudentToRoomDto dto) {
-        var studentName = getStudentNameWithoutRoomByListNumber(dto.studentNumberFromList());
-        var student = getStudentByName(studentName);
+        var studentName = getNameWithoutRoomByListNumber(dto.studentNumberFromList());
+        var student = getByName(studentName);
 
         if (student.getDormitoryId() == null) {
             throw new EntityValidationException("Student must be assigned to a dormitory first");
@@ -177,12 +179,12 @@ public class StudentService {
         studentRepository.update(student);
     }
 
-    public Student getStudentByName(String studentName) {
+    public Student getByName(String studentName) {
         return studentRepository.findByUniversityIdAndFullName(ApplicationContextUtil.getCurrentUniversityId(), studentName)
                 .orElseThrow(() -> new EntityNotFoundException(studentName, Student.class));
     }
 
-    private String getStudentNameWithoutRoomByListNumber(int numberFromList) {
+    private String getNameWithoutRoomByListNumber(int numberFromList) {
         return getStudentNameByListNumber(numberFromList, student -> student.getRoomId() == null);
     }
 
@@ -256,12 +258,12 @@ public class StudentService {
                 .flatMap(dormitoryRepository::findById)
                 .map(Dormitory::getNumber)
                 .orElse(null);
-
     }
 
     public List<Student> getStudentsWithoutRoom() {
         UUID currentDormitoryId = ApplicationContextUtil.getCurrentDormitoryId();
-        return studentRepository.findByDormitoryId(currentDormitoryId).stream()
+        return studentRepository.findByDormitoryId(currentDormitoryId)
+                .stream()
                 .filter(student -> student.getRoomId() == null)
                 .toList();
     }

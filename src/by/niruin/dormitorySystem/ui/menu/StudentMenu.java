@@ -15,17 +15,17 @@ public class StudentMenu implements Menu {
     private static final Logger logger = LoggerFactory.getLogger(StudentMenu.class);
     private final PrintService printService;
     private final InputService inputService;
-    private final MenuFactory menuFactory;
+    private final MenuLocator menuLocator;
     private final MenuItemService menuItemService;
     private final StudentFormHandlerFactory studentFormHandlerFactory;
     private final StudentService studentService;
 
-    public StudentMenu(PrintService printService, InputService inputService, MenuFactory menuFactory,
+    public StudentMenu(PrintService printService, InputService inputService, MenuLocator menuLocator,
                        MenuItemService menuItemService, StudentFormHandlerFactory studentFormHandlerFactory,
                        StudentService studentService) {
         this.printService = printService;
         this.inputService = inputService;
-        this.menuFactory = menuFactory;
+        this.menuLocator = menuLocator;
         this.menuItemService = menuItemService;
         this.studentFormHandlerFactory = studentFormHandlerFactory;
         this.studentService = studentService;
@@ -56,12 +56,12 @@ public class StudentMenu implements Menu {
             case CREATE_STUDENT -> createStudent();
             case DELETE_STUDENT -> deleteStudent();
             case UPDATE_STUDENT -> updateStudent();
-            case GET_SORTED_STUDENTS -> nextMenu = menuFactory.getMenu(SelectSortStudentsOrderMenu.class);
+            case GET_SORTED_STUDENTS -> nextMenu = menuLocator.getMenu(SelectSortStudentsOrderMenu.class);
             case GET_STUDENT_INFO -> getStudentInfo();
             case GET_STUDENTS_WITHOUT_DORMITORY -> getStudentsWithoutDormitory();
             case DISTRIBUTE_STUDENTS_TO_DORMITORIES -> distributeStudentsToDormitories();
             case DISTRIBUTE_STUDENTS_TO_ROOMS -> distributeStudentsToRooms();
-            case GO_BACK -> nextMenu = menuFactory.getMenu(MainMenu.class);
+            case GO_BACK -> nextMenu = menuLocator.getMenu(MainMenu.class);
         }
         return nextMenu;
     }
@@ -75,7 +75,7 @@ public class StudentMenu implements Menu {
                 .inputEnteringDate()
                 .createDto();
         try {
-            studentService.createStudent(dto);
+            studentService.create(dto);
             printService.printStudentCreatedSuccessfulMessage();
             logger.info(STUDENT_CREATED_SUCCESSFUL_LOG.formatted(dto.firstName(), dto.lastName(), dto.fatherName()));
         } catch (Exception e) {
@@ -91,7 +91,7 @@ public class StudentMenu implements Menu {
                 .createDto();
 
         try {
-            studentService.deleteStudent(dto);
+            studentService.delete(dto);
             printService.printStudentDeletedSuccessfulMessage();
             logger.info(STUDENT_DELETED_SUCCESSFUL_LOG);
         } catch (Exception e) {
@@ -109,7 +109,7 @@ public class StudentMenu implements Menu {
                 .createDto();
 
         try {
-            studentService.updateStudent(dto);
+            studentService.update(dto);
             printService.printStudentUpdatedSuccessfulMessage();
             logger.info(STUDENT_UPDATED_SUCCESSFUL_LOG);
         } catch (Exception e) {

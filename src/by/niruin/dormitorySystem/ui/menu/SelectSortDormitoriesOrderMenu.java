@@ -18,15 +18,15 @@ public class SelectSortDormitoriesOrderMenu implements Menu {
     private static final Logger logger = LoggerFactory.getLogger(SelectSortDormitoriesOrderMenuItem.class);
     private final PrintService printService;
     private final InputService inputService;
-    private final MenuFactory menuFactory;
+    private final MenuLocator menuLocator;
     private final DormitoryService dormitoryService;
     private final MenuItemService menuItemService;
 
-    public SelectSortDormitoriesOrderMenu(PrintService printService, InputService inputService, MenuFactory menuFactory,
+    public SelectSortDormitoriesOrderMenu(PrintService printService, InputService inputService, MenuLocator menuLocator,
                                           DormitoryService dormitoryService, MenuItemService menuItemService) {
         this.printService = printService;
         this.inputService = inputService;
-        this.menuFactory = menuFactory;
+        this.menuLocator = menuLocator;
         this.dormitoryService = dormitoryService;
         this.menuItemService = menuItemService;
     }
@@ -44,7 +44,7 @@ public class SelectSortDormitoriesOrderMenu implements Menu {
             String sortedRoomsInfo = dormitoryService.getSortedDormitoriesInfo(getRoomComparator(item));
             printService.printSortedDormitoriesInfo(sortedRoomsInfo);
             logger.info(SELECTED_ITEM_LOG.formatted(item.name()));
-            return menuFactory.getMenu(DormitoryMenu.class);
+            return menuLocator.getMenu(DormitoryMenu.class);
         } catch (Exception e) {
             printService.printInvalidInputMessage();
             logger.info(ENTERED_INVALID_VALUE_LOG.formatted(userInput));

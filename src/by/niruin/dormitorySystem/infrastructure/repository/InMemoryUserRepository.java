@@ -22,7 +22,8 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(UUID userId) {
-        return users.values().stream()
+        return users.values()
+                .stream()
                 .filter(user -> user.getId().equals(userId)).findFirst();
     }
 
@@ -60,14 +61,16 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findByLogin(String login) {
-        return users.values().stream()
+        return users.values()
+                .stream()
                 .filter(user -> user.getLogin().equalsIgnoreCase(login))
                 .findFirst();
     }
 
     @Override
     public List<User> findAllOrderBy(Comparator<User> comparator) {
-        return users.values().stream()
+        return users.values()
+                .stream()
                 .sorted(comparator)
                 .toList();
     }

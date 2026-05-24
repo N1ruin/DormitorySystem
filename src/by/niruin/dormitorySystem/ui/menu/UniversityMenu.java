@@ -20,14 +20,14 @@ public class UniversityMenu implements Menu {
     private final PrintService printService;
     private final UniversityService universityService;
     private final DormitoryService dormitoryService;
-    private final MenuFactory menuFactory;
+    private final MenuLocator menuLocator;
     private final MenuItemService menuItemService;
     private final UniversityFormHandlerFactory universityFormHandlerFactory;
     private final DormitoryFormHandlerFactory dormitoryFormHandlerFactory;
     private final UniversityStatisticService universityStatisticService;
 
     public UniversityMenu(InputService inputService, PrintService printService, UniversityService universityService,
-                          DormitoryService dormitoryService, MenuFactory menuFactory, MenuItemService menuItemService,
+                          DormitoryService dormitoryService, MenuLocator menuLocator, MenuItemService menuItemService,
                           UniversityFormHandlerFactory universityFormHandlerFactory,
                           DormitoryFormHandlerFactory dormitoryFormHandlerFactory,
                           UniversityStatisticService universityStatisticService) {
@@ -35,7 +35,7 @@ public class UniversityMenu implements Menu {
         this.printService = printService;
         this.universityService = universityService;
         this.dormitoryService = dormitoryService;
-        this.menuFactory = menuFactory;
+        this.menuLocator = menuLocator;
         this.menuItemService = menuItemService;
         this.universityFormHandlerFactory = universityFormHandlerFactory;
         this.dormitoryFormHandlerFactory = dormitoryFormHandlerFactory;
@@ -69,10 +69,10 @@ public class UniversityMenu implements Menu {
             case CREATE_UNIVERSITY -> createUniversity();
             case DELETE_UNIVERSITY -> deleteUniversity();
             case UPDATE_UNIVERSITY -> updateUniversity();
-            case GET_SORTED_UNIVERSITIES -> nextMenu = menuFactory.getMenu(SelectSortUniversitiesOrderMenu.class);
+            case GET_SORTED_UNIVERSITIES -> nextMenu = menuLocator.getMenu(SelectSortUniversitiesOrderMenu.class);
             case GET_UNIVERSITY_INFO -> getUniversityInfo();
             case GET_UNIVERSITY_STATISTICS -> getUniversityStatistic();
-            case GO_BACK -> nextMenu = menuFactory.getMenu(MainMenu.class);
+            case GO_BACK -> nextMenu = menuLocator.getMenu(MainMenu.class);
         }
         return nextMenu;
     }
@@ -129,7 +129,7 @@ public class UniversityMenu implements Menu {
                 .inputStudyDuration()
                 .createDto();
         try {
-            universityService.createUniversity(dto);
+            universityService.create(dto);
             printService.printUniversityCreatedSuccessfulMessage();
             logger.info(UNIVERSITY_CREATED_SUCCESSFUL_LOG.formatted(dto.universityName()));
         } catch (Exception e) {
@@ -145,7 +145,7 @@ public class UniversityMenu implements Menu {
                 .createDto();
 
         try {
-            universityService.deleteUniversity(dto);
+            universityService.delete(dto);
             printService.printUniversityDeletedSuccessfulMessage();
             logger.info(UNIVERSITY_DELETED_SUCCESSFUL_LOG);
         } catch (Exception e) {
@@ -162,7 +162,7 @@ public class UniversityMenu implements Menu {
                 .createDto();
 
         try {
-            universityService.updateUniversity(dto);
+            universityService.update(dto);
             printService.printUniversityUpdatedSuccessfulMessage();
             logger.info(UNIVERSITY_UPDATED_SUCCESSFUL_LOG);
         } catch (Exception e) {

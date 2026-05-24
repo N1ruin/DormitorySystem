@@ -55,14 +55,16 @@ public class InMemoryDormitoryRepository implements DormitoryRepository {
 
     @Override
     public List<Dormitory> findByUniversityId(UUID universityId) {
-        return dormitories.values().stream()
+        return dormitories.values()
+                .stream()
                 .filter(dormitory -> dormitory.getUniversityId().equals(universityId))
                 .toList();
     }
 
     @Override
     public Optional<Dormitory> findByDormitoryNumberOrUniversityId(UUID universityId, int dormitoryNumber) {
-        return dormitories.values().stream()
+        return dormitories.values()
+                .stream()
                 .filter(dormitory -> dormitory.getUniversityId().equals(universityId))
                 .filter(dormitory -> dormitory.getNumber() == dormitoryNumber)
                 .findFirst();
@@ -70,14 +72,16 @@ public class InMemoryDormitoryRepository implements DormitoryRepository {
 
     @Override
     public List<Dormitory> findAllByUniversityId(UUID universityId) {
-        return dormitories.values().stream()
+        return dormitories.values()
+                .stream()
                 .filter(dormitory -> dormitory.getUniversityId().equals(universityId))
                 .toList();
     }
 
     @Override
     public Optional<Dormitory> findByUniversityIdAndNumber(UUID universityId, int number) {
-        return dormitories.values().stream()
+        return dormitories.values()
+                .stream()
                 .filter(dormitory -> dormitory.getUniversityId().equals(universityId))
                 .filter(dormitory -> dormitory.getNumber() == number)
                 .findFirst();
@@ -85,7 +89,8 @@ public class InMemoryDormitoryRepository implements DormitoryRepository {
 
     @Override
     public List<Dormitory> findAllByUniversityIdOrderBy(UUID universityId, Comparator<Dormitory> dormitoryComparator) {
-        return dormitories.values().stream()
+        return dormitories.values()
+                .stream()
                 .filter(dormitory -> dormitory.getUniversityId().equals(universityId))
                 .sorted(dormitoryComparator)
                 .toList();
@@ -93,7 +98,8 @@ public class InMemoryDormitoryRepository implements DormitoryRepository {
 
     @Override
     public Optional<Dormitory> findById(UUID id) {
-        return dormitories.values().stream()
+        return dormitories.values()
+                .stream()
                 .filter(dormitory -> dormitory.getId().equals(id))
                 .findFirst();
     }

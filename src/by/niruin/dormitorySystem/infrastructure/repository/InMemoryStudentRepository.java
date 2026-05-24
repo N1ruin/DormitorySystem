@@ -57,14 +57,16 @@ public class InMemoryStudentRepository implements StudentRepository {
 
     @Override
     public List<Student> findByUniversityId(UUID universityId) {
-        return students.values().stream()
+        return students.values()
+                .stream()
                 .filter(student -> student.getUniversityId().equals(universityId))
                 .toList();
     }
 
     @Override
     public List<Student> findAllByUniversityIdOrderBy(UUID universityId, Comparator<Student> comparator) {
-        return students.values().stream()
+        return students.values()
+                .stream()
                 .filter(student -> student.getUniversityId().equals(universityId))
                 .sorted(comparator)
                 .toList();
@@ -72,7 +74,8 @@ public class InMemoryStudentRepository implements StudentRepository {
 
     @Override
     public Map<UUID, List<Student>> findByDormitoryIdGroupingByRoomId(UUID dormitoryId, UUID roomId) {
-        return students.values().stream()
+        return students.values()
+                .stream()
                 .filter(student -> student.getDormitoryId().equals(dormitoryId))
                 .filter(student -> student.getRoomId() != null)
                 .collect(Collectors.groupingBy(Student::getRoomId));
@@ -80,7 +83,8 @@ public class InMemoryStudentRepository implements StudentRepository {
 
     @Override
     public List<Student> findByDormitoryId(UUID dormitoryId) {
-        return students.values().stream()
+        return students.values()
+                .stream()
                 .filter(student -> {
                     var studentDormitoryId = student.getDormitoryId();
                     return studentDormitoryId != null && studentDormitoryId.equals(dormitoryId);
@@ -90,7 +94,8 @@ public class InMemoryStudentRepository implements StudentRepository {
 
     @Override
     public Optional<Student> findByUniversityIdAndFullName(UUID universityId, String fullName) {
-        return students.values().stream()
+        return students.values()
+                .stream()
                 .filter(student -> student.getUniversityId().equals(universityId))
                 .filter(student -> student.getFullName().getFullNameString().equals(fullName))
                 .findFirst();
@@ -98,7 +103,8 @@ public class InMemoryStudentRepository implements StudentRepository {
 
     @Override
     public List<Student> findByRoomId(UUID roomId) {
-        return students.values().stream()
+        return students.values()
+                .stream()
                 .filter(student -> student.getRoomId().equals(roomId))
                 .toList();
     }

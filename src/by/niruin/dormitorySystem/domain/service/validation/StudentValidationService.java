@@ -25,7 +25,8 @@ public class StudentValidationService {
     }
 
     public void validateStudentExist(FullName fullName, LocalDate dateOfEntering) {
-        boolean isStudentExist = studentRepository.findAll().stream()
+        boolean isStudentExist = studentRepository.findAll()
+                .stream()
                 .filter(student -> student.getFullName().equals(fullName))
                 .anyMatch(student -> student.getStartEducationDate().equals(dateOfEntering));
 

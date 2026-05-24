@@ -50,7 +50,7 @@ public class DistributeStudentToRoomFormHandler {
 
     public DistributeStudentToRoomFormHandler inputRoomNumber() {
         var studentName = getStudentNameWithoutRoomByListNumber(studentNumberFromList);
-        var student = studentService.getStudentByName(studentName);
+        var student = studentService.getByName(studentName);
 
         var freeRoomsDto = roomService.getFreeRoomsNumbers(student.getGender());
         List<Room> freeRooms = roomService.getFreeRooms(student.getGender(),

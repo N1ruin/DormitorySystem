@@ -13,15 +13,15 @@ import static by.niruin.dormitorySystem.constant.LoggerMessage.USER_AUTHENTIFICA
 public class AuthenticationMenu implements Menu {
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationMenu.class);
     private final PrintService printService;
-    private final MenuFactory menuFactory;
+    private final MenuLocator menuLocator;
     private final UserFormHandlerFactory userFormHandlerFactory;
     private final AuthenticationService authentificationService;
 
-    public AuthenticationMenu(PrintService printService, MenuFactory menuFactory,
+    public AuthenticationMenu(PrintService printService, MenuLocator menuLocator,
                               UserFormHandlerFactory userFormHandlerFactory,
                               AuthenticationService authentificationService) {
         this.printService = printService;
-        this.menuFactory = menuFactory;
+        this.menuLocator = menuLocator;
         this.userFormHandlerFactory = userFormHandlerFactory;
         this.authentificationService = authentificationService;
     }
@@ -42,12 +42,12 @@ public class AuthenticationMenu implements Menu {
             authentificationService.signIn(dto);
             printService.printWelcomeUserMessage(dto.login());
             logger.info(USER_AUTHENTIFICATION_SUCCESS_LOG.formatted(dto.login()));
-            return menuFactory.getMenu(MainMenu.class);
+            return menuLocator.getMenu(MainMenu.class);
         } catch (Exception e) {
             printService.printExceptionMessage(e);
             logger.info(USER_AUTHENTIFICATION_FAIL_LOG);
             logger.info(e.getMessage());
-            return menuFactory.getMenu(StartMenu.class);
+            return menuLocator.getMenu(StartMenu.class);
         }
     }
 
